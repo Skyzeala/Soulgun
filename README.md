@@ -3,10 +3,10 @@ A cross-platform "bullet hell" game where your gun can possess your enemies.  Th
 _Jackedsoft 2021_
 
 ## Contributors
-* Jared Collums
-* Aleksander Kaletin
-* Christopher Tevren
-* Kirani Anderson
+* **J**ared Collums
+* **A**leksander Kaletin
+* **C**hristopher Tevren
+* **K**irani Anderson
 
 ## Technologies
 * C++
