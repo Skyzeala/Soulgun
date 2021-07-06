@@ -41,16 +41,16 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Soulgun projectile only collides with humanoid enemies
 
 ### Week 4 - Minimum Viable Product
-	- Enemy Movement AI
-		* Enemies face and toward player and move around or away if player gets too close
-		* Enemies position themselves in a relavtively even distribution
-	- Scoring
-		* Points and/or timer
+- Enemy Movement AI
+	* Enemies face and toward player and move around or away if player gets too close
+	* Enemies position themselves in a relavtively even distribution
+- Scoring
+	* Points and/or timer
 
 ### Week 5
-	- Quality Assurance
-		* Test for bugs
-	- Cosmetic Enhancements
-		* Better sprite graphics 
-		* Rudimentary Sound effects
-		* Better map graphics
+- Quality Assurance
+	* Test for bugs
+- Cosmetic Enhancements
+	* Better sprite graphics 
+	* Rudimentary Sound effects
+	* Better map graphics
