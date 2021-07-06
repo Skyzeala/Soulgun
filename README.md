@@ -1,57 +1,56 @@
-###This is the README for Soulgun
-##A super cool bullethell game were you take your enemies body with your soulgun
+# Soulgun
+A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies.  If the player gets in over their head they can target a humanoid enemy to switch places and move out of harm's way.
+_Jackedsoft 2021_
 
-#Collaborators
-*Aleksander Kaletin
-*Christopher Tevren
-*Jared Collums
-*Kirani Anderson
+## Contributors
+* Jared Collums
+* Aleksander Kaletin
+* Christopher Tevren
+* Kirani Anderson
 
-##ROADMAP, SOULGUN
+## Technologies
+* C++
+* [SDL 2.0](https://www.libsdl.org/]) - "a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D"
 
-#Milesones
+## Development Roadmap
+Development will happen in one week sprints, with each sprint introducing the features specified below.  Specific milestone deadlines may be shifted as needed.  After the last of these sprints we hope to have a coherent game whose mechanics and assets can be easily built upon.
 
-*Week one
+### Week 1 - Prototype
+- Basic Game Engine
+	- Main Loop
+		* Construct the main game loop to handle rending of graphics and handle user input
+	- Onscreen Entities
+		* Objects to represent the player, enemies, and their respective locations
+	- Map with Partial Display
+		* A map system to display only a portion of the map depending on player location
 
-	- Architecture Document
-	- Game Engine
-		- Player, Enemy & entities - location
-			* Objects to represent the player, enemey entites and their location
-		- Map & partial display
-			* Map system to display part of the map depending on player location
-		- Gameloop
-			* Construct the main game loop to handle rending of graphics and listen for input,
-				i.e. create even handler.
+### Week 2
+- Player Movement
+	* Enable user to move around map with user input
+- Enemy Spawning System
+	* System for continuously spawning a limited number of enemies in proximity to the player entity
+- Projectiles & Collision
+	* Player and enemies shoot projectiles
+	* Players and enemies disappear from map when projectiles collide with them
 
-*Week two
+### Week 3
+- Humanoid Enemy Type 
+	* Enable an enemy to be “possessed” by the soulgun
+- Soulgun Functionality
+	* Alternate firing mode that causes player entity to switch with humanoid enemy
+	* Soulgun projectile only collides with humanoid enemies
 
-	- Player movement and input
-		* Enable user to move around map depending on user input
-	- Enemy spawning
-		* System for spawning a limited number of enemies in proximity to the player entity
-	- Projectiles & collision
-		* Player and enemies shoot projectiles
-		* Players and enemies disappear from map when projectiles collide with them
+### Week 4 - Minimum Viable Product
+- Enemy Movement AI
+	* Enemies face and toward player and move around or away if player gets too close
+	* Enemies position themselves in a relavtively even distribution
+- Scoring
+	* Points and/or timer
 
-*Week three
-
-	- Humanoid enemy type 
-		* Enemy that can be “possessed” by soulgun
-	- Soulgun functionality
-		* Alternate firing mode that causes player entity to switch with humanoid enemy
-	  * Soulgun projectile only collides with humanoid enemies
-
-*Week four
-
-	- Enemey movement AI
-		* Enemies face and toward player or move away if player gets too close
-		* Enemies position themselves in a relavtively even distribution
-
-*Week five
-	
-	- Scoring
-		* Points and/or timer
-	- Bug hunt
-		* Squish, squash
-	- Cosmetic features & stretch goals
-		* Better sprite graphics, possibly work on soundeffects, enhanced map
+### Week 5
+- Quality Assurance
+	* Test for bugs
+- Cosmetic Enhancements
+	* Better sprite graphics 
+	* Rudimentary Sound effects
+	* Better map graphics
