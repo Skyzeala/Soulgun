@@ -29,7 +29,7 @@ public:
   SDL_Point getDimensions(TextureID id);
 
 private:
-  std::string paths[TX_TOTAL] = {
+  const std::string paths[TX_TOTAL] = {
       "assets/placeholder-player.png", 
       "assets/placeholder-robot.png",
       "assets/placeholder-human.png", 
