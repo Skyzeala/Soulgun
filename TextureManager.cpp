@@ -5,10 +5,13 @@
  * 
  * @param renderer An external renderer needed to create textures
  */
-TextureManager::TextureManager(SDL_Renderer *renderer) {
+TextureManager::TextureManager(SDL_Renderer *renderer)
+{
     externalRenderer = renderer;
 
-    for (int id = 0; id < TX_TOTAL; ++id) {
+    for (int id = 0; id < TX_TOTAL; ++id)
+    {
+        textures[id] = NULL;
         load(static_cast<TextureID>(id));
     }
 }
@@ -16,8 +19,10 @@ TextureManager::TextureManager(SDL_Renderer *renderer) {
 /**
  * Unloads all loaded textures
  */
-TextureManager::~TextureManager(void) {
-    for (int id = 0; id < TX_TOTAL; ++id) {
+TextureManager::~TextureManager(void)
+{
+    for (int id = 0; id < TX_TOTAL; ++id)
+    {
         unload(static_cast<TextureID>(id));
     }
 }
@@ -28,7 +33,8 @@ TextureManager::~TextureManager(void) {
  * @param id The texture ID to retrieve
  * @returns A pointer to the texture
  */
-SDL_Texture *TextureManager::getTexture(TextureID id) {
+SDL_Texture *TextureManager::getTexture(TextureID id)
+{
     return textures[id];
 }
 
@@ -38,7 +44,8 @@ SDL_Texture *TextureManager::getTexture(TextureID id) {
  * @param id The texture ID to retrieve dimensions for
  * @returns An SDL point struct (x = width, y = height)
  */
-SDL_Point TextureManager::getDimensions(TextureID id) {
+SDL_Point TextureManager::getDimensions(TextureID id)
+{
     return dimensions[id];
 }
 
@@ -48,25 +55,17 @@ SDL_Point TextureManager::getDimensions(TextureID id) {
  * @param id The texture ID to load
  * @returns A pointer to the texture that was created, or NULL if failed
  */
-SDL_Texture *TextureManager::load(TextureID id) {
+SDL_Texture *TextureManager::load(TextureID id)
+{
     // Reload if already loaded
     if (textures[id] != NULL)
         unload(id);
 
-    // First image must be loaded onto a surface
     const char *path = paths[id].c_str();
-    SDL_Surface *surface = IMG_Load(path);
+    SDL_Texture *texture = IMG_LoadTexture(externalRenderer, path);
 
-    if (!surface) {
-        printf("Error loading image %s: %s", path, IMG_GetError());
-        return NULL;
-    }
-
-    // Now texture can be created from surface
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(externalRenderer, surface);
     if (!texture)
         printf("Error creating texture from %s: %s", path, SDL_GetError());
-    SDL_FreeSurface(surface);
 
     textures[id] = texture;
     return texture;
@@ -78,9 +77,12 @@ SDL_Texture *TextureManager::load(TextureID id) {
  * @param id The texture ID to load
  * @returns A pointer to the texture that was created, or NULL if failed
  */
-void TextureManager::unload(TextureID id) {
-    SDL_DestroyTexture(textures[id]);
-    textures[id] = NULL;
-    dimensions[id].x = 0;
-    dimensions[id].y = 0;
+void TextureManager::unload(TextureID id)
+{
+    if (textures[id] != NULL) {
+        SDL_DestroyTexture(textures[id]);
+        textures[id] = NULL;
+        dimensions[id].x = 0;
+        dimensions[id].y = 0;
+    }
 }
