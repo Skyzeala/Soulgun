@@ -22,7 +22,7 @@ enum TextureID {
  */
 class TextureManager {
 public:
-  TextureManager(void);
+  TextureManager(SDL_Renderer *renderer);
   ~TextureManager(void);
 
   SDL_Texture *getTexture(TextureID id);
@@ -38,6 +38,7 @@ private:
 
   SDL_Texture *textures[TX_TOTAL];
   SDL_Point dimensions[TX_TOTAL];
+  SDL_Renderer *externalRenderer;
 
   SDL_Texture *load(TextureID id);
   void unload(TextureID id);
