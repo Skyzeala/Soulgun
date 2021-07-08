@@ -33,11 +33,11 @@ public:
 
 private:
     const std::string paths[TX_TOTAL] = {
-        "placeholder-terrain.png",
-        "placeholder-player.png",
-        "placeholder-robot.png",
-        "placeholder-human.png",
-        "placeholder-bullet.png"
+        "assets/images/placeholder-terrain.png",
+        "assets/images/placeholder-player.png",
+        "assets/images/placeholder-robot.png",
+        "assets/images/placeholder-human.png",
+        "assets/images/placeholder-bullet.png"
     };
 
     SDL_Texture *textures[TX_TOTAL];
