@@ -67,6 +67,16 @@ SDL_Texture *TextureManager::load(TextureID id)
     if (!texture)
         printf("Error creating texture from %s: %s", path, SDL_GetError());
 
+    // Get dimensions
+    int w = 0;
+    int h = 0;
+    SDL_Point size;
+
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    size.x = w;
+    size.y = h;
+    dimensions[id] = size;
+
     textures[id] = texture;
     return texture;
 }
