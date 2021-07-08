@@ -12,6 +12,8 @@ TextureManager::TextureManager(SDL_Renderer *renderer)
     for (int id = 0; id < TX_TOTAL; ++id)
     {
         textures[id] = NULL;
+        dimensions[id].x = 0;
+        dimensions[id].y = 0;
         load(static_cast<TextureID>(id));
     }
 }
@@ -82,10 +84,9 @@ SDL_Texture *TextureManager::load(TextureID id)
 }
 
 /**
- * Loads a image into memory and creates a texture from it
+ * Unloads a texture that has been loaded
  * 
  * @param id The texture ID to load
- * @returns A pointer to the texture that was created, or NULL if failed
  */
 void TextureManager::unload(TextureID id)
 {
