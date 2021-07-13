@@ -10,18 +10,18 @@ enum keyPress {
 };
 
 int main()
-{ 
+{
 	//Initializes SDL library
 	if(SDL_Init( SDL_INIT_EVERYTHING ) < 0) {
 		std::cout << "SDL failed Init" << std::endl;
 		return 0;
 	}
-	
+
 	// Game window object
 	gameWindow window_object;
 	// Event object
 	SDL_Event windowEvent;
-	
+
 	// Window initializer
 	window_object.render(900, 900);
 
