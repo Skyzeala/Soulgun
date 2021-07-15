@@ -1,3 +1,10 @@
+/*
+#ifdef LINUXLAB
+    #include "../SDL/include/SDL2/SDL.h"
+#else
+    #include <SDL2/SDL.h>
+#endif //LINUXLAB
+*/
 #include <iostream>
 #include "../SDL/include/SDL2/SDL.h"
 //#include "../SDL/include/SDL.h"
@@ -13,7 +20,7 @@ struct movement{
     bool down = false;
     bool left = false;
     bool right = false;
-};
+}movement;
 
 int main(){
     //Main loop flag
