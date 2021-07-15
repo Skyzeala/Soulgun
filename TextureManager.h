@@ -18,8 +18,8 @@ enum TextureID
 
 /**
  * Manages textures in memory
- * 
- * A pre-defined set of textures can be loaded, unloaded, 
+ *
+ * A pre-defined set of textures can be loaded, unloaded,
  * and retrieved with its dimension meta data
  */
 class TextureManager

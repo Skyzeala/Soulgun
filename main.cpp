@@ -1,30 +1,20 @@
-/*
-#ifdef LINUXLAB
+#ifdef LAB
     #include "../SDL/include/SDL2/SDL.h"
 #else
     #include <SDL2/SDL.h>
-#endif //LINUXLAB
-*/
+#endif //LAB
 #include <iostream>
-#include "../SDL/include/SDL2/SDL.h"
-//#include "../SDL/include/SDL.h"
-//#include "entity.h"
+#include "entity.h"
 
 using namespace std;
 
-//function prototypes
-void eventFinder(SDL_Event &event);
-
-struct movement{
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-}movement;
+//function prototype
+void eventFinder(SDL_Event &event, Movement &movement){
 
 int main(){
     //Main loop flag
     bool quit = false;
+    Movement movement;
 
     //Event handler
     SDL_Event event;
@@ -40,7 +30,7 @@ int main(){
             }
 
             //calls function to figure out event type
-            eventFinder(event);
+            eventFinder(event, movement);
         }
 
         //move(movement);
@@ -50,8 +40,7 @@ int main(){
     return 0;
 }
 
-
-void eventFinder(SDL_Event &event){
+void eventFinder(SDL_Event &event, Movement &movement){
     //User presses a key
     if( event.type == SDL_KEYDOWN){
         //Figure out which key was pressed

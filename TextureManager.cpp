@@ -2,7 +2,7 @@
 
 /**
  * Loads all pre-defined textures
- * 
+ *
  * @param renderer An external renderer needed to create textures
  */
 TextureManager::TextureManager(SDL_Renderer *renderer)
@@ -31,7 +31,7 @@ TextureManager::~TextureManager(void)
 
 /**
  * Retrieves a texture that has been loaded
- * 
+ *
  * @param id The texture ID to retrieve
  * @returns A pointer to the texture
  */
@@ -42,7 +42,7 @@ SDL_Texture *TextureManager::getTexture(TextureID id)
 
 /**
  * Retrieves the dimensions of a texture that has been loaded
- * 
+ *
  * @param id The texture ID to retrieve dimensions for
  * @returns An SDL point struct (x = width, y = height)
  */
@@ -53,7 +53,7 @@ SDL_Point TextureManager::getDimensions(TextureID id)
 
 /**
  * Loads a image into memory and creates a texture from it
- * 
+ *
  * @param id The texture ID to load
  * @returns A pointer to the texture that was created, or NULL if failed
  */
@@ -85,7 +85,7 @@ SDL_Texture *TextureManager::load(TextureID id)
 
 /**
  * Unloads a texture that has been loaded
- * 
+ *
  * @param id The texture ID to load
  */
 void TextureManager::unload(TextureID id)
