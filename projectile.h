@@ -19,7 +19,7 @@ public:
 
         void changeDirection(double amount); //add radians to current direction
         //designed to be used for ease of multi bullet creation along with the copy constructor
-        //could potentially be used for rebounding off walls, but this is not expected
+        //could potentially be used for rebounding off walls, but this is not expected and wont work with all movement functions
 
         int getPower();
         double getDirection();

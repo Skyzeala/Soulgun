@@ -19,8 +19,8 @@ struct Position
 struct Movement
 {
     bool left = false;
-    bool up = false;
     bool down = false;
+    bool up = false;
     bool right = false;
 };
 
