@@ -3,13 +3,17 @@
 #else
     #include <SDL2/SDL.h>
 #endif //LAB
+
 #include <iostream>
+#include "map.h"
 #include "entity.h"
+#include "TextureManager.h"
+#include "DisplayManager.h"
 
 using namespace std;
 
 //function prototype
-void eventFinder(SDL_Event &event, Movement &movement){
+void eventFinder(SDL_Event &event, Movement &movement);
 
 int main(){
     //Main loop flag
@@ -18,6 +22,22 @@ int main(){
 
     //Event handler
     SDL_Event event;
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	SDL_Window *window = SDL_CreateWindow("Texture Manager Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+	TextureManager *txMan = new TextureManager(renderer);
+    DisplayManager dispMan(renderer, txMan);
+
+    Entity *thePlayer = new Entity(100, player, 100, 100, 5, movePlayer, 0, moveLeft, static_cast<int>(TX_PLAYER));
+    dispMan.addEntity(thePlayer);
+
+    Entity *theHuman = new Entity(100, human, 400, 400, 5, moveLeft, 0, moveLeft, static_cast<int>(TX_HUMAN));
+    dispMan.addEntity(theHuman);
+
+    Entity *theRobot = new Entity(100, robot, 200, 200, 5, moveLeft, 0, moveLeft, static_cast<int>(TX_ROBOT));
+    dispMan.addEntity(theRobot);
 
     //While application is running
     while( !quit ){
@@ -31,6 +51,10 @@ int main(){
 
             //calls function to figure out event type
             eventFinder(event, movement);
+
+            thePlayer->move(movement);
+
+            dispMan.refresh();
         }
 
         //move(movement);
