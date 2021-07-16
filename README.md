@@ -7,7 +7,6 @@ _Jackedsoft 2021_
 * **A**leksander Kaletin
 * **C**hristopher Tevren
 * **K**irani Anderson
-* **K**atherine Kagawa
 
 ## Technologies
 * C++
