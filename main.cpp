@@ -15,7 +15,7 @@ using namespace std;
 //function prototype
 void eventFinder(SDL_Event &event, Movement &movement);
 
-int main(){
+int main( int argc, char **argv ) {
 	//Main loop flag
 	bool quit = false;
 	Movement movement;
