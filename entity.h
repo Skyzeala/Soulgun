@@ -2,7 +2,7 @@
 #define _ENTITY_
 
 //include image utilities
-#include "projectile.h"
+// #include "projectile.h"
 #include "movement.h"
 
 //this struct and enum will be moved to a more included file so that they can be used almost anywhere in the program
@@ -32,7 +32,7 @@ public:
 
         virtual void move(Movement &dir); //move based on movement function pointer
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions
-        Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
+        // Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
         bool damage(int amount); //returns true if entity died
 
 protected:

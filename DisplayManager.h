@@ -2,27 +2,14 @@
  * Display Manager for Soulgun
  */
 
+#pragma once
 #include "TextureManager.h"
+#include "entity.h"
 
 // <placeholders>
 // #include "Map.h"
 // #include "Entity.h"
 #define MAX_ENTITY 255
-
-class Map { 
-public:
-    int offset_x;
-    int offset_y;
-
-    void refresh() { }
-};
-
-class Entity {
-public:
-    int x;
-    int y;
-    TextureID type;
-};
 // </placeholders>
 
 /**
@@ -31,8 +18,7 @@ public:
 class DisplayManager
 {
 public:
-    DisplayManager(SDL_Renderer *xRenderer, Map *xMap, TextureManager *xTexture) {
-        map = xMap;
+    DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture) {
         renderer = xRenderer;
         txMan = xTexture;
 
@@ -54,8 +40,10 @@ public:
 
     void removeEntity(Entity *entity) {
         for (int i = 0; i < MAX_ENTITY; ++i) {
-            if (entities[i] == entity)
+            if (entities[i] == entity) {
                 delete entity;
+                --top;
+            }
         }
     }
 
@@ -67,18 +55,23 @@ public:
         Entity *e;
 
         // Map should draw the portion of its texture onscreen that it needs to
-        map->refresh();
+		texture = txMan->getTexture(TX_TERRAIN);
+	 	size = txMan->getDimensions(TX_TERRAIN);
+		SDL_RenderCopy(renderer, texture, NULL, NULL);
 
         for (int i = 0; i < MAX_ENTITY; ++i) {
             e = entities[i];
 
-            texture = txMan->getTexture(e->type);
-            size = txMan->getDimensions(e->type);
+            texture = txMan->getTexture(static_cast<TextureID>(e->getImage()));
+            size = txMan->getDimensions(static_cast<TextureID>(e->getImage()));
             position.h = size.y;
             position.w = size.x;
 
-            position.x  = e->x - map->offset_x;
-            position.y  = e->y - map->offset_y;
+            // position.x  = e->x - map->offset_x;
+            // position.y  = e->y - map->offset_y;
+            Position pos = e->getPosition();
+            position.x  = pos.x;
+            position.y  = pos.y;
 
             SDL_RenderCopy(renderer, texture, NULL, &position);
         }
@@ -86,7 +79,6 @@ public:
 
 private:
     int top = 0;
-    Map *map;
     SDL_Renderer *renderer;
     TextureManager *txMan;
     Entity *entities[MAX_ENTITY];

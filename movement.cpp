@@ -86,7 +86,7 @@ Position movePlayer(int posx, int posy, Movement dir, int speed)
 
 //projectile movement, speed decided by each function itself
 
-Position moveLeft(int startx, int starty, int posx, int posy, int theta, bool soulBullet)
+Position moveLeft(int startx, int starty, int posx, int posy, int theta)
 {
     Position pos;
     pos.x = posx - 2;

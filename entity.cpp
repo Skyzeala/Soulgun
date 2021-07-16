@@ -40,6 +40,10 @@ Entity::Entity(const Entity &entity) :
 #endif
 }
 
+Entity::~Entity(void) {
+    // todo
+}
+
 Entity::Entity(int health, EntityType entityType, 
                 int x, int y, int speed, moveEntityFunc entityMove, 
                 int shootCooldown, moveProjectileFunc projectileMove, 
@@ -93,6 +97,7 @@ Position Entity::testMove(Movement &dir)
     return entityMove(posx, posy, dir, speed);
 }
 
+/*
 Projectile * Entity::shoot(int targetx, int targety, bool soulBullet)
 {
     double aimDirection = atan2((targety-posy), (targetx-posx));
@@ -103,6 +108,7 @@ Projectile * Entity::shoot(int targetx, int targety, bool soulBullet)
     Projectile * proj = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
     return proj;
 }
+*/
 
 bool Entity::damage(int amount)
 {
