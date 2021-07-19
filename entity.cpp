@@ -62,6 +62,9 @@ Entity::Entity(int health, EntityType entityType,
 {
 #ifdef ENTITYDEBUG
     cout << "Created entity with custom stats." << endl;
+    cout << "Type is: " << (entityType == player ? "player" : "npc") << endl;
+    cout << "Position: " << posx << ", " << posy << endl;
+    cout << "speed: " << speed << endl;
 #endif
 }
 
@@ -82,13 +85,13 @@ int Entity::getImage()
 void Entity::move(Movement &dir)
 {
 #ifdef ENTITYDEBUG
-    cout << "Moved entity from " << posx << ", " << posy;
+    cout << "Moved entity from (" << posx << ", " << posy;
 #endif
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
     posy = pos.y;
 #ifdef ENTITYDEBUG
-    cout << " to " << posx << ", " << posy;
+    cout << ") to (" << posx << ", " << posy << ") \n";
 #endif
 }
 

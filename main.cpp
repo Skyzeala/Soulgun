@@ -30,7 +30,7 @@ int main( int argc, char **argv ) {
 	TextureManager *txMan = new TextureManager(renderer);
 	DisplayManager dispMan(renderer, txMan);
 
-	Entity *thePlayer = new Entity(100, player, 100, 100, 5, movePlayer, 0, moveLeft, static_cast<int>(TX_PLAYER));
+	Entity *thePlayer = new Entity(100, player, 100, 100, 10, movePlayer, 0, moveLeft, static_cast<int>(TX_PLAYER));
 	dispMan.addEntity(thePlayer);
 
 	Entity *theHuman = new Entity(100, human, 400, 400, 5, moveLeft, 0, moveLeft, static_cast<int>(TX_HUMAN));
@@ -54,9 +54,8 @@ int main( int argc, char **argv ) {
 		SDL_RenderPresent(renderer);
 		//calls function to figure out event type
 			eventFinder(event, movement);
-
+			Position pos = thePlayer->getPosition();
 			thePlayer->move(movement);
-
 			dispMan.refresh();
 		
 		//move(movement);
@@ -69,6 +68,10 @@ int main( int argc, char **argv ) {
 
 void eventFinder(SDL_Event &event, Movement &movement){
 	//User presses a key
+	movement.up = false;
+	movement.down = false;
+	movement.right = false;
+	movement.left = false;
 	if( event.type == SDL_KEYDOWN){
 		//Figure out which key was pressed
 		switch( event.key.keysym.sym ){
@@ -107,7 +110,7 @@ void eventFinder(SDL_Event &event, Movement &movement){
 				movement.left = false;
 				break;
 			case SDLK_RIGHT:
-				movement.right = false;
+				movement.right = false; 
 				break;
 			default:
 				break;
