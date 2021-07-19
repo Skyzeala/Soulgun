@@ -7,15 +7,13 @@ using namespace std;
 Entity::Entity() :
     maxHealth(10),
     health(maxHealth),
-    entityType(robot),
+    entityType(ET_ROBOT),
     posx(0),
     posy(0),
     speed(1),
     entityMove(moveLeft),
-    shootCooldown(0),
-    shootTimer(10),
     projectileMove(moveLeft),
-    textureID(0)
+    textureID(TX_ROBOT)
 {
 #ifdef ENTITYDEBUG
     cout << "Created default entity." << endl;
@@ -30,8 +28,6 @@ Entity::Entity(const Entity &entity) :
     posy(posy),
     speed(speed),
     entityMove(entityMove),
-    shootCooldown(0),
-    shootTimer(shootTimer),
     projectileMove(projectileMove),
     textureID(textureID)
 {
@@ -46,8 +42,8 @@ Entity::~Entity(void) {
 
 Entity::Entity(int health, EntityType entityType, 
                 int x, int y, int speed, moveEntityFunc entityMove, 
-                int shootCooldown, moveProjectileFunc projectileMove, 
-                int textureID) :
+                moveProjectileFunc projectileMove, 
+                TextureID textureID) :
     maxHealth(health),
     health(health),
     entityType(entityType),
@@ -55,14 +51,12 @@ Entity::Entity(int health, EntityType entityType,
     posy(y),
     speed(speed),
     entityMove(entityMove),
-    shootCooldown(0),
-    shootTimer(shootCooldown),
     projectileMove(projectileMove),
     textureID(textureID)
 {
 #ifdef ENTITYDEBUG
     cout << "Created entity with custom stats." << endl;
-    cout << "Type is: " << (entityType == player ? "player" : "npc") << endl;
+    cout << "Type is: " << (entityType == ET_PLAYER ? "player" : "npc") << endl;
     cout << "Position: " << posx << ", " << posy << endl;
     cout << "speed: " << speed << endl;
 #endif
@@ -99,19 +93,6 @@ Position Entity::testMove(Movement &dir)
 {
     return entityMove(posx, posy, dir, speed);
 }
-
-/*
-Projectile * Entity::shoot(int targetx, int targety, bool soulBullet)
-{
-    double aimDirection = atan2((targety-posy), (targetx-posx));
-    //make a switch statement for shooting style later
-    int texture = (soulBullet ? 1 : 0);
-    int lifetime = 100;
-    int power = 2;
-    Projectile * proj = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
-    return proj;
-}
-*/
 
 bool Entity::damage(int amount)
 {
