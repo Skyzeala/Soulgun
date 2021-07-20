@@ -76,6 +76,11 @@ int Entity::getImage()
     return textureID;
 }
 
+EntityType Entity::getType()
+{
+    return entityType;
+}
+
 void Entity::move(Movement &dir)
 {
 #ifdef ENTITYDEBUG

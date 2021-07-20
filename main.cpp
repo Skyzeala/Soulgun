@@ -30,14 +30,7 @@ int main( int argc, char **argv ) {
 	TextureManager *txMan = new TextureManager(renderer);
 	DisplayManager dispMan(renderer, txMan);
 
-	Humanoid *thePlayer = new Humanoid(100, ET_PLAYER, 100, 100, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
-	dispMan.addEntity(thePlayer);
-
-	Humanoid *theHuman = new Humanoid(100, ET_PLAYER, 400, 400, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_HUMAN);
-	dispMan.addEntity(theHuman);
-
-	Humanoid *theRobot = new Humanoid(100, ET_PLAYER, 200, 200, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_ROBOT);
-	dispMan.addEntity(theRobot);
+	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 
 	// While application is running
 	while (!quit) {
@@ -49,8 +42,10 @@ int main( int argc, char **argv ) {
 			}
 		}
 		
+		dispMan.spawnEnemies();
+
 		eventFinder(event, movement);
-		thePlayer->move(movement);
+		player->move(movement);
 		dispMan.refresh();
 	
 		SDL_RenderPresent(renderer);
