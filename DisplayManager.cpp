@@ -6,9 +6,10 @@
  * @param xRenderer External renderer
  * @param xTexture External texture manager
  */
-DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture) {
+DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture, MapManager *map) {
     renderer = xRenderer;
     txMan = xTexture;
+		renderMap = map;
 
     for (int i = 0; i < MAX_ENTITY; ++i) {
         entities[i] = NULL;
@@ -65,7 +66,8 @@ void DisplayManager::refresh(void) {
     // Map should draw the portion of its texture onscreen that it needs to
     texture = txMan->getTexture(TX_TERRAIN);
     size = txMan->getDimensions(TX_TERRAIN);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    //SDL_RenderCopy(renderer, NULL, NULL, NULL);
+		renderMap->mapDrawer(renderer, texture);
 
     for (int i = 0; i < top; ++i) {
         e = entities[i];
