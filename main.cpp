@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include "map.h"
-#include "entity.h"
+#include "humanoid.h"
 #include "TextureManager.h"
 #include "DisplayManager.h"
 
@@ -30,20 +30,20 @@ int main( int argc, char **argv ) {
 	TextureManager *txMan = new TextureManager(renderer);
 	DisplayManager dispMan(renderer, txMan);
 
-	Entity *thePlayer = new Entity(100, player, 100, 100, 5, movePlayer, 0, moveLeft, static_cast<int>(TX_PLAYER));
+	Humanoid *thePlayer = new Humanoid(100, ET_PLAYER, 100, 100, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 	dispMan.addEntity(thePlayer);
 
-	Entity *theHuman = new Entity(100, human, 400, 400, 5, moveLeft, 0, moveLeft, static_cast<int>(TX_HUMAN));
+	Humanoid *theHuman = new Humanoid(100, ET_PLAYER, 400, 400, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_HUMAN);
 	dispMan.addEntity(theHuman);
 
-	Entity *theRobot = new Entity(100, robot, 200, 200, 5, moveLeft, 0, moveLeft, static_cast<int>(TX_ROBOT));
+	Humanoid *theRobot = new Humanoid(100, ET_PLAYER, 200, 200, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_ROBOT);
 	dispMan.addEntity(theRobot);
 
 	//While application is running
 	while( !quit ){
 		//Handle events on queue
 		while( SDL_PollEvent( &event ) != 0 ){
-
+			
 			//User requests quit
 			if( event.type == SDL_QUIT ){
 				quit = true;
@@ -54,9 +54,8 @@ int main( int argc, char **argv ) {
 		SDL_RenderPresent(renderer);
 		//calls function to figure out event type
 			eventFinder(event, movement);
-
+			Position pos = thePlayer->getPosition();
 			thePlayer->move(movement);
-
 			dispMan.refresh();
 		
 		//move(movement);
@@ -68,7 +67,6 @@ int main( int argc, char **argv ) {
 }
 
 void eventFinder(SDL_Event &event, Movement &movement){
-	//User presses a key
 	if( event.type == SDL_KEYDOWN){
 		//Figure out which key was pressed
 		switch( event.key.keysym.sym ){
@@ -107,7 +105,7 @@ void eventFinder(SDL_Event &event, Movement &movement){
 				movement.left = false;
 				break;
 			case SDLK_RIGHT:
-				movement.right = false;
+				movement.right = false; 
 				break;
 			default:
 				break;

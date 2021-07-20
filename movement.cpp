@@ -72,19 +72,22 @@ Position moveLeft(int posx, int posy, Movement dir, int speed)
 Position movePlayer(int posx, int posy, Movement dir, int speed)
 {
     Position pos;
+    pos.x = posx;
+    pos.y = posy;
     if (dir.left)
-        pos.x = posx - speed;
+        pos.x -= speed;
     if (dir.up)
-        pos.y = posy + speed;
+        pos.y -= speed;
     if (dir.down)
-        pos.y = posy - speed;
+        pos.y += speed;
     if (dir.right)
-        pos.x = posx + speed;
+        pos.x += speed;
     return pos;
+    
 }
 
 
-//projectile movement, speed decided by each function itself
+//projectile movement, speed decided by each function itself?
 
 Position moveLeft(int startx, int starty, int posx, int posy, int theta)
 {

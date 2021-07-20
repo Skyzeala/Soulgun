@@ -57,6 +57,9 @@ SDL_Point TextureManager::getDimensions(TextureID id)
  * @param id The texture ID to load
  * @returns A pointer to the texture that was created, or NULL if failed
  */
+
+
+
 SDL_Texture *TextureManager::load(TextureID id)
 {
     // Reload if already loaded
@@ -82,6 +85,8 @@ SDL_Texture *TextureManager::load(TextureID id)
     textures[id] = texture;
     return texture;
 }
+
+
 
 /**
  * Unloads a texture that has been loaded
