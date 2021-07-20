@@ -7,7 +7,7 @@
  */
 TextureManager::TextureManager(SDL_Renderer *renderer)
 {
-    externalRenderer = renderer;
+    xRenderer = renderer;
 
     for (int id = 0; id < TX_TOTAL; ++id)
     {
@@ -57,9 +57,6 @@ SDL_Point TextureManager::getDimensions(TextureID id)
  * @param id The texture ID to load
  * @returns A pointer to the texture that was created, or NULL if failed
  */
-
-
-
 SDL_Texture *TextureManager::load(TextureID id)
 {
     // Reload if already loaded
@@ -67,7 +64,7 @@ SDL_Texture *TextureManager::load(TextureID id)
         unload(id);
 
     const char *path = paths[id].c_str();
-    SDL_Texture *texture = IMG_LoadTexture(externalRenderer, path);
+    SDL_Texture *texture = IMG_LoadTexture(xRenderer, path);
 
     if (!texture)
         printf("Error creating texture from %s: %s", path, SDL_GetError());
@@ -85,8 +82,6 @@ SDL_Texture *TextureManager::load(TextureID id)
     textures[id] = texture;
     return texture;
 }
-
-
 
 /**
  * Unloads a texture that has been loaded
