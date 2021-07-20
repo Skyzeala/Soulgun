@@ -9,23 +9,16 @@
 DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture) {
     renderer = xRenderer;
     txMan = xTexture;
-
-    for (int i = 0; i < MAX_ENTITY; ++i) {
-        entities[i] = NULL;
-    }
 }
 
 /**
  * Deconstructs all entities
  */
 DisplayManager::~DisplayManager(void) {
-
-    for (int i = 0; i < MAX_ENTITY; ++i) {
-        if (entities[i] != NULL) {
-            delete entities[i];
-            entities[i] = NULL;
-        }
+    for (int i = 0; i != entities.size(); ++i) {
+        delete entities[i];
     }
+    entities.clear();
 }
 
 /**
@@ -34,7 +27,7 @@ DisplayManager::~DisplayManager(void) {
  * @param entity Pointer to an entity
  */
 void DisplayManager::addEntity(Entity *entity) {
-    entities[top++] = entity;
+    entities.push_back(entity);
 }
 
 /**
@@ -43,11 +36,10 @@ void DisplayManager::addEntity(Entity *entity) {
  * @param entity Pointer to an entity that is being managed
  */
 void DisplayManager::removeEntity(Entity *entity) {
-    for (int i = 0; i < MAX_ENTITY; ++i) {
+    for (int i = 0; i < entities.size(); ++i) {
         if (entities[i] == entity) {
             delete entity;
-            entities[i] = NULL;
-            --top;
+            entities.erase(entities.begin() + i);
         }
     }
 }
@@ -67,7 +59,7 @@ void DisplayManager::refresh(void) {
     size = txMan->getDimensions(TX_TERRAIN);
     SDL_RenderCopy(renderer, texture, NULL, NULL);
 
-    for (int i = 0; i < top; ++i) {
+    for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
 
         texture = txMan->getTexture(static_cast<TextureID>(e->getImage()));

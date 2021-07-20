@@ -5,8 +5,7 @@
 #pragma once
 #include "TextureManager.h"
 #include "entity.h"
-
-#define MAX_ENTITY 255
+#include <vector>
 
 /**
  * Manages entities and where textures are drawn on-screen
@@ -22,8 +21,7 @@ public:
     void refresh(void);
 
 private:
-    int top = 0;
+    std::vector<Entity *> entities;
     SDL_Renderer *renderer;
     TextureManager *txMan;
-    Entity *entities[MAX_ENTITY];
 }; 
