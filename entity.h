@@ -13,8 +13,8 @@
 enum EntityType
 {
         ET_PLAYER,
-        ET_HUMAN,
         ET_ROBOT,
+        ET_HUMAN,
         ET_PROJECTILE
 };
 
@@ -32,6 +32,7 @@ public:
 
         Position getPosition(); //returns x and y position
         int getImage(); //returns TextureID
+        EntityType getType(); //returns Entity ID
 
         virtual void move(Movement &dir); //move based on movement function pointer
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions

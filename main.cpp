@@ -25,44 +25,36 @@ int main( int argc, char **argv ) {
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	SDL_Window *window = SDL_CreateWindow("Texture Manager Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
+	SDL_Window *window = SDL_CreateWindow("Soulgun", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TextureManager *txMan = new TextureManager(renderer);
 	DisplayManager dispMan(renderer, txMan);
 
-	Humanoid *thePlayer = new Humanoid(100, ET_PLAYER, 100, 100, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
-	dispMan.addEntity(thePlayer);
+	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 
-	Humanoid *theHuman = new Humanoid(100, ET_PLAYER, 400, 400, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_HUMAN);
-	dispMan.addEntity(theHuman);
-
-	Humanoid *theRobot = new Humanoid(100, ET_PLAYER, 200, 200, 5, moveLeft, 0, SS_SINGLESHOT, moveLeft, TX_ROBOT);
-	dispMan.addEntity(theRobot);
-
-	//While application is running
-	while( !quit ){
-		//Handle events on queue
-		while( SDL_PollEvent( &event ) != 0 ){
-			
-			//User requests quit
-			if( event.type == SDL_QUIT ){
+	// While application is running
+	while (!quit) {
+		// Handle events on queue
+		while (SDL_PollEvent(&event) != 0) {
+			// User requests quit
+			if (event.type == SDL_QUIT) {
 				quit = true;
 			}
-
 		}
 		
+		dispMan.spawnEnemies();
+
+		eventFinder(event, movement);
+		player->move(movement);
+		dispMan.refresh();
+	
 		SDL_RenderPresent(renderer);
-		//calls function to figure out event type
-			eventFinder(event, movement);
-			Position pos = thePlayer->getPosition();
-			thePlayer->move(movement);
-			dispMan.refresh();
-		
-		//move(movement);
-		//continue game stuff
 	}
 
-		
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
 	return 0;
 }
 
