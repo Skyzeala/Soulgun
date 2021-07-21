@@ -54,8 +54,8 @@ MapManager::MapManager() {
 		for(int i = 0; i < MAX_TILES; ++i){
 			gameMap[i].resize(MAX_TILES);
 			for(int j = 0; j < MAX_TILES; ++j){
-				mapFile >> tile_type; 
-				gameMap[i][j] = new mapTile(i, j, static_cast<tileID>(tile_type));
+				mapFile >> tile_type;
+				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, static_cast<tileID>(tile_type));
 			}
 		}
 	}else{
@@ -71,11 +71,12 @@ void MapManager::mapDrawer(SDL_Renderer * renderer, SDL_Texture * texture) {
 
 	for(int i = 0; i < MAX_TILES; ++i){
 			for(int j = 0; j < MAX_TILES; ++j){
-				if(gameMap[i][j]->getType() == TID_WALL) SDL_RenderDrawRect(renderer, &rect);
-
 				rect = gameMap[i][j]->getTile();
+				if(gameMap[i][j]->getType() == TID_WALL) SDL_RenderDrawRect(renderer, &rect);
+				else{
 				SDL_RenderCopy(renderer, texture, NULL, &rect);
 			//	SDL_FillRect(mapSurface, &rect, SDL_MapRGB(mapSurface->format, 255, 0, 0));
+				}
 			}
 	}
 }

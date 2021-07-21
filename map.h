@@ -4,8 +4,8 @@
 #include <iostream>
 #include <fstream>
 
-const int TILE_HEIGHT = 10;
-const int TILE_WIDTH = 10;
+const int TILE_HEIGHT = 30;
+const int TILE_WIDTH = 30;
 const int MAX_TILES = 30;
 
 enum tileID 
