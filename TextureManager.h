@@ -9,6 +9,9 @@
 
 enum TextureID
 {
+    TX_TERRAIN,
+		TX_WALL,
+		TX_PIT,
     TX_PLAYER,
     TX_ROBOT,
     TX_HUMAN,
@@ -34,6 +37,9 @@ public:
 
 private:
     const std::string paths[TX_TOTAL] = {
+        "assets/images/placeholder-terrain.png",
+        "assets/images/placeholder-wall.png",
+        "assets/images/placeholder-pit.png",
         "assets/images/placeholder-player.png",
         "assets/images/placeholder-robot.png",
         "assets/images/placeholder-human.png",
