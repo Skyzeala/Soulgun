@@ -41,5 +41,4 @@ private:
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
-    Entity *entities[MAX_ENTITY];
 }; 
