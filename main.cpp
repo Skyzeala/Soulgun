@@ -28,7 +28,8 @@ int main( int argc, char **argv ) {
 	SDL_Window *window = SDL_CreateWindow("Texture Manager Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TextureManager *txMan = new TextureManager(renderer);
-	DisplayManager dispMan(renderer, txMan);
+	MapManager *map = new MapManager();
+	DisplayManager dispMan(renderer, txMan, map);
 
 	Humanoid *thePlayer = new Humanoid(100, ET_PLAYER, 100, 100, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 	dispMan.addEntity(thePlayer);
