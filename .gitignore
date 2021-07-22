@@ -37,3 +37,6 @@
 .vscode
 build
 dependencies
+
+# macOS
+.DS_Store
