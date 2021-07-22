@@ -3,6 +3,7 @@
  */
 
 #pragma once
+#include "map.h"
 #include "TextureManager.h"
 #include "humanoid.h"
 #include <vector>
@@ -24,7 +25,7 @@
 class DisplayManager
 {
 public:
-    DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture);
+    DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture, MapManager *map);
     ~DisplayManager(void);
 
     void spawnEnemies(void);
@@ -39,5 +40,6 @@ public:
 private:
     std::vector<Entity *> entities;
     SDL_Renderer *renderer;
+		MapManager *renderMap;
     TextureManager *txMan;
 }; 
