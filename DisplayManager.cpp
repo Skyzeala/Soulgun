@@ -103,19 +103,53 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Have enemies encircle the player
     float unitCircle = 2 * M_PI;
     float total = (MIN_HUMAN + MIN_ROBOT);
+
     for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        int x = pos.x + cos(i) * MIN_DIST;
-        int y = pos.y + sin(i) * MIN_DIST;
+        int x = pos.x + cos(i) * SPAWN_DIST;
+        int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 1, moveLeft, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
             addEntity(e);
-
             return e;
         }
     }
 
     return NULL;
+}
+
+/**
+ * Moves enemies according to their algorithm
+ * 
+ * @param player Pointer to the player
+ */
+void DisplayManager::moveEnemies(Humanoid *player) {
+    Position pos = player->getPosition(); 
+    Humanoid *h = NULL;
+
+    for (int i = 0; i < entities.size(); ++i) {
+        Entity *e = entities[i];
+        Movement mov;
+
+        switch (e->getType()) {
+            case ET_HUMAN:
+                // Humans move randomly, or may choose not to move
+                h = dynamic_cast<Humanoid *>(e);
+                h->moveDirection.left = true;
+                mov.left = true;
+
+                h->move(mov);
+            break;
+            case ET_ROBOT:
+                // Robots move rigidly and nonstop
+                h = dynamic_cast<Humanoid *>(e);
+                h->moveDirection.right = true;
+                mov.right = true;
+
+                h->move(mov);
+            break;
+        }
+    }
 }
 
 /**

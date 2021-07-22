@@ -8,7 +8,9 @@ using namespace std;
 Humanoid::Humanoid() :
     Entity(),
     shootCooldown(0),
-    shootTimer(10)
+    shootTimer(10),
+    moveStartTime(0),
+    moveMode(0)  
 {
 }
 
@@ -25,7 +27,9 @@ Humanoid::Humanoid(int health, EntityType entityType,
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
     shootCooldown(0),
-    shootTimer(shootTimer)
+    shootTimer(shootTimer),
+    moveStartTime(0),
+    moveMode(0)    
 {
 }
 
