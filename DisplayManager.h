@@ -40,6 +40,6 @@ public:
 private:
     std::vector<Entity *> entities;
     SDL_Renderer *renderer;
-		MapManager *renderMap;
+	MapManager *renderMap;
     TextureManager *txMan;
 }; 
