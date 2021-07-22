@@ -44,8 +44,10 @@ class MapManager {
 		~MapManager();
 
 		void mapDrawer(SDL_Renderer * renderer, TextureManager * txMan); 
+		void levelLoader(int level);
 
-
+		tileID textureToTile(int tile_type);
+		TextureID tileToTexture(int texture_type);
 	private:
 		SDL_Surface *mapSurface;
 		std::vector<std::vector<mapTile*> > gameMap;
