@@ -13,7 +13,10 @@ Entity::Entity() :
     speed(1),
     entityMove(moveLeft),
     projectileMove(moveLeft),
-    textureID(TX_ROBOT)
+    textureID(TX_ROBOT),
+    moveStartTime(0),
+    moveAway(false)
+
 {
 #ifdef ENTITYDEBUG
     cout << "Created default entity." << endl;
@@ -89,6 +92,8 @@ void Entity::move(Movement &dir)
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
     posy = pos.y;
+
+    moveDirection = dir;
 #ifdef ENTITYDEBUG
     cout << ") to (" << posx << ", " << posy << ") \n";
 #endif

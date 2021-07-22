@@ -4,6 +4,16 @@
 #include "entity.h"
 #include "projectile.h"
 
+// Time enemy will move in one direction before changing
+#define ROBOT_MOVE_TIME 500
+#define HUMAN_MOVE_TIME 150
+
+// Distance enemy will move toward player
+#define ENEMY_MIN_DIST 250
+
+// Distance enemy will move away from player
+#define ENEMY_MAX_DIST 500
+
 enum ShootStyle 
 {
     SS_SINGLESHOT,
@@ -25,6 +35,7 @@ public:
                 TextureID textureID);
     ~Humanoid();
     Projectile * shoot(int targetx, int targety, bool soulBullet); //returns a list of bullets
+
 protected:
     int shootCooldown; //the current time left before being able to shoot again
     int shootTimer; //the time between each shot

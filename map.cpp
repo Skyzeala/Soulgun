@@ -60,7 +60,7 @@ void MapManager::levelLoader(int level){
 			gameMap[i].resize(MAX_TILES);
 			for(int j = 0; j < MAX_TILES; ++j){
 				mapFile >> tile_type;
-				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, static_cast<tileID>(tile_type));
+				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, textureToTile(tile_type));
 			}
 		}
 	}else{
@@ -70,6 +70,39 @@ void MapManager::levelLoader(int level){
 	mapFile.close();
 
 }
+
+tileID MapManager::textureToTile(int tile_type) {
+	tileID tid;
+	switch (tile_type) {
+		case 0:
+			tid = TID_TERRAIN;
+		break;
+		case 1:
+			tid = TID_WALL;
+		break;
+		case 2:
+			tid = TID_PIT;
+		break;
+	}
+	return tid;
+}
+
+TextureID MapManager::tileToTexture(int texture_type) {
+	TextureID tid;
+	switch (texture_type) {
+		case 0:
+			tid = TX_TERRAIN;
+		break;
+		case 1:
+			tid = TX_WALL;
+		break;
+		case 2:
+			tid = TX_PIT;
+		break;
+	}
+	return tid;
+}
+
 void MapManager::mapDrawer(SDL_Renderer * renderer, TextureManager * txMan) {
 
 	SDL_Rect rect;
@@ -77,7 +110,7 @@ void MapManager::mapDrawer(SDL_Renderer * renderer, TextureManager * txMan) {
 
 	//preloads texture set
 	for(int i = 0; i < 3; ++i){
-		texture[i] = txMan->getTexture(static_cast<TextureID>(i));
+		texture[i] = txMan->getTexture(tileToTexture(i));
 	}
 
 	//Loops itterate over map 2D vector

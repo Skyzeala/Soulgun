@@ -12,8 +12,8 @@
 #define MIN_HUMAN 2
 #define MIN_ROBOT 8
 
-// Minimum distance humanoids will keep away from player
-#define MIN_DIST 250
+// Distance enemies will spawn away from the player
+#define SPAWN_DIST 512
 
 // Hard-coded until Manager is merged with Map
 #define MAP_WIDTH 1024
@@ -30,6 +30,7 @@ public:
 
     void spawnEnemies(void);
     Humanoid *spawnHumanoid(EntityType type, Humanoid *player = NULL);
+    void moveEnemies(Humanoid *player = NULL);
     bool isNearEnemy(int x, int y, int proximity);
 
     void addEntity(Entity *entity);
@@ -39,6 +40,6 @@ public:
 private:
     std::vector<Entity *> entities;
     SDL_Renderer *renderer;
-		MapManager *renderMap;
+	MapManager *renderMap;
     TextureManager *txMan;
 }; 

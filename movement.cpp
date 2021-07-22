@@ -83,7 +83,6 @@ Position movePlayer(int posx, int posy, Movement dir, int speed)
     if (dir.right)
         pos.x += speed;
     return pos;
-    
 }
 
 

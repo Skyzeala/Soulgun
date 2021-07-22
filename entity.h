@@ -39,6 +39,10 @@ public:
         // Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
         bool damage(int amount); //returns true if entity died
 
+        // Todo: Protected getters and setters
+        Movement moveDirection; // Last direction moved
+        int moveStartTime;      // When humanoid started moving in this direction
+        int moveAway;           // If true move away from player
 protected:
         int maxHealth;
         int health; //hit points
