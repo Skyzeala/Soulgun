@@ -25,7 +25,7 @@ Humanoid::Humanoid(int health, EntityType entityType,
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
     shootCooldown(0),
-    shootTimer(shootTimer)
+    shootTimer(shootTimer) 
 {
 }
 

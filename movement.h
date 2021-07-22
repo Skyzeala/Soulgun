@@ -38,7 +38,6 @@ typedef Position (*moveProjectileFunc)(int startx, int starty, int posx, int pos
 Position moveLeft(int posx, int posy, Movement dir, int speed);
 Position movePlayer(int posx, int posy, Movement dir, int speed);
 
-
 //projectile movement functions
 Position moveLeft(int startx, int starty, int posx, int posy, int thetaAim);
 

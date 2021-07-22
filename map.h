@@ -1,12 +1,29 @@
+#pragma once
 #include <SDL2/SDL.h>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include "TextureManager.h"
 
-enum tileID { Empty, Wall };
+const int TILE_HEIGHT = 30;
+const int TILE_WIDTH = 30;
+const int MAX_TILES = 30;
+
+enum tileID 
+{ 
+	TID_TERRAIN,
+	TID_WALL,
+	TID_PIT,
+};
+
 
 class mapTile {
 	public:
 		//Constructor
+		mapTile();
+		//Argumented Constructor
 		mapTile(int x, int y, tileID id);
-	
+
 		//Set tile data
 		void setTileData(int x, int y, int h, int w, tileID id);
 		//Returns tile ID
@@ -19,4 +36,19 @@ class mapTile {
 		tileID tID;
 		SDL_Rect tileData;
 
+};
+
+class MapManager {
+	public:	
+		MapManager();
+		~MapManager();
+
+		void mapDrawer(SDL_Renderer * renderer, TextureManager * txMan); 
+		void levelLoader(int level);
+
+		tileID textureToTile(int tile_type);
+		TextureID tileToTexture(int texture_type);
+	private:
+		SDL_Surface *mapSurface;
+		std::vector<std::vector<mapTile*> > gameMap;
 };

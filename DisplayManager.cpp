@@ -6,9 +6,10 @@
  * @param xRenderer External renderer
  * @param xTexture External texture manager
  */
-DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture) {
+DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture, MapManager *map) {
     renderer = xRenderer;
     txMan = xTexture;
+		renderMap = map;
 }
 
 /**
@@ -92,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 1, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
+	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -103,19 +104,116 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Have enemies encircle the player
     float unitCircle = 2 * M_PI;
     float total = (MIN_HUMAN + MIN_ROBOT);
+
     for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        int x = pos.x + cos(i) * MIN_DIST;
-        int y = pos.y + sin(i) * MIN_DIST;
+        int x = pos.x + cos(i) * SPAWN_DIST;
+        int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 1, moveLeft, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
             addEntity(e);
-
             return e;
         }
     }
 
     return NULL;
+}
+
+/**
+ * Enemy movement AI
+ * 
+ * @param player Pointer to the player
+ */
+void DisplayManager::moveEnemies(Humanoid *player) {
+    Position playerPos = player->getPosition(); 
+    Humanoid *h = NULL;
+
+    for (int i = 0; i < entities.size(); ++i) {
+        Entity *e = entities[i];
+        Movement mov;
+        int direction = 0;
+        int now = SDL_GetTicks();
+
+        Position enemyPos = e->getPosition();
+
+        // All hail Pythagoras
+        int distFromPlayer = static_cast<int>(sqrt(pow(abs(playerPos.x - enemyPos.x), 2) + pow(abs(playerPos.y - enemyPos.y), 2)));
+
+        switch (e->getType()) {
+            case ET_HUMAN:
+                // Humans moves randomly on diagonals
+                h = dynamic_cast<Humanoid *>(e);
+                if (now - h->moveStartTime > HUMAN_MOVE_TIME) {
+                    h->moveStartTime = now;
+                
+                    // If too far away, force to move closer to player
+                    if (distFromPlayer > ENEMY_MAX_DIST) {
+                        mov.right = (playerPos.x > enemyPos.x);
+                        mov.up = (playerPos.y < enemyPos.y);
+                    }
+                    // Otherwise be random
+                    else {
+                        // Vertical movement
+                        direction = rand() % 2;
+                        mov.up = direction;
+
+                        // Horizontal movement
+                        direction = rand() % 2;
+                        mov.right = direction;
+                    }
+                    mov.down = !mov.up;
+                    mov.left = !mov.right;
+                    
+                    h->move(mov);
+                }
+                else {
+                    h->move(h->moveDirection);
+                }
+            break;
+            case ET_ROBOT:
+                // Robots move rigidly and nonstop
+                h = dynamic_cast<Humanoid *>(e);
+
+                if (now - h->moveStartTime > ROBOT_MOVE_TIME) {
+                    h->moveStartTime = now;
+                
+                    // If too far away, force to move closer to player
+                    if (distFromPlayer > ENEMY_MAX_DIST) {
+                        mov.right = (playerPos.x > enemyPos.x);
+                        mov.up = (playerPos.y < enemyPos.y);
+                    }
+                    // Otherwise be random
+                    else {
+                        // Vertical movement
+                        direction = rand() % 2;
+                        mov.up = direction;
+
+                        // Horizontal movement
+                        direction = rand() % 2;
+                        mov.right = direction;
+                    }
+                    mov.down = !mov.up;
+                    mov.left = !mov.right;
+
+                    // Enforce 90-degree movement
+                    if (rand() % 2 == 1) {
+                        // Disable vertical
+                        mov.up = false;
+                        mov.down = false;
+                    }
+                    else {
+                        // Disable horizontal
+                        mov.left = false;
+                        mov.right = false;
+                    }
+                    h->move(mov);
+                }
+                else {
+                    h->move(h->moveDirection);
+                }
+            break;
+        }
+    }
 }
 
 /**
@@ -149,10 +247,8 @@ void DisplayManager::refresh(void) {
     SDL_Texture *texture;
     Entity *e;
 
-    // Map should draw the portion of its texture onscreen that it needs to
-    texture = txMan->getTexture(TX_TERRAIN);
-    size = txMan->getDimensions(TX_TERRAIN);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    // Map rendering
+		renderMap->mapDrawer(renderer, txMan);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];

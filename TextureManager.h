@@ -14,6 +14,8 @@ enum TextureID
     TX_HUMAN,
     TX_BULLET,
     TX_TERRAIN,
+	TX_WALL,
+	TX_PIT,
     TX_TOTAL
 };
 
@@ -37,8 +39,10 @@ private:
         "assets/images/placeholder-player.png",
         "assets/images/placeholder-robot.png",
         "assets/images/placeholder-human.png",
-        "assets/images/placeholder-bullet.png",
-        "assets/images/placeholder-terrain.png"
+        "assets/images/placeholder-bullet.png"
+        "assets/images/placeholder-terrain.png",
+        "assets/images/placeholder-wall.png",
+        "assets/images/placeholder-pit.png"
     };
 
     SDL_Texture *textures[TX_TOTAL];
