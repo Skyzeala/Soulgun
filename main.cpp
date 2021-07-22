@@ -75,12 +75,5 @@ void eventFinder(SDL_Event &event, Movement &movement){
 	movement.right = (keystate[SDL_SCANCODE_RIGHT] != 0);
 	movement.down = (keystate[SDL_SCANCODE_DOWN] != 0);
 	bool shoot = (keystate[SDL_SCANCODE_SPACE] != 0);
-
-	/*
-	switch (event.type) {
-		switch(event.key.keysym.sym) {
-		}
-	}
-	*/
 }
 
