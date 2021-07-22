@@ -38,15 +38,21 @@ SDL_Rect mapTile::getTile(){
 //MAP MANAGER SECTION
 
 MapManager::~MapManager() {
-
 }
 
 MapManager::MapManager() {
+	levelLoader(1);
+}
+void MapManager::levelLoader(int level){
 	
 	std::ifstream mapFile;
 	int tile_type;
-	mapFile.open("maps/levelone.txt");
 
+	switch (level){
+		case 1:
+			mapFile.open("maps/levelone.txt");
+			break;
+ 	}
 	gameMap.resize(MAX_TILES);
 
 	if(mapFile.is_open()) {
@@ -62,6 +68,7 @@ MapManager::MapManager() {
 	}
 
 	mapFile.close();
+
 }
 void MapManager::mapDrawer(SDL_Renderer * renderer, TextureManager * txMan) {
 
