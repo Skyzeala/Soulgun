@@ -10,10 +10,6 @@ DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture
     renderer = xRenderer;
     txMan = xTexture;
 		renderMap = map;
-
-    for (int i = 0; i < MAX_ENTITY; ++i) {
-        entities[i] = NULL;
-    }
 }
 
 /**
