@@ -16,6 +16,7 @@ enum TextureID
     TX_ROBOT,
     TX_HUMAN,
     TX_BULLET,
+    TX_TERRAIN,
     TX_TOTAL
 };
 
@@ -42,12 +43,13 @@ private:
         "assets/images/placeholder-player.png",
         "assets/images/placeholder-robot.png",
         "assets/images/placeholder-human.png",
-        "assets/images/placeholder-bullet.png"
+        "assets/images/placeholder-bullet.png",
+        "assets/images/placeholder-terrain.png"
     };
 
     SDL_Texture *textures[TX_TOTAL];
     SDL_Point dimensions[TX_TOTAL];
-    SDL_Renderer *externalRenderer;
+    SDL_Renderer *xRenderer;
 
     SDL_Texture *load(TextureID id);
     void unload(TextureID id);
