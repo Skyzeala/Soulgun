@@ -1,5 +1,4 @@
 #include "map.h"
-#include "TextureManager.h"
 
 
 mapTile::mapTile(){
@@ -10,7 +9,7 @@ mapTile::mapTile(){
 	tileData.h = TILE_HEIGHT;
 	tileData.w = TILE_WIDTH;
 	// Tile type enum ID
-	tID = TID_EMPTY;
+	tID = TID_PIT;
 
 }
 mapTile::mapTile(int x, int y, tileID id){
@@ -64,20 +63,33 @@ MapManager::MapManager() {
 
 	mapFile.close();
 }
-void MapManager::mapDrawer(SDL_Renderer * renderer, SDL_Texture * texture) {
+void MapManager::mapDrawer(SDL_Renderer * renderer, TextureManager * txMan) {
 
 	SDL_Rect rect;
-	//mapSurface = SDL_CreateRGBSurface(0, TILE_WIDTH, TILE_HEIGHT, 32, 0, 0, 0, 0);
+	SDL_Texture *texture[3];
 
+	//preloads texture set
+	for(int i = 0; i < 3; ++i){
+		texture[i] = txMan->getTexture(static_cast<TextureID>(i));
+	}
+
+	//Loops itterate over map 2D vector
 	for(int i = 0; i < MAX_TILES; ++i){
-			for(int j = 0; j < MAX_TILES; ++j){
-				rect = gameMap[i][j]->getTile();
-				if(gameMap[i][j]->getType() == TID_WALL) SDL_RenderDrawRect(renderer, &rect);
-				else{
-				SDL_RenderCopy(renderer, texture, NULL, &rect);
-			//	SDL_FillRect(mapSurface, &rect, SDL_MapRGB(mapSurface->format, 255, 0, 0));
-				}
+		for(int j = 0; j < MAX_TILES; ++j){
+			rect = gameMap[i][j]->getTile();
+			
+			//Switch to load texture of choice
+			switch (gameMap[i][j]->getType()) {
+				case TID_TERRAIN:
+					SDL_RenderCopy(renderer, texture[0], NULL, &rect);
+					break;
+				case TID_WALL:
+					SDL_RenderCopy(renderer, texture[1], NULL, &rect);
+					break;
+				case TID_PIT:
+					SDL_RenderCopy(renderer, texture[2], NULL, &rect);
+					break;
 			}
+		}
 	}
 }
-

@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include "TextureManager.h"
 
 const int TILE_HEIGHT = 30;
 const int TILE_WIDTH = 30;
@@ -10,7 +11,7 @@ const int MAX_TILES = 30;
 
 enum tileID 
 { 
-	TID_EMPTY,
+	TID_TERRAIN,
 	TID_WALL,
 	TID_PIT,
 };
@@ -42,7 +43,7 @@ class MapManager {
 		MapManager();
 		~MapManager();
 
-		void mapDrawer(SDL_Renderer * renderer, SDL_Texture * texture); 
+		void mapDrawer(SDL_Renderer * renderer, TextureManager * txMan); 
 
 
 	private:

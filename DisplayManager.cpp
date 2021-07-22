@@ -63,11 +63,8 @@ void DisplayManager::refresh(void) {
     SDL_Texture *texture;
     Entity *e;
 
-    // Map should draw the portion of its texture onscreen that it needs to
-    texture = txMan->getTexture(TX_TERRAIN);
-    size = txMan->getDimensions(TX_TERRAIN);
-    //SDL_RenderCopy(renderer, NULL, NULL, NULL);
-		renderMap->mapDrawer(renderer, texture);
+    // Map rendering
+		renderMap->mapDrawer(renderer, txMan);
 
     for (int i = 0; i < top; ++i) {
         e = entities[i];
