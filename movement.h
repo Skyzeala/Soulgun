@@ -2,18 +2,22 @@
 #define _MOVEMENT_
 #define _USE_MATH_DEFINES
 
-//comment this out if not debugging entity
-#define ENTITYDEBUG
+//comment this out if not debugging
+//#define ENTITYDEBUG
+#define PROJECTILEDEBUG
 
 #ifdef ENTITYDEBUG
+#include <iostream>
+#endif
+#ifdef PROJECTILEDEBUG
 #include <iostream>
 #endif
 #include <cmath>
 
 struct Position
 {
-        int x;
-        int y;
+    int x;
+    int y;
 };
 
 struct Movement
