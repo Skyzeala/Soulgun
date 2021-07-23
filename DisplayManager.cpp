@@ -250,7 +250,7 @@ void DisplayManager::removeProjectile(Projectile *proj) {
         }
     }
 }
-void DisplayManager::fireEnemies(Humanoid *player = NULL)
+void DisplayManager::fireEnemies(Humanoid *player)
 {
     Position playerPos = player->getPosition();
     int posx = playerPos.x;
