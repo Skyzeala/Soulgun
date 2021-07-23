@@ -2,6 +2,10 @@
 
 using namespace std;
 
+double convertCoordsToRads(int startx, int starty, int endx, int endy)
+{
+    return atan2(endy-starty, endx-startx);
+}
 
 Movement convertCoordsToMovement(int startx, int starty, int endx, int endy)
 { //doesnt call convertRadsToMovement because thats an extra copy of the movement struct

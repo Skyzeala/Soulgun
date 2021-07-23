@@ -26,6 +26,7 @@ struct Movement
 
 //0 radians is up, positive y is up, positive x is right
 //these functions are for convenience
+double convertCoordsToRads(int startx, int starty, int endx, int endy);
 Movement convertCoordsToMovement(int startx, int starty, int endx, int endy);
 Movement convertRadsToMovement(double rads);
 double convertMovementToRads(Movement &dir);

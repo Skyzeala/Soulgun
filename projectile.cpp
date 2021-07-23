@@ -65,22 +65,17 @@ these next two functions are not implemented yet.
 
 -------------------------------------------------
 */
-void Projectile::move(int targetx, int targety)
+void Projectile::move(double thetaAim)
 {
-#ifdef ENTITYDEBUG
-    cout << "The move(targetx,targety) function is not implemented. " << endl;
-#endif
+    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    posx = pos.x;
+    posy = pos.y;
     return;
 }
 //and this one
-Position Projectile::testMove(int targetx, int targety)
+Position Projectile::testMove(double thetaAim)
 {
-#ifdef ENTITYDEBUG
-    cout << "The testMove(targetx,targety) function is not implemented. " << endl;
-#endif
-    Position pos;
-    pos.x = 0;
-    pos.y = 0;
+    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     return pos;
 }
 //end of unimplemented functions

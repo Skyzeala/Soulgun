@@ -63,7 +63,7 @@ void DisplayManager::spawnEnemies(void) {
                 ++robots;
             break;
             case ET_PLAYER:
-                player = dynamic_cast<Humanoid *>(e);
+                player = (e);
             break;
         }
     }
@@ -93,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
+	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 30, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -110,7 +110,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 30, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -263,6 +263,24 @@ void DisplayManager::fireEnemies(Humanoid *player)
         p = e->shoot(posx, posy, false);
         for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); i++)
             addProjectile(p[i]);
+        if (p != nullptr)
+            delete [] p;
+    }
+}
+void DisplayManager::moveProjectiles(Humanoid *player) {
+    Position playerPos = player->getPosition(); 
+    Projectile *p = NULL;
+    Movement mov;
+    int direction = 0;
+    int now = SDL_GetTicks();
+    Position enemyPos;
+    Position projPos;
+    double thetaAim;
+    for (int i = 0; i < projectiles.size(); ++i) {
+        p = projectiles[i];
+        projPos = p->getPosition();
+        thetaAim = convertCoordsToRads(playerPos.x, playerPos.y, projPos.x, projPos.y);
+        p->move(thetaAim);
     }
 }
 

@@ -33,6 +33,7 @@ public:
     void moveEnemies(Humanoid *player = NULL);
     bool isNearEnemy(int x, int y, int proximity);
     void fireEnemies(Humanoid *player = NULL);
+    void moveProjectiles(Humanoid *player = NULL);
 
     void addEntity(Humanoid *entity);
     void removeEntity(Humanoid *entity);
