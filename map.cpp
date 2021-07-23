@@ -12,12 +12,13 @@ mapTile::mapTile(){
 	tID = TID_PIT;
 
 }
-mapTile::mapTile(int x, int y, tileID id){
+mapTile::mapTile(int x, int y, tileID id, SDL_Texture * texture){
 	tileData.x = x;
 	tileData.y = y;
 	tileData.h = TILE_HEIGHT;
 	tileData.w = TILE_WIDTH;
 	tID = id;
+	tileTexture = texture;
 }
 
 void mapTile::setTileData(int x, int y, int h, int w, tileID id){
@@ -31,8 +32,11 @@ tileID mapTile::getType() {
 	return tID;
 }
 
-SDL_Rect mapTile::getTile(){
-	return tileData;
+SDL_Rect* mapTile::getTile(){
+	return &tileData;
+}
+SDL_Texture* mapTile::getTileTexture(){
+	return tileTexture;
 }
 
 //MAP MANAGER SECTION
@@ -41,7 +45,6 @@ MapManager::~MapManager() {
 }
 
 MapManager::MapManager() {
-	levelLoader(1);
 }
 void MapManager::levelLoader(int level){
 	
@@ -60,7 +63,7 @@ void MapManager::levelLoader(int level){
 			gameMap[i].resize(MAX_TILES);
 			for(int j = 0; j < MAX_TILES; ++j){
 				mapFile >> tile_type;
-				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, textureToTile(tile_type));
+				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, textureToTile(tile_type), textureUnloader(tile_type));
 			}
 		}
 	}else{
@@ -69,6 +72,18 @@ void MapManager::levelLoader(int level){
 
 	mapFile.close();
 
+}
+void MapManager::texturePreloader(TextureManager * txMan){ 
+	
+	mapTextures.resize(3);
+	//preloads texture set
+	for(int i = 0; i < 3; ++i){
+		mapTextures[i] = txMan->getTexture(tileToTexture(i));
+	}
+	
+}
+SDL_Texture* MapManager::textureUnloader(int tile_type){
+	return mapTextures[tile_type];
 }
 
 tileID MapManager::textureToTile(int tile_type) {
@@ -102,34 +117,12 @@ TextureID MapManager::tileToTexture(int texture_type) {
 	}
 	return tid;
 }
-
-void MapManager::mapDrawer(SDL_Renderer * renderer, TextureManager * txMan) {
-
-	SDL_Rect rect;
-	SDL_Texture *texture[3];
-
-	//preloads texture set
-	for(int i = 0; i < 3; ++i){
-		texture[i] = txMan->getTexture(tileToTexture(i));
-	}
+void MapManager::mapDrawer(SDL_Renderer * renderer) {
 
 	//Loops itterate over map 2D vector
 	for(int i = 0; i < MAX_TILES; ++i){
 		for(int j = 0; j < MAX_TILES; ++j){
-			rect = gameMap[i][j]->getTile();
-			
-			//Switch to load texture of choice
-			switch (gameMap[i][j]->getType()) {
-				case TID_TERRAIN:
-					SDL_RenderCopy(renderer, texture[0], NULL, &rect);
-					break;
-				case TID_WALL:
-					SDL_RenderCopy(renderer, texture[1], NULL, &rect);
-					break;
-				case TID_PIT:
-					SDL_RenderCopy(renderer, texture[2], NULL, &rect);
-					break;
+			SDL_RenderCopy(renderer, gameMap[i][j]->getTileTexture(), NULL, gameMap[i][j]->getTile());
 			}
-		}
 	}
 }
