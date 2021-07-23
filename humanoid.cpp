@@ -47,8 +47,8 @@ void Humanoid::move(Movement &dir)
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
     posy = pos.y;
-
     moveDirection = dir;
+    shootCooldown -=1;
 #ifdef ENTITYDEBUG
     if (printSecondHalfOfDebug)
         cout << ") to (" << posx << ", " << posy << ") \n";

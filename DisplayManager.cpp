@@ -256,10 +256,13 @@ void DisplayManager::fireEnemies(Humanoid *player)
     int posx = playerPos.x;
     int posy = playerPos.y;
     Humanoid *e;
+    Projectile **p;
     for (int i = 0; i < entities.size(); ++i) 
     {
         e = entities[i];
-        e->shoot(posx, posy, false);
+        p = e->shoot(posx, posy, false);
+        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); i++)
+            addProjectile(p[i]);
     }
 }
 
@@ -272,7 +275,8 @@ void DisplayManager::refresh(void) {
     SDL_Rect position;
     SDL_Point size;
     SDL_Texture *texture;
-    Entity *e;
+    Humanoid *e;
+    Projectile *p;
 
     // Map rendering
 		renderMap->mapDrawer(renderer);
@@ -280,14 +284,30 @@ void DisplayManager::refresh(void) {
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
 
-        texture = txMan->getTexture(static_cast<TextureID>(e->getImage()));
-        size = txMan->getDimensions(static_cast<TextureID>(e->getImage()));
+        texture = txMan->getTexture(e->getImage());
+        size = txMan->getDimensions(e->getImage());
         position.h = size.y;
         position.w = size.x;
 
         // position.x  = e->x - map->offset_x;
         // position.y  = e->y - map->offset_y;
         Position pos = e->getPosition();
+        position.x  = pos.x;
+        position.y  = pos.y;
+
+        SDL_RenderCopy(renderer, texture, NULL, &position);
+    }
+    for (int i = 0; i < projectiles.size(); ++i) {
+        p = projectiles[i];
+
+        texture = txMan->getTexture((p->getImage()));
+        size = txMan->getDimensions((p->getImage()));
+        position.h = size.y;
+        position.w = size.x;
+
+        // position.x  = e->x - map->offset_x;
+        // position.y  = e->y - map->offset_y;
+        Position pos = p->getPosition();
         position.x  = pos.x;
         position.y  = pos.y;
 

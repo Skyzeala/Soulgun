@@ -31,7 +31,7 @@ public:
         ~Entity();
 
         Position getPosition(); //returns x and y position
-        int getImage(); //returns TextureID
+        TextureID getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID
 
         virtual void move(Movement &dir) = 0; //move based on movement function pointer
