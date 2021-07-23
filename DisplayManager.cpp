@@ -248,7 +248,7 @@ void DisplayManager::refresh(void) {
     Entity *e;
 
     // Map rendering
-		renderMap->mapDrawer(renderer, txMan);
+		renderMap->mapDrawer(renderer);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
