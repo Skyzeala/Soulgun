@@ -84,6 +84,7 @@ EntityType Entity::getType()
     return entityType;
 }
 
+/*
 void Entity::move(Movement &dir)
 {
 #ifdef ENTITYDEBUG
@@ -104,6 +105,7 @@ void Entity::move(Movement &dir)
         cout << ") to (" << posx << ", " << posy << ") \n";
 #endif
 }
+*/
 
 Position Entity::testMove(Movement &dir)
 {

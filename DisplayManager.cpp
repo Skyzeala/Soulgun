@@ -27,7 +27,7 @@ DisplayManager::~DisplayManager(void) {
  * 
  * @param entity Pointer to an entity
  */
-void DisplayManager::addEntity(Entity *entity) {
+void DisplayManager::addEntity(Humanoid *entity) {
     entities.push_back(entity);
 }
 
@@ -36,7 +36,7 @@ void DisplayManager::addEntity(Entity *entity) {
  * 
  * @param entity Pointer to an entity that is being managed
  */
-void DisplayManager::removeEntity(Entity *entity) {
+void DisplayManager::removeEntity(Humanoid *entity) {
     for (int i = 0; i < entities.size(); ++i) {
         if (entities[i] == entity) {
             delete entity;
@@ -54,7 +54,7 @@ void DisplayManager::spawnEnemies(void) {
     Humanoid *player = NULL;
     
     for (int i = 0; i < entities.size(); ++i) {
-        Entity *e = entities[i];
+        Humanoid *e = entities[i];
         switch (e->getType()) {
             case ET_HUMAN:
                 ++humans;
@@ -129,7 +129,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
     Humanoid *h = NULL;
 
     for (int i = 0; i < entities.size(); ++i) {
-        Entity *e = entities[i];
+        Humanoid *e = entities[i];
         Movement mov;
         int direction = 0;
         int now = SDL_GetTicks();
@@ -142,7 +142,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
         switch (e->getType()) {
             case ET_HUMAN:
                 // Humans moves randomly on diagonals
-                h = dynamic_cast<Humanoid *>(e);
+                h = (e);
                 if (now - h->moveStartTime > HUMAN_MOVE_TIME) {
                     h->moveStartTime = now;
                 
@@ -172,7 +172,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
             break;
             case ET_ROBOT:
                 // Robots move rigidly and nonstop
-                h = dynamic_cast<Humanoid *>(e);
+                h = (e);
 
                 if (now - h->moveStartTime > ROBOT_MOVE_TIME) {
                     h->moveStartTime = now;
@@ -236,6 +236,33 @@ bool DisplayManager::isNearEnemy(int x, int y, int proximity) {
 
     return false;
 }
+
+
+
+void DisplayManager::addProjectile(Projectile *proj) {
+    projectiles.push_back(proj);
+}
+void DisplayManager::removeProjectile(Projectile *proj) {
+    for (int i = 0; i < projectiles.size(); ++i) {
+        if (projectiles[i] == proj) {
+            delete proj;
+            projectiles.erase(projectiles.begin() + i);
+        }
+    }
+}
+void DisplayManager::fireEnemies(Humanoid *player = NULL)
+{
+    Position playerPos = player->getPosition();
+    int posx = playerPos.x;
+    int posy = playerPos.y;
+    Humanoid *e;
+    for (int i = 0; i < entities.size(); ++i) 
+    {
+        e = entities[i];
+        e->shoot(posx, posy, false);
+    }
+}
+
 
 /**
  * Draws textures on the window where they are currently located

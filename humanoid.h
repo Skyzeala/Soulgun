@@ -35,6 +35,7 @@ public:
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID);
     ~Humanoid();
+    void move(Movement &dir);
     Projectile ** shoot(int targetx, int targety, bool soulBullet); //returns a list of bullets
 
 protected:

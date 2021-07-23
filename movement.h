@@ -4,12 +4,8 @@
 
 //comment this out if not debugging
 //#define ENTITYDEBUG
-#define PROJECTILEDEBUG
 
 #ifdef ENTITYDEBUG
-#include <iostream>
-#endif
-#ifdef PROJECTILEDEBUG
 #include <iostream>
 #endif
 #include <cmath>

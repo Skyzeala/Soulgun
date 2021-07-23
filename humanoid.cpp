@@ -34,6 +34,28 @@ Humanoid::~Humanoid()
     //todo
 }
 
+void Humanoid::move(Movement &dir)
+{
+#ifdef ENTITYDEBUG
+    bool printSecondHalfOfDebug;
+    if (dir.right || dir.left || dir.up || dir.down)  //only print if its going to move
+    {
+        cout << "Moved entity from (" << posx << ", " << posy;
+        printSecondHalfOfDebug = true;
+    }
+#endif
+    Position pos = entityMove(posx, posy, dir, speed);
+    posx = pos.x;
+    posy = pos.y;
+
+    moveDirection = dir;
+#ifdef ENTITYDEBUG
+    if (printSecondHalfOfDebug)
+        cout << ") to (" << posx << ", " << posy << ") \n";
+#endif
+}
+
+
 //slightly unfinished, may not need to be finished
 Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
 {

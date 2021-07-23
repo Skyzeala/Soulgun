@@ -34,7 +34,7 @@ public:
         int getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID
 
-        virtual void move(Movement &dir); //move based on movement function pointer
+        virtual void move(Movement &dir) = 0; //move based on movement function pointer
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions
         // Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
         bool damage(int amount); //returns true if entity died
