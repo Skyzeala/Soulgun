@@ -59,6 +59,7 @@ int main( int argc, char **argv ) {
 		dispMan.spawnEnemies();
 		dispMan.moveEnemies(player);
 		dispMan.fireEnemies(player);
+		dispMan.moveProjectiles(player);
 		dispMan.refresh();
 
 		SDL_RenderPresent(renderer);

@@ -1,21 +1,23 @@
 
 
 #include "humanoid.h"
-
+#include <iostream>
 
 using namespace std;
 
 Humanoid::Humanoid() :
     Entity(),
     shootCooldown(0),
-    shootTimer(10)
+    shootTimer(10),
+    shootStyle(SS_SINGLESHOT)
 {
 }
 
 Humanoid::Humanoid(const Humanoid &humanoid) :
     Entity(humanoid),
     shootCooldown(0),
-    shootTimer(shootTimer)
+    shootTimer(shootCooldown),
+    shootStyle(shootStyle)
 {
 }
 
@@ -25,7 +27,8 @@ Humanoid::Humanoid(int health, EntityType entityType,
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
     shootCooldown(0),
-    shootTimer(shootTimer) 
+    shootTimer(shootCooldown),
+    shootStyle(shootStyle)
 {
 }
 
@@ -60,7 +63,7 @@ void Humanoid::move(Movement &dir)
 Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
 {
     double aimDirection = atan2((targety-posy), (targetx-posx));
-    int texture = (soulBullet ? TX_BULLET : TX_BULLET);
+    TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
     int lifetime = 100;
     int power = 1;
     Projectile ** proj = nullptr;
@@ -97,6 +100,7 @@ Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
             case SS_SPIRAL:
                 break;
             default:
+                cout << "no type" << endl;
                 break;
         }
         shootCooldown = shootTimer;

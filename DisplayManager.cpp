@@ -93,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 30, SS_SINGLESHOT, moveLeft, TX_PLAYER);
+	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 230, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -110,7 +110,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 30, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 130, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }

@@ -95,7 +95,51 @@ Position movePlayer(int posx, int posy, Movement dir, int speed)
 Position moveLeft(int startx, int starty, int posx, int posy, int theta)
 {
     Position pos;
-    pos.x = posx - 2;
+    pos.x = posx;
     pos.y = posy;
+    pos.x -= 2;
     return pos;
 }
+
+Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
+{
+    Position pos;
+    pos.x = posx;
+    pos.y = posy;
+    int difx = posx - startx;
+    int dify = posy - starty;
+    if (difx == 0 && dify == 0)
+    {
+        pos.x += cos(thetaAim);
+        pos.y += sin(thetaAim);
+    }
+    else
+    {
+        pos.x += difx;
+        pos.y += dify;
+    }
+    return pos;
+}
+
+Position moveTracking(int startx, int starty, int posx, int posy, int thetaAim)
+{
+    Position pos;
+    int difx = posx - startx;
+    int dify = posy - starty;
+    double thetaDir = convertCoordsToRads(startx, starty, posx, posy);
+    double thetaDiff = thetaAim - thetaDiff;
+    while (thetaDiff > M_PI)
+        thetaDiff -= 2*M_PI;
+    while (thetaDiff < -M_PI)
+        thetaDiff += 2*M_PI;
+    if (thetaDiff > M_PI/8);
+        thetaDiff += M_PI/8;
+    if (thetaDiff < -M_PI/8);
+        thetaDiff -= M_PI/8;
+
+    pos.x = posx;
+    pos.y = posy;
+    posx += cos(thetaDir + thetaDiff);
+    posy += sin(thetaDir + thetaDiff);
+}
+

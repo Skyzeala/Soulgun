@@ -41,7 +41,8 @@ Position movePlayer(int posx, int posy, Movement dir, int speed);
 
 //projectile movement functions
 Position moveLeft(int startx, int starty, int posx, int posy, int thetaAim);
-
+Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim);
+Position moveTracking(int startx, int starty, int posx, int posy, int thetaAim);
 
 
 #endif

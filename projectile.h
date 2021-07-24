@@ -10,7 +10,7 @@ class Projectile : public Entity
 public:
         Projectile();
         Projectile(const Projectile &projectile);
-        Projectile(int lifetime, int power, int startx, int starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, int textureID);
+        Projectile(int lifetime, int power, int startx, int starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID);
 
         void move(Movement &dir); //not the ideal movement but will work
         Position testMove(Movement &dir);

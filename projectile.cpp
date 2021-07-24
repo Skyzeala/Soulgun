@@ -29,8 +29,8 @@ Projectile::Projectile(const Projectile &projectile) :
 }
 
 Projectile::Projectile(int lifetime, int power, int startx, int starty, double direction, 
-                        bool soulBullet, moveProjectileFunc projectileMove, int textureID) :
-    //Entity(lifetime, ET_PROJECTILE, startx, starty, 0, movePlayer, projectileMove, textureID),
+                        bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID) :
+    Entity(lifetime, ET_PROJECTILE, startx, starty, 2, movePlayer, projectileMove, textureID),
     power(power),
     soulBullet(soulBullet),
     startx(startx),
