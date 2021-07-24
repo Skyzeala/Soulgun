@@ -42,12 +42,14 @@ Projectile::Projectile(int lifetime, int power, int startx, int starty, double d
 #endif
 }
 
+
 void Projectile::move(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
     Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     posx = pos.x;
     posy = pos.y;
+    health -= 1;
 }
 
 Position Projectile::testMove(Movement &dir)
@@ -58,27 +60,24 @@ Position Projectile::testMove(Movement &dir)
 }
 
 
-/*
--------------------------------------------------
 
-these next two functions are not implemented yet.
-
--------------------------------------------------
-*/
-void Projectile::move(double thetaAim)
+bool Projectile::move(double thetaAim)
 {
     Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     posx = pos.x;
     posy = pos.y;
-    return;
+    health -= 1;
+    if (health <= 0)
+        return true;
+    return false;
 }
-//and this one
+
 Position Projectile::testMove(double thetaAim)
 {
     Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     return pos;
 }
-//end of unimplemented functions
+
 
 void Projectile::changeDirection(double amount)
 {

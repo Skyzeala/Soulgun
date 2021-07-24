@@ -110,7 +110,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 130, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -280,7 +280,8 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
         p = projectiles[i];
         projPos = p->getPosition();
         thetaAim = convertCoordsToRads(playerPos.x, playerPos.y, projPos.x, projPos.y);
-        p->move(thetaAim);
+        if (p->move(thetaAim))
+            removeProjectile(p);
     }
 }
 

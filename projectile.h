@@ -14,7 +14,7 @@ public:
 
         void move(Movement &dir); //not the ideal movement but will work
         Position testMove(Movement &dir);
-        void move(double thetaAim); //not implemented yet but use these instead with the player location
+        bool move(double thetaAim); //not implemented yet but use these instead with the player location
         Position testMove(double thetaAim); //these could be changed to accept a Position instead
 
         void changeDirection(double amount); //add radians to current direction

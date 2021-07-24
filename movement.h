@@ -2,6 +2,12 @@
 #define _MOVEMENT_
 #define _USE_MATH_DEFINES
 
+//theta = 0 is defined to be left
+//left is negative x, right is positive x
+//up is negative y, down is positive y
+//basically opposite from what you might expect, be careful
+
+
 //comment this out if not debugging
 //#define ENTITYDEBUG
 

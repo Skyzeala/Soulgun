@@ -1,4 +1,5 @@
 #include "movement.h"
+#include <iostream>
 
 using namespace std;
 
@@ -108,6 +109,8 @@ Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
     pos.y = posy;
     int difx = posx - startx;
     int dify = posy - starty;
+    double thetaDir = convertCoordsToRads(startx, starty, posx, posy);
+    thetaDir += M_PI;
     if (difx == 0 && dify == 0)
     {
         pos.x += cos(thetaAim);
@@ -115,8 +118,8 @@ Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
     }
     else
     {
-        pos.x += difx;
-        pos.y += dify;
+        pos.x += cos(thetaDir);
+        pos.y += sin(thetaDir);
     }
     return pos;
 }
@@ -141,5 +144,6 @@ Position moveTracking(int startx, int starty, int posx, int posy, int thetaAim)
     pos.y = posy;
     posx += cos(thetaDir + thetaDiff);
     posy += sin(thetaDir + thetaDiff);
+    return pos;
 }
 

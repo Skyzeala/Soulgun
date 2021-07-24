@@ -64,7 +64,7 @@ Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
 {
     double aimDirection = atan2((targety-posy), (targetx-posx));
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
-    int lifetime = 100;
+    int lifetime = 400;
     int power = 1;
     Projectile ** proj = nullptr;
     if (shootCooldown <= 0)
