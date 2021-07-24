@@ -27,7 +27,7 @@ DisplayManager::~DisplayManager(void) {
  * 
  * @param entity Pointer to an entity
  */
-void DisplayManager::addEntity(Entity *entity) {
+void DisplayManager::addEntity(Humanoid *entity) {
     entities.push_back(entity);
 }
 
@@ -36,7 +36,7 @@ void DisplayManager::addEntity(Entity *entity) {
  * 
  * @param entity Pointer to an entity that is being managed
  */
-void DisplayManager::removeEntity(Entity *entity) {
+void DisplayManager::removeEntity(Humanoid *entity) {
     for (int i = 0; i < entities.size(); ++i) {
         if (entities[i] == entity) {
             delete entity;
@@ -54,7 +54,7 @@ void DisplayManager::spawnEnemies(void) {
     Humanoid *player = NULL;
     
     for (int i = 0; i < entities.size(); ++i) {
-        Entity *e = entities[i];
+        Humanoid *e = entities[i];
         switch (e->getType()) {
             case ET_HUMAN:
                 ++humans;
@@ -63,7 +63,7 @@ void DisplayManager::spawnEnemies(void) {
                 ++robots;
             break;
             case ET_PLAYER:
-                player = dynamic_cast<Humanoid *>(e);
+                player = (e);
             break;
         }
     }
@@ -93,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, TX_PLAYER);
+	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 230, SS_SINGLESHOT, moveLeft, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -110,7 +110,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 0, SS_SINGLESHOT, moveLeft, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -129,7 +129,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
     Humanoid *h = NULL;
 
     for (int i = 0; i < entities.size(); ++i) {
-        Entity *e = entities[i];
+        Humanoid *e = entities[i];
         Movement mov;
         int direction = 0;
         int now = SDL_GetTicks();
@@ -142,7 +142,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
         switch (e->getType()) {
             case ET_HUMAN:
                 // Humans moves randomly on diagonals
-                h = dynamic_cast<Humanoid *>(e);
+                h = (e);
                 if (now - h->moveStartTime > HUMAN_MOVE_TIME) {
                     h->moveStartTime = now;
                 
@@ -172,7 +172,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
             break;
             case ET_ROBOT:
                 // Robots move rigidly and nonstop
-                h = dynamic_cast<Humanoid *>(e);
+                h = (e);
 
                 if (now - h->moveStartTime > ROBOT_MOVE_TIME) {
                     h->moveStartTime = now;
@@ -237,6 +237,55 @@ bool DisplayManager::isNearEnemy(int x, int y, int proximity) {
     return false;
 }
 
+
+
+void DisplayManager::addProjectile(Projectile *proj) {
+    projectiles.push_back(proj);
+}
+void DisplayManager::removeProjectile(Projectile *proj) {
+    for (int i = 0; i < projectiles.size(); ++i) {
+        if (projectiles[i] == proj) {
+            delete proj;
+            projectiles.erase(projectiles.begin() + i);
+        }
+    }
+}
+void DisplayManager::fireEnemies(Humanoid *player)
+{
+    Position playerPos = player->getPosition();
+    int posx = playerPos.x;
+    int posy = playerPos.y;
+    Humanoid *e = nullptr;
+    Projectile **p = nullptr;
+    for (int i = 0; i < entities.size(); ++i) 
+    {
+        e = entities[i];
+        p = e->shoot(posx, posy, false);
+        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); ++i)
+            addProjectile(p[i]);
+        if (p != nullptr)
+            delete [] p;
+    }
+}
+void DisplayManager::moveProjectiles(Humanoid *player) {
+    Position playerPos = player->getPosition(); 
+    Projectile *p = NULL;
+    Movement mov;
+    int direction = 0;
+    int now = SDL_GetTicks();
+    Position enemyPos;
+    Position projPos;
+    double thetaAim;
+    for (int i = 0; i < projectiles.size(); ++i) {
+        p = projectiles[i];
+        projPos = p->getPosition();
+        thetaAim = convertCoordsToRads(playerPos.x, playerPos.y, projPos.x, projPos.y);
+        if (p->move(thetaAim))
+            removeProjectile(p);
+    }
+}
+
+
 /**
  * Draws textures on the window where they are currently located
  */
@@ -245,7 +294,8 @@ void DisplayManager::refresh(void) {
     SDL_Rect position;
     SDL_Point size;
     SDL_Texture *texture;
-    Entity *e;
+    Humanoid *e;
+    Projectile *p;
 
     // Map rendering
 		renderMap->mapDrawer(renderer);
@@ -253,14 +303,30 @@ void DisplayManager::refresh(void) {
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
 
-        texture = txMan->getTexture(static_cast<TextureID>(e->getImage()));
-        size = txMan->getDimensions(static_cast<TextureID>(e->getImage()));
+        texture = txMan->getTexture(e->getImage());
+        size = txMan->getDimensions(e->getImage());
         position.h = size.y;
         position.w = size.x;
 
         // position.x  = e->x - map->offset_x;
         // position.y  = e->y - map->offset_y;
         Position pos = e->getPosition();
+        position.x  = pos.x;
+        position.y  = pos.y;
+
+        SDL_RenderCopy(renderer, texture, NULL, &position);
+    }
+    for (int i = 0; i < projectiles.size(); ++i) {
+        p = projectiles[i];
+
+        texture = txMan->getTexture((p->getImage()));
+        size = txMan->getDimensions((p->getImage()));
+        position.h = size.y;
+        position.w = size.x;
+
+        // position.x  = e->x - map->offset_x;
+        // position.y  = e->y - map->offset_y;
+        Position pos = p->getPosition();
         position.x  = pos.x;
         position.y  = pos.y;
 

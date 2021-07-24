@@ -21,7 +21,8 @@ enum ShootStyle
     SS_TRIPLESHOT,
     SS_4WAY,
     SS_4WAYTILT,
-    SS_8WAY
+    SS_8WAY,
+    SS_SPIRAL
 };
 
 class Humanoid : public Entity
@@ -34,7 +35,8 @@ public:
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID);
     ~Humanoid();
-    Projectile * shoot(int targetx, int targety, bool soulBullet); //returns a list of bullets
+    void move(Movement &dir);
+    Projectile ** shoot(int targetx, int targety, bool soulBullet); //returns a list of bullets
 
 protected:
     int shootCooldown; //the current time left before being able to shoot again
