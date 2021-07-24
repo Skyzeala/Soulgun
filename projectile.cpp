@@ -29,8 +29,8 @@ Projectile::Projectile(const Projectile &projectile) :
 }
 
 Projectile::Projectile(int lifetime, int power, int startx, int starty, double direction, 
-                        bool soulBullet, moveProjectileFunc projectileMove, int textureID) :
-    //Entity(lifetime, ET_PROJECTILE, startx, starty, 0, movePlayer, projectileMove, textureID),
+                        bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID) :
+    Entity(lifetime, ET_PROJECTILE, startx, starty, 2, movePlayer, projectileMove, textureID),
     power(power),
     soulBullet(soulBullet),
     startx(startx),
@@ -42,12 +42,14 @@ Projectile::Projectile(int lifetime, int power, int startx, int starty, double d
 #endif
 }
 
+
 void Projectile::move(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
     Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     posx = pos.x;
     posy = pos.y;
+    health -= 1;
 }
 
 Position Projectile::testMove(Movement &dir)
@@ -58,32 +60,24 @@ Position Projectile::testMove(Movement &dir)
 }
 
 
-/*
--------------------------------------------------
 
-these next two functions are not implemented yet.
-
--------------------------------------------------
-*/
-void Projectile::move(int targetx, int targety)
+bool Projectile::move(double thetaAim)
 {
-#ifdef ENTITYDEBUG
-    cout << "The move(targetx,targety) function is not implemented. " << endl;
-#endif
-    return;
+    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    posx = pos.x;
+    posy = pos.y;
+    health -= 1;
+    if (health <= 0)
+        return true;
+    return false;
 }
-//and this one
-Position Projectile::testMove(int targetx, int targety)
+
+Position Projectile::testMove(double thetaAim)
 {
-#ifdef ENTITYDEBUG
-    cout << "The testMove(targetx,targety) function is not implemented. " << endl;
-#endif
-    Position pos;
-    pos.x = 0;
-    pos.y = 0;
+    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
     return pos;
 }
-//end of unimplemented functions
+
 
 void Projectile::changeDirection(double amount)
 {

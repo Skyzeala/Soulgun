@@ -32,13 +32,18 @@ public:
     Humanoid *spawnHumanoid(EntityType type, Humanoid *player = NULL);
     void moveEnemies(Humanoid *player = NULL);
     bool isNearEnemy(int x, int y, int proximity);
+    void fireEnemies(Humanoid *player = NULL);
+    void moveProjectiles(Humanoid *player = NULL);
 
-    void addEntity(Entity *entity);
-    void removeEntity(Entity *entity);
+    void addEntity(Humanoid *entity);
+    void removeEntity(Humanoid *entity);
+    void addProjectile(Projectile *proj);
+    void removeProjectile(Projectile *proj);
     void refresh(void);
 
 private:
-    std::vector<Entity *> entities;
+    std::vector<Humanoid *> entities;
+    std::vector<Projectile *> projectiles;
     SDL_Renderer *renderer;
 	MapManager *renderMap;
     TextureManager *txMan;
