@@ -110,9 +110,10 @@ Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
     int difx = posx - startx;
     int dify = posy - starty;
     double thetaDir = convertCoordsToRads(startx, starty, posx, posy);
-    thetaDir += M_PI;
+    
     if (difx == 0 && dify == 0)
     {
+        //thetaAim += M_PI;
         pos.x += cos(thetaAim);
         pos.y += sin(thetaAim);
     }

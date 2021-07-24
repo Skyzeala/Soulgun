@@ -255,13 +255,13 @@ void DisplayManager::fireEnemies(Humanoid *player)
     Position playerPos = player->getPosition();
     int posx = playerPos.x;
     int posy = playerPos.y;
-    Humanoid *e;
-    Projectile **p;
+    Humanoid *e = nullptr;
+    Projectile **p = nullptr;
     for (int i = 0; i < entities.size(); ++i) 
     {
         e = entities[i];
         p = e->shoot(posx, posy, false);
-        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); i++)
+        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); ++i)
             addProjectile(p[i]);
         if (p != nullptr)
             delete [] p;
