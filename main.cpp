@@ -10,7 +10,7 @@
 #include "TextureManager.h"
 #include "DisplayManager.h"
 
-#define REFRESH_RATE 5
+#define REFRESH_RATE 15
 
 using namespace std;
 
