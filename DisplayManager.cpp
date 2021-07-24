@@ -110,7 +110,9 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         int y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(100, type, x, y, 2, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
+            int speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 2;
+
+            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
