@@ -74,7 +74,7 @@ Position Entity::getPosition()
     return pos;
 }
 
-int Entity::getImage()
+TextureID Entity::getImage()
 {
     return textureID;
 }
@@ -84,10 +84,16 @@ EntityType Entity::getType()
     return entityType;
 }
 
+/*
 void Entity::move(Movement &dir)
 {
 #ifdef ENTITYDEBUG
-    cout << "Moved entity from (" << posx << ", " << posy;
+    bool printSecondHalfOfDebug;
+    if (dir.right || dir.left || dir.up || dir.down)  //only print if its going to move
+    {
+        cout << "Moved entity from (" << posx << ", " << posy;
+        printSecondHalfOfDebug = true;
+    }
 #endif
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
@@ -95,9 +101,11 @@ void Entity::move(Movement &dir)
 
     moveDirection = dir;
 #ifdef ENTITYDEBUG
-    cout << ") to (" << posx << ", " << posy << ") \n";
+    if (printSecondHalfOfDebug)
+        cout << ") to (" << posx << ", " << posy << ") \n";
 #endif
 }
+*/
 
 Position Entity::testMove(Movement &dir)
 {

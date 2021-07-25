@@ -10,12 +10,12 @@ class Projectile : public Entity
 public:
         Projectile();
         Projectile(const Projectile &projectile);
-        Projectile(int lifetime, int power, int startx, int starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, int textureID);
+        Projectile(int lifetime, int power, int startx, int starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID);
 
         void move(Movement &dir); //not the ideal movement but will work
         Position testMove(Movement &dir);
-        void move(int targetx, int targety); //not implemented yet but use these instead with the player location
-        Position testMove(int targetx, int targety); //these could be changed to accept a Position instead
+        bool move(double thetaAim); //not implemented yet but use these instead with the player location
+        Position testMove(double thetaAim); //these could be changed to accept a Position instead
 
         void changeDirection(double amount); //add radians to current direction
         //designed to be used for ease of multi bullet creation along with the copy constructor

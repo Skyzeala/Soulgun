@@ -10,7 +10,7 @@
 #include "TextureManager.h"
 #include "DisplayManager.h"
 
-#define REFRESH_RATE 5
+#define REFRESH_RATE 15
 
 using namespace std;
 
@@ -31,6 +31,8 @@ int main( int argc, char **argv ) {
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TextureManager *txMan = new TextureManager(renderer);
 	MapManager *map = new MapManager();
+	map->texturePreloader(txMan);
+	map->levelLoader(1);
 	DisplayManager dispMan(renderer, txMan, map);
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
@@ -56,6 +58,8 @@ int main( int argc, char **argv ) {
 		// Redraw entities
 		dispMan.spawnEnemies();
 		dispMan.moveEnemies(player);
+		dispMan.fireEnemies(player);
+		dispMan.moveProjectiles(player);
 		dispMan.refresh();
 
 		SDL_RenderPresent(renderer);
