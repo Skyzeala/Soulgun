@@ -93,7 +93,7 @@ Position movePlayer(int posx, int posy, Movement dir, int speed)
 
 //projectile movement, speed decided by each function itself?
 
-Position moveLeft(int startx, int starty, int posx, int posy, int theta)
+Position moveLeft(int startx, int starty, int posx, int posy, double direction, double thetaAim)
 {
     Position pos;
     pos.x = posx;
@@ -102,7 +102,7 @@ Position moveLeft(int startx, int starty, int posx, int posy, int theta)
     return pos;
 }
 
-Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
+Position moveDirection(int startx, int starty, int posx, int posy, double direction, double thetaAim)
 {
     Position pos;
     pos.x = posx;
@@ -125,7 +125,7 @@ Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim)
     return pos;
 }
 
-Position moveTracking(int startx, int starty, int posx, int posy, int thetaAim)
+Position moveTracking(int startx, int starty, int posx, int posy, double direction, double thetaAim)
 {
     Position pos;
     int difx = posx - startx;

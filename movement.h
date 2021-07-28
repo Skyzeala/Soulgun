@@ -39,16 +39,16 @@ double convertMovementToRads(Movement &dir);
 
 //nice clean code
 typedef Position (*moveEntityFunc)(int posx, int posy, Movement dir, int speed);
-typedef Position (*moveProjectileFunc)(int startx, int starty, int posx, int posy, int thetaAim);
+typedef Position (*moveProjectileFunc)(int startx, int starty, int posx, int posy, double direction, double thetaAim);
 
 //entity movement functions
 Position moveLeft(int posx, int posy, Movement dir, int speed);
 Position movePlayer(int posx, int posy, Movement dir, int speed);
 
 //projectile movement functions
-Position moveLeft(int startx, int starty, int posx, int posy, int thetaAim);
-Position moveDirection(int startx, int starty, int posx, int posy, int thetaAim);
-Position moveTracking(int startx, int starty, int posx, int posy, int thetaAim);
+Position moveLeft(int startx, int starty, int posx, int posy, double direction, double thetaAim);
+Position moveDirection(int startx, int starty, int posx, int posy, double direction, double thetaAim);
+Position moveTracking(int startx, int starty, int posx, int posy, double direction, double thetaAim);
 
 
 #endif

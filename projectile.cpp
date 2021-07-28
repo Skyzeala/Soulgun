@@ -46,7 +46,7 @@ Projectile::Projectile(int lifetime, int power, int startx, int starty, double d
 void Projectile::move(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim);
     posx = pos.x;
     posy = pos.y;
     health -= 1;
@@ -55,7 +55,7 @@ void Projectile::move(Movement &dir)
 Position Projectile::testMove(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim);
     return pos;
 }
 
@@ -63,7 +63,7 @@ Position Projectile::testMove(Movement &dir)
 
 bool Projectile::move(double thetaAim)
 {
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim);
     posx = pos.x;
     posy = pos.y;
     health -= 1;
@@ -74,7 +74,7 @@ bool Projectile::move(double thetaAim)
 
 Position Projectile::testMove(double thetaAim)
 {
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim);
     return pos;
 }
 
