@@ -9,6 +9,7 @@
 #include "humanoid.h"
 #include "TextureManager.h"
 #include "DisplayManager.h"
+#include "HUD.h"
 
 #define REFRESH_RATE 15
 
@@ -17,7 +18,7 @@ using namespace std;
 //function prototype
 void eventFinder(SDL_Event &event, Movement &movement);
 
-int main( int argc, char **argv ) {
+int main (int argc, char **argv) {
 	//Main loop flag
 	bool quit = false;
 	Movement movement;
@@ -36,6 +37,7 @@ int main( int argc, char **argv ) {
 	DisplayManager dispMan(renderer, txMan, map);
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
+	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
 	while (event.type != SDL_QUIT) {
@@ -61,6 +63,7 @@ int main( int argc, char **argv ) {
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();
+		hud->refresh();
 
 		SDL_RenderPresent(renderer);
 	}
