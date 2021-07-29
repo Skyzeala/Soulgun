@@ -24,7 +24,7 @@ public:
         Entity();
         Entity(const Entity &entity);
         Entity(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
+                double x, double y, double speed, moveEntityFunc entityMove, 
                 moveProjectileFunc projectileMove, 
                 TextureID textureID);
         Entity& operator=(const Entity &entity); //for use with soul stealing
@@ -47,9 +47,9 @@ protected:
         int maxHealth;
         int health; //hit points
         EntityType entityType; //human, robot, player, etc
-        int posx; //cuurent x coordinate
-        int posy; //current y coordinate
-        int speed; //movement speed, how much does it move between frames
+        double posx; //cuurent x coordinate
+        double posy; //current y coordinate
+        double speed; //movement speed, how much does it move between frames
         moveEntityFunc entityMove;
         moveProjectileFunc projectileMove;
         TextureID textureID; //change to whatever type needed

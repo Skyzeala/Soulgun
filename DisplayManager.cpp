@@ -106,11 +106,11 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     float total = (MIN_HUMAN + MIN_ROBOT);
 
     for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        int x = pos.x + cos(i) * SPAWN_DIST;
-        int y = pos.y + sin(i) * SPAWN_DIST;
+        double x = pos.x + cos(i) * SPAWN_DIST;
+        double y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            int speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 2;
+            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 2;
 
             Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
             addEntity(e);
@@ -281,7 +281,7 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
     for (int i = 0; i < projectiles.size(); ++i) {
         p = projectiles[i];
         projPos = p->getPosition();
-        thetaAim = convertCoordsToRads(playerPos.x, playerPos.y, projPos.x, projPos.y);
+        thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
         if (p->move(thetaAim))
             removeProjectile(p);
     }

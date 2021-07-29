@@ -22,7 +22,7 @@ Humanoid::Humanoid(const Humanoid &humanoid) :
 }
 
 Humanoid::Humanoid(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
+                double x, double y, double speed, moveEntityFunc entityMove, 
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
@@ -60,7 +60,7 @@ void Humanoid::move(Movement &dir)
 
 
 //slightly unfinished, may not need to be finished
-Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
+Projectile ** Humanoid::shoot(double targetx, double targety, bool soulBullet)
 {
     double aimDirection = atan2((targety-posy), (targetx-posx));
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available

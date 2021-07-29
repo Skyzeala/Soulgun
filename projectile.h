@@ -10,7 +10,7 @@ class Projectile : public Entity
 public:
         Projectile();
         Projectile(const Projectile &projectile);
-        Projectile(int lifetime, int power, int startx, int starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID);
+        Projectile(int lifetime, int power, double startx, double starty, double direction, bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID);
 
         void move(Movement &dir); //not the ideal movement but will work
         Position testMove(Movement &dir);
@@ -28,8 +28,8 @@ protected:
         int power; //the number of health points the projectile will do upon contact
         bool soulBullet; //true if the bullet used will take a humans soul
 
-        int startx;
-        int starty;
+        double startx;
+        double starty;
         double direction; //radians for the direction the bullet is facing/aimed at
 };
 #endif

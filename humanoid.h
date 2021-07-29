@@ -31,12 +31,12 @@ public:
     Humanoid();
     Humanoid(const Humanoid &humanoid);
     Humanoid(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
+                double x, double y, double speed, moveEntityFunc entityMove, 
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID);
     ~Humanoid();
     void move(Movement &dir);
-    Projectile ** shoot(int targetx, int targety, bool soulBullet); //returns a list of bullets
+    Projectile ** shoot(double targetx, double targety, bool soulBullet); //returns a list of bullets
 
 protected:
     int shootCooldown; //the current time left before being able to shoot again

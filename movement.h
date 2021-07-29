@@ -2,7 +2,9 @@
 #define _MOVEMENT_
 #define _USE_MATH_DEFINES
 
-//theta = 0 is defined to be left
+//theta = 0 is defined to be right ->
+//negative theta is counterclockwise
+//positive theta is clockwise
 //left is negative x, right is positive x
 //up is negative y, down is positive y
 //basically opposite from what you might expect, be careful
@@ -16,10 +18,13 @@
 #endif
 #include <cmath>
 
+
+#include <iostream>
+
 struct Position
 {
-    int x;
-    int y;
+    double x;
+    double y;
 };
 
 struct Movement
@@ -38,17 +43,17 @@ Movement convertRadsToMovement(double rads);
 double convertMovementToRads(Movement &dir);
 
 //nice clean code
-typedef Position (*moveEntityFunc)(int posx, int posy, Movement dir, int speed);
-typedef Position (*moveProjectileFunc)(int startx, int starty, int posx, int posy, double direction, double thetaAim);
+typedef Position (*moveEntityFunc)(double posx, double posy, Movement dir, double speed);
+typedef Position (*moveProjectileFunc)(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed);
 
 //entity movement functions
-Position moveLeft(int posx, int posy, Movement dir, int speed);
-Position movePlayer(int posx, int posy, Movement dir, int speed);
+Position moveLeft(double posx, double posy, Movement dir, double speed);
+Position movePlayer(double posx, double posy, Movement dir, double speed);
 
 //projectile movement functions
-Position moveLeft(int startx, int starty, int posx, int posy, double direction, double thetaAim);
-Position moveDirection(int startx, int starty, int posx, int posy, double direction, double thetaAim);
-Position moveTracking(int startx, int starty, int posx, int posy, double direction, double thetaAim);
+Position moveLeft(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed);
+Position moveDirection(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed);
+Position moveTracking(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed);
 
 
 #endif

@@ -66,7 +66,7 @@ double convertMovementToRads(Movement &dir)
 
 //entity movement
 
-Position moveLeft(int posx, int posy, Movement dir, int speed)
+Position moveLeft(double posx, double posy, Movement dir, double speed)
 {
     Position pos;
     pos.x = posx - speed;
@@ -74,7 +74,7 @@ Position moveLeft(int posx, int posy, Movement dir, int speed)
     return pos;
 }
 
-Position movePlayer(int posx, int posy, Movement dir, int speed)
+Position movePlayer(double posx, double posy, Movement dir, double speed)
 {
     Position pos;
     pos.x = posx;
@@ -93,58 +93,45 @@ Position movePlayer(int posx, int posy, Movement dir, int speed)
 
 //projectile movement, speed decided by each function itself?
 
-Position moveLeft(int startx, int starty, int posx, int posy, double direction, double thetaAim)
+Position moveLeft(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
 {
     Position pos;
     pos.x = posx;
     pos.y = posy;
-    pos.x -= 2;
+    pos.x -= speed;
     return pos;
 }
 
-Position moveDirection(int startx, int starty, int posx, int posy, double direction, double thetaAim)
+Position moveDirection(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
 {
     Position pos;
     pos.x = posx;
     pos.y = posy;
-    int difx = posx - startx;
-    int dify = posy - starty;
-    double thetaDir = convertCoordsToRads(startx, starty, posx, posy);
-    
-    if (difx == 0 && dify == 0)
-    {
-        //thetaAim += M_PI;
-        pos.x += cos(thetaAim);
-        pos.y += sin(thetaAim);
-    }
-    else
-    {
-        pos.x += cos(thetaDir);
-        pos.y += sin(thetaDir);
-    }
+
+    pos.x += cos(direction)*speed;
+    pos.y += sin(direction)*speed;
+
     return pos;
 }
 
-Position moveTracking(int startx, int starty, int posx, int posy, double direction, double thetaAim)
+Position moveTracking(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
 {
     Position pos;
-    int difx = posx - startx;
-    int dify = posy - starty;
-    double thetaDir = convertCoordsToRads(startx, starty, posx, posy);
-    double thetaDiff = thetaAim - thetaDiff;
-    while (thetaDiff > M_PI)
-        thetaDiff -= 2*M_PI;
-    while (thetaDiff < -M_PI)
-        thetaDiff += 2*M_PI;
-    if (thetaDiff > M_PI/8);
-        thetaDiff += M_PI/8;
-    if (thetaDiff < -M_PI/8);
-        thetaDiff -= M_PI/8;
-
     pos.x = posx;
     pos.y = posy;
-    posx += cos(thetaDir + thetaDiff);
-    posy += sin(thetaDir + thetaDiff);
+
+    while (direction > 2*M_PI)
+        direction -= 2*M_PI;
+    while (direction <= -2*M_PI)
+        direction += 2*M_PI;
+    while (thetaAim > 2*M_PI)
+        thetaAim -= 2*M_PI;
+    while (thetaAim <= -2*M_PI)
+        thetaAim += 2*M_PI;
+
+    pos.x += cos(direction)*speed;
+    pos.y += sin(direction)*speed;
+
     return pos;
 }
 
