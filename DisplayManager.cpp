@@ -106,13 +106,13 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     float total = (MIN_HUMAN + MIN_ROBOT);
 
     for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        int x = pos.x + cos(i) * SPAWN_DIST;
-        int y = pos.y + sin(i) * SPAWN_DIST;
+        double x = pos.x + cos(i) * SPAWN_DIST;
+        double y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            int speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 2;
+            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 1.5;
 
-            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_4WAY, moveSpiral, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -258,15 +258,13 @@ void DisplayManager::fireEnemies(Humanoid *player)
     int posx = playerPos.x;
     int posy = playerPos.y;
     Humanoid *e = nullptr;
-    Projectile **p = nullptr;
-    for (int i = 0; i < entities.size(); ++i) 
+    std::vector<Projectile*> p;
+    for (int i = 0; i < entities.size(); ++i)
     {
         e = entities[i];
         p = e->shoot(posx, posy, false);
-        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); ++i)
+        for (int i = 0; i < p.size(); ++i)
             addProjectile(p[i]);
-        if (p != nullptr)
-            delete [] p;
     }
 }
 void DisplayManager::moveProjectiles(Humanoid *player) {
@@ -281,7 +279,7 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
     for (int i = 0; i < projectiles.size(); ++i) {
         p = projectiles[i];
         projPos = p->getPosition();
-        thetaAim = convertCoordsToRads(playerPos.x, playerPos.y, projPos.x, projPos.y);
+        thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
         if (p->move(thetaAim))
             removeProjectile(p);
     }

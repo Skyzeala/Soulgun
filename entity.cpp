@@ -44,7 +44,7 @@ Entity::~Entity(void) {
 }
 
 Entity::Entity(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
+                double x, double y, double speed, moveEntityFunc entityMove, 
                 moveProjectileFunc projectileMove, 
                 TextureID textureID) :
     maxHealth(health),
