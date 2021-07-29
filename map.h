@@ -3,10 +3,11 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include "entity.h"
 #include "TextureManager.h"
 
-const int TILE_HEIGHT = 30;
-const int TILE_WIDTH = 30;
+const int TILE_HEIGHT = 35;
+const int TILE_WIDTH = 35;
 const int MAX_TILES = 30;
 
 enum tileID 
@@ -46,13 +47,13 @@ class MapManager {
 		MapManager();
 		~MapManager();
 		
-		void texturePreloader(TextureManager * txMan); 
-		void mapDrawer(SDL_Renderer * renderer); 
 		void levelLoader(int level);
+		void texturePreloader(TextureManager * txMan); 
 		SDL_Texture* textureUnloader(int tile_type);
 
 		tileID textureToTile(int tile_type);
 		TextureID tileToTexture(int texture_type);
+		void mapDrawer(SDL_Renderer * renderer); 
 	private:
 		std::vector<SDL_Texture*> mapTextures;
 		std::vector<std::vector<mapTile*> > gameMap;
