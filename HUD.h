@@ -43,6 +43,4 @@ private:
     SDL_Renderer *renderer;
     Humanoid *player;
     TextureManager *txMan;
-
-    TextureID HUD::symbolToTexture(char value);
 };

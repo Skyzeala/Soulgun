@@ -1,33 +1,4 @@
-#include 'HUD.h'
-
-TextureID HUD::symbolToTexture(char value) {
-    switch (value) {        
-        case '0':
-            return TX_0;
-        case '1':
-            return TX_1;
-        case '2':
-            return TX_2;
-        case '3':
-            return TX_3;
-        case '4':
-            return TX_4;
-        case '5':
-            return TX_5;
-        case '6':
-            return TX_6;
-        case '7':
-            return TX_3;
-        case '8':
-            return TX_8;        
-        case '9':
-            return TX_9;
-        case ':':
-            return TX_COLON;
-        case '.':
-            return TX_POINT;
-    }
-}
+#include "HUD.h"
 
 HUD::HUD(SDL_Renderer *renderer, Humanoid *player, TextureManager *txMan): renderer(renderer), txMan(txMan), player(player), lastTime(0), elapsedTime(0), isPaused(false) { }
 
@@ -39,6 +10,7 @@ HUD::~HUD(void) {
 }
 
 void HUD::refresh(void) {
+    /*
     if (!isPaused) {
         elapsedTime += SDL_GetTicks() - lastTime;
         lastTime = SDL_GetTicks();
@@ -69,6 +41,7 @@ void HUD::refresh(void) {
 
         SDL_RenderPresent(renderer);
     }
+    */
 }
 
 void HUD::startTimer(void) {
