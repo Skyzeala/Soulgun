@@ -110,9 +110,9 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         double y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 2;
+            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 1.5;
 
-            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_SINGLESHOT, moveSpiral, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_4WAY, moveSpiral, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -258,15 +258,13 @@ void DisplayManager::fireEnemies(Humanoid *player)
     int posx = playerPos.x;
     int posy = playerPos.y;
     Humanoid *e = nullptr;
-    Projectile **p = nullptr;
-    for (int i = 0; i < entities.size(); ++i) 
+    std::vector<Projectile*> p;
+    for (int i = 0; i < entities.size(); ++i)
     {
         e = entities[i];
         p = e->shoot(posx, posy, false);
-        for (int i = 0; p != nullptr && i < sizeof(p)/sizeof(p[0]); ++i)
+        for (int i = 0; i < p.size(); ++i)
             addProjectile(p[i]);
-        if (p != nullptr)
-            delete [] p;
     }
 }
 void DisplayManager::moveProjectiles(Humanoid *player) {
@@ -300,8 +298,7 @@ void DisplayManager::refresh(void) {
     Projectile *p;
 
     // Map rendering
-        //UNCOMMENT THIS NEXT LINE
-		//renderMap->mapDrawer(renderer);
+		renderMap->mapDrawer(renderer);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];

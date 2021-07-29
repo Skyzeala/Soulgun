@@ -1,6 +1,7 @@
 #ifndef _HUMANOID_
 #define _HUMANOID_
 
+#include <vector>
 #include "entity.h"
 #include "projectile.h"
 
@@ -36,7 +37,7 @@ public:
                 TextureID textureID);
     ~Humanoid();
     void move(Movement &dir);
-    Projectile ** shoot(double targetx, double targety, bool soulBullet); //returns a list of bullets
+    std::vector<Projectile*> shoot(double targetx, double targety, bool soulBullet); //returns a list of bullets
 
 protected:
     int shootCooldown; //the current time left before being able to shoot again
