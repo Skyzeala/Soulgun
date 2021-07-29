@@ -63,7 +63,7 @@ void MapManager::levelLoader(int level){
 			gameMap[i].resize(MAX_TILES);
 			for(int j = 0; j < MAX_TILES; ++j){
 				mapFile >> tile_type;
-				gameMap[i][j] = new mapTile(i*TILE_WIDTH, j*TILE_HEIGHT, textureToTile(tile_type), textureUnloader(tile_type));
+				gameMap[i][j] = new mapTile(j*TILE_WIDTH, i*TILE_HEIGHT, textureToTile(tile_type), textureUnloader(tile_type));
 			}
 		}
 	}else{
