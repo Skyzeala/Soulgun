@@ -93,7 +93,7 @@ Position movePlayer(double posx, double posy, Movement dir, double speed)
 
 //projectile movement, speed decided by each function itself?
 
-Position moveLeft(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
+Position moveLeft(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double speed)
 {
     Position pos;
     pos.x = posx;
@@ -102,7 +102,7 @@ Position moveLeft(double startx, double starty, double posx, double posy, double
     return pos;
 }
 
-Position moveDirection(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
+Position moveDirection(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double speed)
 {
     Position pos;
     pos.x = posx;
@@ -114,24 +114,19 @@ Position moveDirection(double startx, double starty, double posx, double posy, d
     return pos;
 }
 
-Position moveTracking(double startx, double starty, double posx, double posy, double direction, double thetaAim, double speed)
+//coded with help from https://forum.unity.com/threads/moving-an-object-in-a-spiral-pattern-math-inside.465693/
+Position moveSpiral(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double speed)
 {
     Position pos;
-    pos.x = posx;
-    pos.y = posy;
 
-    while (direction > 2*M_PI)
-        direction -= 2*M_PI;
-    while (direction <= -2*M_PI)
-        direction += 2*M_PI;
-    while (thetaAim > 2*M_PI)
-        thetaAim -= 2*M_PI;
-    while (thetaAim <= -2*M_PI)
-        thetaAim += 2*M_PI;
+    double dist = sqrt(pow(posx - startx, 2) + pow(posy - starty, 2));
+    dist *= 1.00001;
+    dist += 0.15; 
+    direction += M_PI/(5*dist);
 
-    pos.x += cos(direction)*speed;
-    pos.y += sin(direction)*speed;
+
+    pos.x = cos(direction)*dist + startx;
+    pos.y = sin(direction)*dist + starty;
 
     return pos;
 }
-
