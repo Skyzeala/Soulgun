@@ -28,9 +28,9 @@ Projectile::Projectile(const Projectile &projectile) :
 #endif
 }
 
-Projectile::Projectile(int lifetime, int power, int startx, int starty, double direction, 
+Projectile::Projectile(int lifetime, int power, double startx, double starty, double direction, 
                         bool soulBullet, moveProjectileFunc projectileMove, TextureID textureID) :
-    Entity(lifetime, ET_PROJECTILE, startx, starty, 2, movePlayer, projectileMove, textureID),
+    Entity(lifetime, ET_PROJECTILE, startx, starty, 1, movePlayer, projectileMove, textureID), //control all bullet speeds from here
     power(power),
     soulBullet(soulBullet),
     startx(startx),
@@ -46,7 +46,7 @@ Projectile::Projectile(int lifetime, int power, int startx, int starty, double d
 void Projectile::move(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim, speed);
     posx = pos.x;
     posy = pos.y;
     health -= 1;
@@ -55,7 +55,7 @@ void Projectile::move(Movement &dir)
 Position Projectile::testMove(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim, speed);
     return pos;
 }
 
@@ -63,10 +63,11 @@ Position Projectile::testMove(Movement &dir)
 
 bool Projectile::move(double thetaAim)
 {
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim, speed);
     posx = pos.x;
     posy = pos.y;
     health -= 1;
+
     if (health <= 0)
         return true;
     return false;
@@ -74,7 +75,7 @@ bool Projectile::move(double thetaAim)
 
 Position Projectile::testMove(double thetaAim)
 {
-    Position pos = projectileMove(startx, starty, posx, posy, thetaAim);
+    Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim, speed);
     return pos;
 }
 
