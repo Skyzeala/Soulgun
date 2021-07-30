@@ -279,7 +279,10 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
     for (int i = 0; i < projectiles.size(); ++i) {
         p = projectiles[i];
         projPos = p->getPosition();
+				p->setHitboxPos(projPos);
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
+				if (player->entityCollision(player->getHitbox(), p->getHitbox()))
+						removeProjectile(p);
         if (p->move(thetaAim))
             removeProjectile(p);
     }

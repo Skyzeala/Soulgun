@@ -36,7 +36,6 @@ int main( int argc, char **argv ) {
 	DisplayManager dispMan(renderer, txMan, map);
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
-	player->setHitbox(ET_HUMAN);
 
 	int nextRefresh = SDL_GetTicks();
 	while (event.type != SDL_QUIT) {
