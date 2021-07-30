@@ -47,7 +47,8 @@ int main( int argc, char **argv ) {
 
 		// Interpret event
 		eventFinder(event, movement);
-		player->move(movement);
+		if(map->mapCollision(player->testMove(movement)))
+			player->move(movement);
 
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
@@ -61,7 +62,7 @@ int main( int argc, char **argv ) {
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();
-
+		
 		SDL_RenderPresent(renderer);
 	}
 

@@ -50,6 +50,7 @@ class MapManager {
 		void levelLoader(int level);
 		void texturePreloader(TextureManager * txMan); 
 		SDL_Texture* textureUnloader(int tile_type);
+		bool mapCollision(Position player);
 
 		tileID textureToTile(int tile_type);
 		TextureID tileToTexture(int texture_type);

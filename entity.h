@@ -33,6 +33,10 @@ public:
         Position getPosition(); //returns x and y position
         TextureID getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID
+				void setHitbox(EntityType ID); //Sets hitbox depending on EntityType
+				void setHitboxPos(Position entity); //Sets hitbox pos with Position struct
+				SDL_Rect * getHitbox(); //Returns hitbox
+				bool entityCollision(SDL_Rect * a, SDL_Rect * b);
 
         virtual void move(Movement &dir) = 0; //move based on movement function pointer
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions
@@ -46,6 +50,7 @@ public:
 protected:
         int maxHealth;
         int health; //hit points
+				SDL_Rect hitbox;
         EntityType entityType; //human, robot, player, etc
         double posx; //cuurent x coordinate
         double posy; //current y coordinate

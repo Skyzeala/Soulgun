@@ -7,6 +7,7 @@ using namespace std;
 Entity::Entity() :
     maxHealth(10),
     health(maxHealth),
+		
     entityType(ET_ROBOT),
     posx(0),
     posy(0),
@@ -18,6 +19,7 @@ Entity::Entity() :
     moveAway(false)
 
 {
+		setHitbox(ET_ROBOT);
 #ifdef ENTITYDEBUG
     cout << "Created default entity." << endl;
 #endif
@@ -34,6 +36,7 @@ Entity::Entity(const Entity &entity) :
     projectileMove(projectileMove),
     textureID(textureID)
 {
+		setHitbox(ET_ROBOT);
 #ifdef ENTITYDEBUG
     cout << "Created entity from copy." << endl;
 #endif
@@ -57,6 +60,7 @@ Entity::Entity(int health, EntityType entityType,
     projectileMove(projectileMove),
     textureID(textureID)
 {
+		setHitbox(entityType);
 #ifdef ENTITYDEBUG
     cout << "Created entity with custom stats." << endl;
     cout << "Type is: " << (entityType == ET_PLAYER ? "player" : "npc") << endl;
@@ -84,6 +88,29 @@ EntityType Entity::getType()
     return entityType;
 }
 
+void Entity::setHitbox(EntityType ID){
+
+    if(ID == ET_PROJECTILE){
+			hitbox.h = 5;
+			hitbox.w = 5;
+		}
+		else{
+			hitbox.h = 25;
+			hitbox.w = 25;
+		}
+}
+void Entity::setHitboxPos(Position entity){
+
+			hitbox.x = entity.x;
+			hitbox.y = entity.y;
+}
+
+SDL_Rect * Entity::getHitbox(){
+	return &hitbox;
+}
+bool Entity::entityCollision(SDL_Rect * a, SDL_Rect * b){
+	return SDL_HasIntersection(a, b);
+}
 /*
 void Entity::move(Movement &dir)
 {
