@@ -43,9 +43,9 @@ Entity::~Entity(void) {
     // todo
 }
 
-Entity::Entity(int health, EntityType entityType, 
-                double x, double y, double speed, moveEntityFunc entityMove, 
-                moveProjectileFunc projectileMove, 
+Entity::Entity(int health, EntityType entityType,
+                double x, double y, double speed, moveEntityFunc entityMove,
+                moveProjectileFunc projectileMove,
                 TextureID textureID) :
     maxHealth(health),
     health(health),
@@ -129,3 +129,7 @@ bool Entity::damage(int amount)
         return false;
 }
 
+void Entity::setLocation(Position &newPos){
+    posx = newPos.x;
+    posy = newPos.y;
+}

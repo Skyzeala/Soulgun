@@ -2,7 +2,7 @@
 
 /**
  * Initializes the display manager
- * 
+ *
  * @param xRenderer External renderer
  * @param xTexture External texture manager
  */
@@ -24,7 +24,7 @@ DisplayManager::~DisplayManager(void) {
 
 /**
  * Adds an entity to the manager
- * 
+ *
  * @param entity Pointer to an entity
  */
 void DisplayManager::addEntity(Humanoid *entity) {
@@ -33,7 +33,7 @@ void DisplayManager::addEntity(Humanoid *entity) {
 
 /**
  * Removes an entity from the manager
- * 
+ *
  * @param entity Pointer to an entity that is being managed
  */
 void DisplayManager::removeEntity(Humanoid *entity) {
@@ -52,7 +52,7 @@ void DisplayManager::spawnEnemies(void) {
     int humans = 0;
     int robots = 0;
     Humanoid *player = NULL;
-    
+
     for (int i = 0; i < entities.size(); ++i) {
         Humanoid *e = entities[i];
         switch (e->getType()) {
@@ -85,7 +85,7 @@ void DisplayManager::spawnEnemies(void) {
 
 /**
  * Spawns a humanoid entity at an appropriate location considering player location and other enemies
- * 
+ *
  * @param type Type of humanoid to spawn
  * @param player Pointer to the player
  * @returns A pointer to the humanoid spawned
@@ -123,11 +123,11 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
 
 /**
  * Enemy movement AI
- * 
+ *
  * @param player Pointer to the player
  */
 void DisplayManager::moveEnemies(Humanoid *player) {
-    Position playerPos = player->getPosition(); 
+    Position playerPos = player->getPosition();
     Humanoid *h = NULL;
 
     for (int i = 0; i < entities.size(); ++i) {
@@ -147,7 +147,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
                 h = (e);
                 if (now - h->moveStartTime > HUMAN_MOVE_TIME) {
                     h->moveStartTime = now;
-                
+
                     // If too far away, force to move closer to player
                     if (distFromPlayer > ENEMY_MAX_DIST) {
                         mov.right = (playerPos.x > enemyPos.x);
@@ -165,7 +165,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
                     }
                     mov.down = !mov.up;
                     mov.left = !mov.right;
-                    
+
                     h->move(mov);
                 }
                 else {
@@ -178,7 +178,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
 
                 if (now - h->moveStartTime > ROBOT_MOVE_TIME) {
                     h->moveStartTime = now;
-                
+
                     // If too far away, force to move closer to player
                     if (distFromPlayer > ENEMY_MAX_DIST) {
                         mov.right = (playerPos.x > enemyPos.x);
@@ -220,7 +220,7 @@ void DisplayManager::moveEnemies(Humanoid *player) {
 
 /**
  * Indicates whether an enemy is located near a coordinate
- * 
+ *
  * @param x X coorindate
  * @param y Y coordinate
  * @param proximity Distance from the coordinates to be considered "near"
@@ -234,7 +234,7 @@ bool DisplayManager::isNearEnemy(int x, int y, int proximity) {
         // Todo: Do some pythagorean theorem magic to incorporate proximity
         if (pos.x == x && pos.y == y)
             return true;
-    }    
+    }
 
     return false;
 }
@@ -268,7 +268,7 @@ void DisplayManager::fireEnemies(Humanoid *player)
     }
 }
 void DisplayManager::moveProjectiles(Humanoid *player) {
-    Position playerPos = player->getPosition(); 
+    Position playerPos = player->getPosition();
     Projectile *p = NULL;
     Movement mov;
     int direction = 0;
@@ -298,7 +298,7 @@ void DisplayManager::refresh(void) {
     Projectile *p;
 
     // Map rendering
-		renderMap->mapDrawer(renderer);
+	renderMap->mapDrawer(renderer);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
@@ -332,4 +332,62 @@ void DisplayManager::refresh(void) {
 
         SDL_RenderCopy(renderer, texture, NULL, &position);
     }
+
+    //TODO need to remove this once collision is done
+    //Attempt at swapping player with humanoid
+    if(rand() % 100 == 3){
+        int random = (rand() % 10) + 1;
+        if(swapSpots(entities[random])){
+            //entities.erase(entities.begin() + i);
+            entities.erase(entities.begin() + random);
+        }
+    }
+}
+
+void DisplayManager::flashBox(int startx, int starty, int Width, int Height){
+    //select the color you want to render (red, green, blue, alpha)
+    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+
+    //creates box
+    SDL_Rect box;
+    box.x = startx;
+    box.y = starty;
+    box.w = Width;
+    box.h = Height;
+
+    //adds box and displays
+    SDL_RenderFillRect(renderer, &box);
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+}
+
+void DisplayManager::flashScreen(){
+    //select the color you want to render (red, green, blue, alpha)
+    SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+
+    //creates box
+    SDL_Rect box;
+    box.x = 0;
+    box.y = 0;
+    box.w = MAP_WIDTH;
+    box.h = MAP_HEIGHT;
+
+    //adds box and displays
+    SDL_RenderFillRect(renderer, &box);
+    SDL_RenderPresent(renderer);
+    //SDL_RenderClear(renderer);
+}
+
+bool DisplayManager::swapSpots(Humanoid *toSwap){
+    //double checks that the first item is the player
+    if (entities[0]->getType() == ET_PLAYER){
+        if(toSwap->getType() == ET_HUMAN){
+            Position newPos = toSwap->getPosition();
+            entities[0]->setLocation(newPos);
+            flashScreen();
+            flashBox(newPos.x-5, newPos.y-5, newPos.x+5, newPos.y+5);
+            return true;
+        }
+    }
+    return false;
 }
