@@ -36,6 +36,7 @@ int main( int argc, char **argv ) {
 	DisplayManager dispMan(renderer, txMan, map);
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
+	player->setHitbox(ET_HUMAN);
 
 	int nextRefresh = SDL_GetTicks();
 	while (event.type != SDL_QUIT) {
@@ -47,7 +48,8 @@ int main( int argc, char **argv ) {
 
 		// Interpret event
 		eventFinder(event, movement);
-		player->move(movement);
+		if(map->mapCollision(player->testMove(movement)))
+			player->move(movement);
 
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
@@ -61,7 +63,7 @@ int main( int argc, char **argv ) {
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();
-
+		
 		SDL_RenderPresent(renderer);
 	}
 
