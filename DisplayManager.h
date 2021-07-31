@@ -41,10 +41,14 @@ public:
     void removeProjectile(Projectile *proj);
     void refresh(void);
 
+    void flashBox(int startx, int starty, int Width, int Height);
+    void flashScreen();
+    bool swapSpots(Humanoid *toSwap);
+
 private:
     std::vector<Humanoid *> entities;
     std::vector<Projectile *> projectiles;
     SDL_Renderer *renderer;
 	MapManager *renderMap;
     TextureManager *txMan;
-}; 
+};

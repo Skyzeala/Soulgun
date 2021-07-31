@@ -23,9 +23,9 @@ class Entity
 public:
         Entity();
         Entity(const Entity &entity);
-        Entity(int health, EntityType entityType, 
-                double x, double y, double speed, moveEntityFunc entityMove, 
-                moveProjectileFunc projectileMove, 
+        Entity(int health, EntityType entityType,
+                double x, double y, double speed, moveEntityFunc entityMove,
+                moveProjectileFunc projectileMove,
                 TextureID textureID);
         Entity& operator=(const Entity &entity); //for use with soul stealing
         ~Entity();
@@ -42,6 +42,7 @@ public:
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions
         // Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
         bool damage(int amount); //returns true if entity died
+        void setLocation(Position &newPos);
 
         // Todo: Protected getters and setters
         Movement moveDirection; // Last direction moved
