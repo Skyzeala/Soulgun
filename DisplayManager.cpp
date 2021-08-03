@@ -93,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 230, SS_SINGLESHOT, moveLeft, TX_PLAYER);
+	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -262,7 +262,8 @@ void DisplayManager::fireEnemies(Humanoid *player)
     for (int i = 0; i < entities.size(); ++i)
     {
         e = entities[i];
-        p = e->shoot(posx, posy, false);
+        if (e->getType() != ET_PLAYER)
+            p = e->shoot(posx, posy, false);
         for (int i = 0; i < p.size(); ++i)
             addProjectile(p[i]);
     }
@@ -281,7 +282,7 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
         projPos = p->getPosition();
 				p->setHitboxPos(projPos);
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
-				if (player->entityCollision(player->getHitbox(), p->getHitbox()))
+ 				if (player->entityCollision(player->getHitbox(), p->getHitbox()))
 						removeProjectile(p);
         if (p->move(thetaAim))
             removeProjectile(p);
@@ -335,7 +336,7 @@ void DisplayManager::refresh(void) {
 
         SDL_RenderCopy(renderer, texture, NULL, &position);
     }
-
+/*
     //TODO need to remove this once collision is done
     //Attempt at swapping player with humanoid
     if(rand() % 100 == 3){
@@ -345,6 +346,7 @@ void DisplayManager::refresh(void) {
             entities.erase(entities.begin() + random);
         }
     }
+*/
 }
 
 void DisplayManager::flashBox(int startx, int starty, int Width, int Height){

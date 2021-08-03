@@ -27,7 +27,7 @@ Entity::Entity() :
 Entity::Entity(const Entity &entity) :
     maxHealth(maxHealth),
     health(maxHealth),
-    entityType(entityType),
+    entityType(ET_PLAYER),
     posx(posx),
     posy(posy),
     speed(speed),
