@@ -39,7 +39,8 @@ int main( int argc, char **argv ) {
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 
 	int nextRefresh = SDL_GetTicks();
-	while (event.type != SDL_QUIT) {
+	while (event.type != SDL_QUIT) 
+	{
 		// Check for input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
@@ -54,6 +55,7 @@ int main( int argc, char **argv ) {
 				dispMan.addProjectile(playerShots[i]);
 		}
 		if(map->mapCollision(player->testMove(movement)))
+		{
 			player->move(movement);
 			player->setHitboxPos(player->getPosition());
 		}
