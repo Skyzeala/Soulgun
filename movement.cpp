@@ -42,7 +42,7 @@ double convertMovementToRads(Movement &dir)
     double rads = -M_PI; //default value, will be returned if conversion failed
     if (dir.up)
     {
-        rads = 0;
+        rads = -M_PI/2;
         if (dir.right)
             rads += M_PI/4;
         if (dir.left)
@@ -50,16 +50,16 @@ double convertMovementToRads(Movement &dir)
     }
     else if (dir.down)
     {
-        rads = M_PI;
+        rads = M_PI/2;
         if (dir.right)
             rads -= M_PI/4;
         if (dir.left)
-            rads = -M_PI*3/4;
+            rads += M_PI/4;
     }
     else if (dir.right)
-        rads = M_PI/2;
+        rads = 0;
     else if (dir.left)
-        rads = -M_PI/2;
+        rads = M_PI;
     return rads;
 }
 
@@ -108,8 +108,8 @@ Position moveDirection(double startx, double starty, double posx, double posy, d
     pos.x = posx;
     pos.y = posy;
 
-    pos.x += cos(direction)*speed;
-    pos.y += sin(direction)*speed;
+    pos.x += cos(direction)*2.5*speed;
+    pos.y += sin(direction)*2.5*speed;
 
     return pos;
 }

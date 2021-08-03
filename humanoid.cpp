@@ -49,7 +49,8 @@ void Humanoid::move(Movement &dir)
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
     posy = pos.y;
-    moveDirection = dir;
+    if (dir.up || dir.down || dir.left || dir.right)
+        moveDirection = dir;
     shootCooldown -=1;
 #ifdef ENTITYDEBUG
     if (printSecondHalfOfDebug)
@@ -63,7 +64,11 @@ void Humanoid::move(Movement &dir)
 //will convert this over to using vectors in the future
 vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBullet)
 {
-    double aimDirection = atan2((targety-posy), (targetx-posx));
+    double aimDirection;
+    if (entityType != ET_PLAYER) 
+        aimDirection = atan2((targety-posy), (targetx-posx));
+    else
+        aimDirection = convertMovementToRads(moveDirection);
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
     int lifetime = 500;
     int power = 1;

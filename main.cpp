@@ -15,7 +15,7 @@
 using namespace std;
 
 //function prototype
-void eventFinder(SDL_Event &event, Movement &movement);
+bool eventFinder(SDL_Event &event, Movement &movement);
 
 int main( int argc, char **argv ) {
 	//Main loop flag
@@ -34,6 +34,7 @@ int main( int argc, char **argv ) {
 	map->texturePreloader(txMan);
 	map->levelLoader(1);
 	DisplayManager dispMan(renderer, txMan, map);
+	vector<Projectile*> playerShots;
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 
@@ -46,7 +47,12 @@ int main( int argc, char **argv ) {
 		}	
 
 		// Interpret event
-		eventFinder(event, movement);
+		if (eventFinder(event, movement))
+		{
+			playerShots = player->shoot(0,0,true);
+			for (int i = 0; i < playerShots.size(); ++i)
+				dispMan.addProjectile(playerShots[i]);
+		}
 		if(map->mapCollision(player->testMove(movement)))
 			player->move(movement);
 
@@ -73,13 +79,13 @@ int main( int argc, char **argv ) {
 	return 0;
 }
 
-void eventFinder(SDL_Event &event, Movement &movement){
+bool eventFinder(SDL_Event &event, Movement &movement){
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
 	movement.left = (keystate[SDL_SCANCODE_LEFT] != 0);
 	movement.up = (keystate[SDL_SCANCODE_UP] != 0);
 	movement.right = (keystate[SDL_SCANCODE_RIGHT] != 0);
 	movement.down = (keystate[SDL_SCANCODE_DOWN] != 0);
-	bool shoot = (keystate[SDL_SCANCODE_SPACE] != 0);
+	return (keystate[SDL_SCANCODE_SPACE] != 0);
 }
 

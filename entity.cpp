@@ -28,7 +28,7 @@ Entity::Entity() :
 Entity::Entity(const Entity &entity) :
     maxHealth(maxHealth),
     health(maxHealth),
-    entityType(entityType),
+    entityType(ET_PLAYER),
     posx(posx),
     posy(posy),
     speed(speed),
@@ -36,7 +36,7 @@ Entity::Entity(const Entity &entity) :
     projectileMove(projectileMove),
     textureID(textureID)
 {
-		setHitbox(ET_ROBOT);
+		setHitbox(entityType);
 #ifdef ENTITYDEBUG
     cout << "Created entity from copy." << endl;
 #endif
