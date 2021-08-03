@@ -7,7 +7,6 @@ using namespace std;
 Entity::Entity() :
     maxHealth(10),
     health(maxHealth),
-		
     entityType(ET_ROBOT),
     posx(0),
     posy(0),
@@ -108,8 +107,8 @@ void Entity::setHitboxPos(Position entity){
 SDL_Rect * Entity::getHitbox(){
 	return &hitbox;
 }
-bool Entity::entityCollision(SDL_Rect * a, SDL_Rect * b){
-	return SDL_HasIntersection(a, b);
+bool Entity::entityCollision(SDL_Rect * a){
+	return SDL_HasIntersection(a, &this->hitbox);
 }
 /*
 void Entity::move(Movement &dir)
