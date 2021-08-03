@@ -93,7 +93,7 @@ void DisplayManager::spawnEnemies(void) {
 Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(100, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+	    player = new Humanoid(1, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
 
         addEntity(player);
         return player;
@@ -112,7 +112,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
         if (!isNearEnemy(x, y, 0)) {
             double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 1.5;
 
-            Humanoid *e = new Humanoid(100, type, x, y, speed, movePlayer, 330, SS_4WAY, moveSpiral, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(1, type, x, y, speed, movePlayer, 330, SS_4WAY, moveSpiral, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }
@@ -282,9 +282,29 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
         projPos = p->getPosition();
 				p->setHitboxPos(projPos);
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
- 				if (player->entityCollision(player->getHitbox(), p->getHitbox()))
-						removeProjectile(p);
-        if (p->move(thetaAim))
+ 		if (!(p->isSoulBullet()) && player->entityCollision(p->getHitbox()))
+        {
+			removeProjectile(p);
+        }
+        else if (p->isSoulBullet())
+        {
+            for (int i = 0; i < entities.size(); ++i)
+            {
+                if (entities[i]->getType() != ET_PLAYER)
+                {
+                    entities[i]->setHitboxPos(entities[i]->getPosition());
+                    if ((entities[i])->entityCollision(p->getHitbox()))
+                    {
+                        if (entities[i]->damage(p->getPower()))
+                            removeEntity(entities[i]);
+                        removeProjectile(p);
+                    }
+                }
+                else if (p->move(thetaAim))
+                    removeProjectile(p);
+            }
+        }
+        else if (p->move(thetaAim))
             removeProjectile(p);
     }
 }
