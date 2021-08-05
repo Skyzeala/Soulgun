@@ -90,7 +90,8 @@ SDL_Texture* MapManager::textureUnloader(int tile_type){
 	return mapTextures[tile_type];
 }
 bool MapManager::mapCollision(Position player){
-	if(player.x <= 0 || player.y <= 0 || player.x+20 >= 1024 || player.y+25 >= 1024) return false;
+	if(player.x <= 0 || player.y <= 0 || player.x+20 >= MAX_TILES*TILE_WIDTH || player.y+25 >= MAX_TILES*TILE_HEIGHT) return false;
+
 	if(gameMap[player.y / TILE_WIDTH][player.x / TILE_HEIGHT]->getType() == TID_WALL ||
 		gameMap[(player.y+25) / TILE_WIDTH][ (player.x+20) / TILE_HEIGHT]->getType() == TID_WALL ||
 		gameMap[(player.y+25) / TILE_WIDTH][ (player.x) / TILE_HEIGHT]->getType() == TID_WALL ||
