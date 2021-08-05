@@ -23,6 +23,22 @@ DisplayManager::~DisplayManager(void) {
 }
 
 /**
+ * Pass in window and what you Position you want window to focus on
+ */
+void DisplayManager::updateWindowPos(Position window_focus){
+
+		SDL_Rect point_of_view;
+
+		point_of_view.h = 10000;
+		point_of_view.w = 10000;
+	  point_of_view.x = 512 - window_focus.x;
+		point_of_view.y = 512 - window_focus.y;
+
+		SDL_RenderSetViewport(renderer, &point_of_view);
+
+}
+
+/**
  * Adds an entity to the manager
  *
  * @param entity Pointer to an entity
@@ -322,7 +338,7 @@ void DisplayManager::refresh(void) {
     Projectile *p;
 
     // Map rendering
-	renderMap->mapDrawer(renderer);
+		renderMap->mapDrawer(renderer);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];
