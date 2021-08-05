@@ -23,9 +23,9 @@ class Entity
 public:
         Entity();
         Entity(const Entity &entity);
-        Entity(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
-                moveProjectileFunc projectileMove, 
+        Entity(int health, EntityType entityType,
+                double x, double y, double speed, moveEntityFunc entityMove,
+                moveProjectileFunc projectileMove,
                 TextureID textureID);
         Entity& operator=(const Entity &entity); //for use with soul stealing
         ~Entity();
@@ -33,11 +33,16 @@ public:
         Position getPosition(); //returns x and y position
         TextureID getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID
+				void setHitbox(EntityType ID); //Sets hitbox depending on EntityType
+				void setHitboxPos(Position entity); //Sets hitbox pos with Position struct
+				SDL_Rect * getHitbox(); //Returns hitbox
+				bool entityCollision(SDL_Rect * a);
 
         virtual void move(Movement &dir) = 0; //move based on movement function pointer
         virtual Position testMove(Movement &dir); //return what the position would be after it moves, use to test collisions
         // Projectile * shoot(int targetx, int targety, bool soulBullet); //does this work?
         bool damage(int amount); //returns true if entity died
+        void setLocation(Position &newPos);
 
         // Todo: Protected getters and setters
         Movement moveDirection; // Last direction moved
@@ -46,10 +51,11 @@ public:
 protected:
         int maxHealth;
         int health; //hit points
+				SDL_Rect hitbox;
         EntityType entityType; //human, robot, player, etc
-        int posx; //cuurent x coordinate
-        int posy; //current y coordinate
-        int speed; //movement speed, how much does it move between frames
+        double posx; //cuurent x coordinate
+        double posy; //current y coordinate
+        double speed; //movement speed, how much does it move between frames
         moveEntityFunc entityMove;
         moveProjectileFunc projectileMove;
         TextureID textureID; //change to whatever type needed

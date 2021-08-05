@@ -1,7 +1,6 @@
 
 
 #include "humanoid.h"
-#include <iostream>
 
 using namespace std;
 
@@ -22,7 +21,7 @@ Humanoid::Humanoid(const Humanoid &humanoid) :
 }
 
 Humanoid::Humanoid(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
+                double x, double y, double speed, moveEntityFunc entityMove, 
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
@@ -50,7 +49,8 @@ void Humanoid::move(Movement &dir)
     Position pos = entityMove(posx, posy, dir, speed);
     posx = pos.x;
     posy = pos.y;
-    moveDirection = dir;
+    if (dir.up || dir.down || dir.left || dir.right)
+        moveDirection = dir;
     shootCooldown -=1;
 #ifdef ENTITYDEBUG
     if (printSecondHalfOfDebug)
@@ -59,48 +59,66 @@ void Humanoid::move(Movement &dir)
 }
 
 
-//slightly unfinished, may not need to be finished
-Projectile ** Humanoid::shoot(int targetx, int targety, bool soulBullet)
+//unfinished, only singleshot works
+//how to watch the proj pointer in vscode with gdb: (Projectile*[9]) *proj
+//will convert this over to using vectors in the future
+vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBullet)
 {
-    double aimDirection = atan2((targety-posy), (targetx-posx));
+    double aimDirection;
+    if (entityType != ET_PLAYER) 
+        aimDirection = atan2((targety-posy), (targetx-posx));
+    else
+        aimDirection = convertMovementToRads(moveDirection);
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
     int lifetime = 500;
     int power = 1;
-    Projectile ** proj = nullptr;
+    vector<Projectile*> proj;
     if (shootCooldown <= 0)
     {
         switch (shootStyle)
         {
             case SS_SINGLESHOT:
-                proj = new Projectile*[1];
-                proj[0] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
                 break;
             case SS_DOUBLESHOT:
-                proj = new Projectile*[2];
-                aimDirection -= M_PI/8;
-                proj[0] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
-                aimDirection += M_PI/4;
-                proj[1] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
+                aimDirection -= M_PI/15;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/7.5;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
                 break;
             case SS_TRIPLESHOT:
-                proj = new Projectile*[3];
-                aimDirection -= M_PI/6;
-                proj[0] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
-                aimDirection += M_PI/6;
-                proj[1] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
-                aimDirection += M_PI/6;
-                proj[2] = new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture);
+                aimDirection -= M_PI/12;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/12;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/12;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
                 break;
             case SS_4WAY:
+                aimDirection = 0;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
                 break;
             case SS_4WAYTILT:
+                aimDirection = M_PI/4;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
+                aimDirection += M_PI/2;
+                proj.push_back(new Projectile(lifetime, power, posx, posy, aimDirection, soulBullet, projectileMove, texture));
                 break;
             case SS_8WAY:
                 break;
             case SS_SPIRAL:
                 break;
             default:
-                cout << "no type" << endl;
                 break;
         }
         shootCooldown = shootTimer;

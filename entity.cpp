@@ -18,6 +18,7 @@ Entity::Entity() :
     moveAway(false)
 
 {
+		setHitbox(ET_ROBOT);
 #ifdef ENTITYDEBUG
     cout << "Created default entity." << endl;
 #endif
@@ -26,7 +27,7 @@ Entity::Entity() :
 Entity::Entity(const Entity &entity) :
     maxHealth(maxHealth),
     health(maxHealth),
-    entityType(entityType),
+    entityType(ET_PLAYER),
     posx(posx),
     posy(posy),
     speed(speed),
@@ -34,6 +35,7 @@ Entity::Entity(const Entity &entity) :
     projectileMove(projectileMove),
     textureID(textureID)
 {
+		setHitbox(entityType);
 #ifdef ENTITYDEBUG
     cout << "Created entity from copy." << endl;
 #endif
@@ -43,9 +45,9 @@ Entity::~Entity(void) {
     // todo
 }
 
-Entity::Entity(int health, EntityType entityType, 
-                int x, int y, int speed, moveEntityFunc entityMove, 
-                moveProjectileFunc projectileMove, 
+Entity::Entity(int health, EntityType entityType,
+                double x, double y, double speed, moveEntityFunc entityMove,
+                moveProjectileFunc projectileMove,
                 TextureID textureID) :
     maxHealth(health),
     health(health),
@@ -57,6 +59,7 @@ Entity::Entity(int health, EntityType entityType,
     projectileMove(projectileMove),
     textureID(textureID)
 {
+		setHitbox(entityType);
 #ifdef ENTITYDEBUG
     cout << "Created entity with custom stats." << endl;
     cout << "Type is: " << (entityType == ET_PLAYER ? "player" : "npc") << endl;
@@ -84,6 +87,29 @@ EntityType Entity::getType()
     return entityType;
 }
 
+void Entity::setHitbox(EntityType ID){
+
+    if(ID == ET_PROJECTILE){
+			hitbox.h = 5;
+			hitbox.w = 5;
+		}
+		else{
+			hitbox.h = 25;
+			hitbox.w = 25;
+		}
+}
+void Entity::setHitboxPos(Position entity){
+
+			hitbox.x = entity.x;
+			hitbox.y = entity.y;
+}
+
+SDL_Rect * Entity::getHitbox(){
+	return &hitbox;
+}
+bool Entity::entityCollision(SDL_Rect * a){
+	return SDL_HasIntersection(a, &this->hitbox);
+}
 /*
 void Entity::move(Movement &dir)
 {
@@ -129,3 +155,7 @@ bool Entity::damage(int amount)
         return false;
 }
 
+void Entity::setLocation(Position &newPos){
+    posx = newPos.x;
+    posy = newPos.y;
+}

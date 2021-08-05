@@ -16,7 +16,7 @@
 using namespace std;
 
 //function prototype
-void eventFinder(SDL_Event &event, Movement &movement);
+bool eventFinder(SDL_Event &event, Movement &movement);
 
 int main (int argc, char **argv) {
 	//Main loop flag
@@ -35,12 +35,14 @@ int main (int argc, char **argv) {
 	map->texturePreloader(txMan);
 	map->levelLoader(1);
 	DisplayManager dispMan(renderer, txMan, map);
+	vector<Projectile*> playerShots;
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
-	while (event.type != SDL_QUIT) {
+	while (event.type != SDL_QUIT) 
+	{
 		// Check for input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
@@ -48,8 +50,17 @@ int main (int argc, char **argv) {
 		}	
 
 		// Interpret event
-		eventFinder(event, movement);
-		player->move(movement);
+		if (eventFinder(event, movement))
+		{
+			playerShots = player->shoot(0,0,true);
+			for (int i = 0; i < playerShots.size(); ++i)
+				dispMan.addProjectile(playerShots[i]);
+		}
+		if(map->mapCollision(player->testMove(movement)))
+		{
+			player->move(movement);
+			player->setHitboxPos(player->getPosition());
+		}
 
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
@@ -63,8 +74,7 @@ int main (int argc, char **argv) {
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();
-		hud->refresh();
-
+		
 		SDL_RenderPresent(renderer);
 	}
 
@@ -75,13 +85,13 @@ int main (int argc, char **argv) {
 	return 0;
 }
 
-void eventFinder(SDL_Event &event, Movement &movement){
+bool eventFinder(SDL_Event &event, Movement &movement){
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
 	movement.left = (keystate[SDL_SCANCODE_LEFT] != 0);
 	movement.up = (keystate[SDL_SCANCODE_UP] != 0);
 	movement.right = (keystate[SDL_SCANCODE_RIGHT] != 0);
 	movement.down = (keystate[SDL_SCANCODE_DOWN] != 0);
-	bool shoot = (keystate[SDL_SCANCODE_SPACE] != 0);
+	return (keystate[SDL_SCANCODE_SPACE] != 0);
 }
 
