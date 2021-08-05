@@ -50,6 +50,7 @@ public:
 private:
     std::vector<Humanoid *> entities;
     std::vector<Projectile *> projectiles;
+		SDL_Rect point_of_view;
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
