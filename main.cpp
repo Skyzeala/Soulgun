@@ -18,8 +18,6 @@ using namespace std;
 bool eventFinder(SDL_Event &event, Movement &movement);
 
 int main( int argc, char **argv ) {
-	//Main loop flag
-	bool quit = false;
 	Movement movement;
 
 	//Event handler
@@ -39,13 +37,13 @@ int main( int argc, char **argv ) {
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
 
 	int nextRefresh = SDL_GetTicks();
-	while (event.type != SDL_QUIT) 
+	while (event.type != SDL_QUIT)
 	{
 		// Check for input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
 				break;
-		}	
+		}
 
 		// Interpret event
 		if (eventFinder(event, movement))
@@ -71,8 +69,17 @@ int main( int argc, char **argv ) {
 		dispMan.moveEnemies(player);
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
+
+        //checks if players health is below 0
+        if(player->damage(0)){
+            while(event.type != SDL_QUIT){
+                SDL_RenderCopy(renderer, txMan->getTexture(TX_GAMEOVER), NULL, NULL);
+                SDL_RenderPresent(renderer);
+            }
+            break;
+        }
+
 		dispMan.refresh();
-		
 		SDL_RenderPresent(renderer);
 	}
 

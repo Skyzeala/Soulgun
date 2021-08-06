@@ -16,6 +16,7 @@ enum TextureID
     TX_TERRAIN,
 	TX_WALL,
 	TX_PIT,
+    TX_GAMEOVER,
     TX_TOTAL
 };
 
@@ -42,7 +43,8 @@ private:
         "assets/images/placeholder-bullet.png",
         "assets/images/placeholder-terrain.png",
         "assets/images/placeholder-wall.png",
-        "assets/images/placeholder-pit.png"
+        "assets/images/placeholder-pit.png",
+        "assets/images/game_over.png"
     };
 
     SDL_Texture *textures[TX_TOTAL];
