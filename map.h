@@ -6,8 +6,8 @@
 #include "entity.h"
 #include "TextureManager.h"
 
-const int TILE_HEIGHT = 35;
-const int TILE_WIDTH = 35;
+const int TILE_HEIGHT = 100;
+const int TILE_WIDTH = 100;
 const int MAX_TILES = 30;
 
 enum tileID 
