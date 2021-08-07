@@ -297,7 +297,6 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
     for (int i = 0; i < projectiles.size(); ++i) {
         p = projectiles[i];
         projPos = p->getPosition();
-				p->setHitboxPos(projPos);
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
  		if (!(p->isSoulBullet()) && player->entityCollision(p->getHitbox()))
         {
@@ -309,7 +308,6 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
             {
                 if (entities[i]->getType() != ET_PLAYER)
                 {
-                    entities[i]->setHitboxPos(entities[i]->getPosition());
                     if ((entities[i])->entityCollision(p->getHitbox()))
                     {
                         if (entities[i]->damage(p->getPower()))
