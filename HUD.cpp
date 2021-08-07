@@ -86,7 +86,7 @@ TimeUnits HUD::getTime(void) {
     TimeUnits t;
     
     t.hours = elapsedTime / (60 * 60 * 1000) % 24;
-    t.minutes = t.seconds / (60 * 1000) % 60;
+    t.minutes = elapsedTime / (60 * 1000) % 60;
     t.seconds = (elapsedTime / 1000) % 60;
     t.ms = elapsedTime % 1000;
 
