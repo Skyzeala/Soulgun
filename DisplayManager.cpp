@@ -23,6 +23,23 @@ DisplayManager::~DisplayManager(void) {
 }
 
 /**
+ * Pass in window and what you Position you want window to focus on
+ */
+void DisplayManager::updateWindowPos(Position window_focus){
+
+
+		point_of_view.h = 5000;
+		point_of_view.w = 5000;
+		if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
+	  	point_of_view.x = 512 - window_focus.x;
+		if(window_focus.y >= 512 && window_focus.y <= MAX_TILES*TILE_HEIGHT - 512)
+			point_of_view.y = 512 - window_focus.y;
+
+		SDL_RenderSetViewport(renderer, &point_of_view);
+
+}
+
+/**
  * Adds an entity to the manager
  *
  * @param entity Pointer to an entity
@@ -280,7 +297,6 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
     for (int i = 0; i < projectiles.size(); ++i) {
         p = projectiles[i];
         projPos = p->getPosition();
-				p->setHitboxPos(projPos);
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
  		if (!(p->isSoulBullet()) && player->entityCollision(p->getHitbox()))
         {
@@ -292,7 +308,6 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
             {
                 if (entities[i]->getType() != ET_PLAYER)
                 {
-                    entities[i]->setHitboxPos(entities[i]->getPosition());
                     if ((entities[i])->entityCollision(p->getHitbox()))
                     {
                         if (entities[i]->damage(p->getPower()))
@@ -322,7 +337,7 @@ void DisplayManager::refresh(void) {
     Projectile *p;
 
     // Map rendering
-	renderMap->mapDrawer(renderer);
+		renderMap->mapDrawer(renderer);
 
     for (int i = 0; i < entities.size(); ++i) {
         e = entities[i];

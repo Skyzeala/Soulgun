@@ -47,6 +47,7 @@ void Projectile::move(Movement &dir)
 {
     double thetaAim = convertMovementToRads(dir);
     Position pos = projectileMove(startx, starty, posx, posy, direction, thetaAim, speed);
+		setHitboxPos(pos);
     posx = pos.x;
     posy = pos.y;
     health -= 1;
@@ -68,6 +69,7 @@ bool Projectile::move(double thetaAim)
     posy = pos.y;
     health -= 1;
 
+		setHitboxPos(pos);
     if (health <= 0)
         return true;
     return false;

@@ -47,6 +47,7 @@ void Humanoid::move(Movement &dir)
     }
 #endif
     Position pos = entityMove(posx, posy, dir, speed);
+		setHitboxPos(pos);
     posx = pos.x;
     posy = pos.y;
     if (dir.up || dir.down || dir.left || dir.right)

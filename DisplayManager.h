@@ -28,6 +28,8 @@ public:
     DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture, MapManager *map);
     ~DisplayManager(void);
 
+		void updateWindowPos(Position window_focus);
+
     void spawnEnemies(void);
     Humanoid *spawnHumanoid(EntityType type, Humanoid *player = NULL);
     void moveEnemies(Humanoid *player = NULL);
@@ -48,7 +50,8 @@ public:
 private:
     std::vector<Humanoid *> entities;
     std::vector<Projectile *> projectiles;
+		SDL_Rect point_of_view;
     SDL_Renderer *renderer;
-	MapManager *renderMap;
+		MapManager *renderMap;
     TextureManager *txMan;
 };
