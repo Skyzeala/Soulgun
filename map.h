@@ -44,7 +44,7 @@ class mapTile {
 
 class MapManager {
 	public:	
-		MapManager();
+		MapManager(TextureManager * txMan);
 		~MapManager();
 		
 		void levelLoader(int level);
