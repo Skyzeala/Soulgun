@@ -70,7 +70,7 @@ vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBul
     else
         aimDirection = convertMovementToRads(moveDirection);
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
-    int lifetime = 500;
+    int lifetime = 1000;
     int power = 1;
     vector<Projectile*> proj;
     if (shootCooldown <= 0)

@@ -50,10 +50,11 @@ Position movePlayer(double posx, double posy, Movement dir, double speed);
 //projectile movement functions
 Position moveLeft(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveDirection(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
+//Position moveTracking(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveSpiral(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveCorkscrew(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveSine(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
-
+Position moveFlower(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 
 
 #endif
