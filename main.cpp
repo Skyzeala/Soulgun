@@ -49,6 +49,8 @@ int main (int argc, char **argv) {
 				break;
 		}	
 
+		SDL_RenderClear(renderer);
+
 		// Interpret event
 		if (eventFinder(event, movement))
 		{
