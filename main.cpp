@@ -32,9 +32,8 @@ int main (int argc, char **argv) {
 	SDL_Window *window = SDL_CreateWindow("Soulgun", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TextureManager *txMan = new TextureManager(renderer);
-	MapManager *map = new MapManager();
-	map->texturePreloader(txMan);
-	map->levelLoader(1);
+	//Creates MapManger object
+	MapManager *map = new MapManager(txMan);
 	DisplayManager dispMan(renderer, txMan, map);
 	vector<Projectile*> playerShots;
 
@@ -60,7 +59,6 @@ int main (int argc, char **argv) {
 		if(map->mapCollision(player->testMove(movement)))
 		{
 			player->move(movement);
-			player->setHitboxPos(player->getPosition());
 			dispMan.updateWindowPos(player->getPosition());
 		}
 		
