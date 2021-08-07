@@ -27,6 +27,7 @@ int main (int argc, char **argv) {
 	SDL_Event event;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 
 	SDL_Window *window = SDL_CreateWindow("Soulgun", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
@@ -62,6 +63,7 @@ int main (int argc, char **argv) {
 			player->setHitboxPos(player->getPosition());
 			dispMan.updateWindowPos(player->getPosition());
 		}
+		
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
 		if (now < nextRefresh)
@@ -74,6 +76,7 @@ int main (int argc, char **argv) {
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();
+		hud->refresh();
 		
 		SDL_RenderPresent(renderer);
 	}
@@ -81,6 +84,7 @@ int main (int argc, char **argv) {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	TTF_Quit();
 
 	return 0;
 }
