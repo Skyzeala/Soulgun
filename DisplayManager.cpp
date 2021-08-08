@@ -312,7 +312,11 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
                 {
                     if ((entities[i])->entityCollision(p->getHitbox()))
                     {
-                        if (entities[i]->damage(p->getPower()))
+                        //if bullet hit another entity(humanoid)
+                        if(swapSpots(entities[i])){
+                            entities.erase(entities.begin() + i);
+                        }//bullet didnt hit a humanoid
+                        else if (entities[i]->damage(p->getPower()))
                             removeEntity(entities[i]);
                         removeProjectile(p);
                     }
@@ -373,17 +377,6 @@ void DisplayManager::refresh(void) {
 
         SDL_RenderCopy(renderer, texture, NULL, &position);
     }
-/*
-    //TODO need to remove this once collision is done
-    //Attempt at swapping player with humanoid
-    if(rand() % 100 == 3){
-        int random = (rand() % 10) + 1;
-        if(swapSpots(entities[random])){
-            //entities.erase(entities.begin() + i);
-            entities.erase(entities.begin() + random);
-        }
-    }
-*/
 }
 
 void DisplayManager::flashBox(int startx, int starty, int Width, int Height){
@@ -426,6 +419,7 @@ bool DisplayManager::swapSpots(Humanoid *toSwap){
         if(toSwap->getType() == ET_HUMAN){
             Position newPos = toSwap->getPosition();
             entities[0]->setLocation(newPos);
+            entities[0]->setHitboxPos(newPos);
             flashScreen();
             flashBox(newPos.x-5, newPos.y-5, newPos.x+5, newPos.y+5);
             return true;

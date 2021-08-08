@@ -70,10 +70,13 @@ int main( int argc, char **argv ) {
 
         //checks if players health is below 0
         if(player->damage(0)){
-            while(event.type != SDL_QUIT){
-                SDL_RenderCopy(renderer, txMan->getTexture(TX_GAMEOVER), NULL, NULL);
-                SDL_RenderPresent(renderer);
-            }
+            SDL_DestroyRenderer(renderer);
+            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+            SDL_Texture *gtext = IMG_LoadTexture(renderer, "assets/images/game_over.png");
+            //SDL_RenderCopy(renderer, (txMan->getTexture(TX_GAMEOVER)), NULL, NULL);
+            SDL_RenderCopy(renderer, gtext, NULL, NULL);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(2000);
             break;
         }
 
