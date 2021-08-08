@@ -2,7 +2,7 @@ CC=g++
 
 OBJS=*.cpp
 
-FLAGS=-lSDL2 -lSDL2_image
+FLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf
 
 all: $(OBJS)
 		$(CC) $(OBJS) $(FLAGS)

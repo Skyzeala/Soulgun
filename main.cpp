@@ -9,6 +9,7 @@
 #include "humanoid.h"
 #include "TextureManager.h"
 #include "DisplayManager.h"
+#include "HUD.h"
 
 #define REFRESH_RATE 15
 
@@ -17,13 +18,14 @@ using namespace std;
 //function prototype
 bool eventFinder(SDL_Event &event, Movement &movement);
 
-int main( int argc, char **argv ) {
+int main (int argc, char **argv) {
 	Movement movement;
 
 	//Event handler
 	SDL_Event event;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 
 	SDL_Window *window = SDL_CreateWindow("Soulgun", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
@@ -34,6 +36,7 @@ int main( int argc, char **argv ) {
 	vector<Projectile*> playerShots;
 
 	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
+	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
 	while (event.type != SDL_QUIT)
@@ -43,6 +46,8 @@ int main( int argc, char **argv ) {
 			if (event.type == SDL_QUIT)
 				break;
 		}
+
+		SDL_RenderClear(renderer);
 
 		// Interpret event
 		if (eventFinder(event, movement))
@@ -56,6 +61,7 @@ int main( int argc, char **argv ) {
 			player->move(movement);
 			dispMan.updateWindowPos(player->getPosition());
 		}
+		
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
 		if (now < nextRefresh)
@@ -81,12 +87,14 @@ int main( int argc, char **argv ) {
         }
 
 		dispMan.refresh();
+		hud->refresh();
 		SDL_RenderPresent(renderer);
 	}
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	TTF_Quit();
 
 	return 0;
 }
