@@ -48,8 +48,14 @@ MapManager::~MapManager() {
 	gameMap.clear();
 }
 
-MapManager::MapManager() {
+//Constructor preloads textures and base level
+MapManager::MapManager(TextureManager * txMan) {
+	
+	texturePreloader(txMan);
+	levelLoader(1);
 }
+
+//Loads levels based on int to swtich
 void MapManager::levelLoader(int level){
 	
 	std::ifstream mapFile;
@@ -74,9 +80,11 @@ void MapManager::levelLoader(int level){
 		std::cout << "Map file failed to load" << std::endl;
 	}
 
-	mapFile.close();
+	mapFile.close(); 
 
 }
+
+//Loads textures to a vertex
 void MapManager::texturePreloader(TextureManager * txMan){ 
 	
 	mapTextures.resize(3);
@@ -86,9 +94,13 @@ void MapManager::texturePreloader(TextureManager * txMan){
 	}
 	
 }
+
+//Unloads one texture in the vertex
 SDL_Texture* MapManager::textureUnloader(int tile_type){
 	return mapTextures[tile_type];
 }
+
+//Collision with map edge, walls & pits returns FALSE
 bool MapManager::mapCollision(Position player){
 	if(player.x <= 0 || player.y <= 0 || player.x+20 >= MAX_TILES*TILE_WIDTH || player.y+25 >= MAX_TILES*TILE_HEIGHT) return false;
 
@@ -98,10 +110,17 @@ bool MapManager::mapCollision(Position player){
 		gameMap[(player.y) / TILE_WIDTH][ (player.x+20) / TILE_HEIGHT]->getType() == TID_WALL){
 		return false;
 	}
+	if(gameMap[player.y / TILE_WIDTH][player.x / TILE_HEIGHT]->getType() == TID_PIT ||
+		gameMap[(player.y+25) / TILE_WIDTH][ (player.x+20) / TILE_HEIGHT]->getType() == TID_PIT ||
+		gameMap[(player.y+25) / TILE_WIDTH][ (player.x) / TILE_HEIGHT]->getType() == TID_PIT ||
+		gameMap[(player.y) / TILE_WIDTH][ (player.x+20) / TILE_HEIGHT]->getType() == TID_PIT){
+		return false;
+	}
 	else return true;
 
 }
 
+//TextureID to TileID
 tileID MapManager::textureToTile(int tile_type) {
 	tileID tid;
 	switch (tile_type) {
@@ -118,6 +137,7 @@ tileID MapManager::textureToTile(int tile_type) {
 	return tid;
 }
 
+//TileID to TextureID
 TextureID MapManager::tileToTexture(int texture_type) {
 	TextureID tid;
 	switch (texture_type) {
@@ -133,6 +153,8 @@ TextureID MapManager::tileToTexture(int texture_type) {
 	}
 	return tid;
 }
+
+//Renders map tiles from vector
 void MapManager::mapDrawer(SDL_Renderer * renderer) {
 
 	//Loops itterate over map 2D vector
