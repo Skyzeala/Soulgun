@@ -30,6 +30,7 @@ public:
         Entity& operator=(const Entity &entity); //for use with soul stealing
         ~Entity();
 
+        int getHealth();
         Position getPosition(); //returns x and y position
         TextureID getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID

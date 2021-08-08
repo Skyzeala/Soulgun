@@ -77,6 +77,11 @@ Position Entity::getPosition()
     return pos;
 }
 
+int Entity::getHealth()
+{
+    return health;
+}
+
 TextureID Entity::getImage()
 {
     return textureID;
