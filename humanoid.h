@@ -23,7 +23,9 @@ enum ShootStyle
     SS_4WAY,
     SS_4WAYTILT,
     SS_8WAY,
-    SS_SPIRAL
+    SS_SPIRAL,
+    SS_3INAROW,
+    SS_TOTAL
 };
 
 class Humanoid : public Entity

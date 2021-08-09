@@ -8,12 +8,12 @@
 #include "humanoid.h"
 #include <vector>
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
-#define MIN_HUMAN 2
-#define MIN_ROBOT 8
 
 // Distance enemies will spawn away from the player
-#define SPAWN_DIST 512
+#define SPAWN_DIST 350
 
 // Hard-coded until Manager is merged with Map
 #define MAP_WIDTH 1024
@@ -54,4 +54,6 @@ private:
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
+    int minHuman = 0;
+    int minRobot = 3;
 };

@@ -63,7 +63,11 @@ int main( int argc, char **argv ) {
 		if (now < nextRefresh)
 			SDL_Delay(nextRefresh - now);
 		nextRefresh = now + REFRESH_RATE;
-
+		
+		
+		SDL_RenderClear(renderer);
+		
+		
 		// Redraw entities
 		dispMan.spawnEnemies();
 		dispMan.moveEnemies(player);

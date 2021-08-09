@@ -53,7 +53,7 @@ protected:
         int health; //hit points
 				SDL_Rect hitbox;
         EntityType entityType; //human, robot, player, etc
-        double posx; //cuurent x coordinate
+        double posx; //curent x coordinate
         double posy; //current y coordinate
         double speed; //movement speed, how much does it move between frames
         moveEntityFunc entityMove;

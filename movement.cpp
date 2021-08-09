@@ -111,8 +111,8 @@ Position moveDirection(double startx, double starty, double posx, double posy, d
     pos.x = posx;
     pos.y = posy;
 
-    pos.x += cos(direction)*2.5*speed;
-    pos.y += sin(direction)*2.5*speed;
+    pos.x += cos(direction)*3*speed;
+    pos.y += sin(direction)*3*speed;
 
     return pos;
 }
@@ -205,18 +205,16 @@ Position moveSine(double startx, double starty, double posx, double posy, double
 }
 
 
-//NOT DONE, DOESNT WORK
-//coded with help from http://jwilson.coe.uga.edu/EMT668/EMAT6680.2003.fall/Shiver/assignment11/PolarGraphs.htm
-Position moveFlower(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
+Position moveBoomerang(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
 {
     Position pos;
+    pos.x = posx;
+    pos.y = posy;
 
-    direction += 0.01;
-    speed += 0.01;
-    double distance = 2*sin(3*speed);
+    pos.x += cos(direction)*2.5*speed;
+    pos.y += sin(direction)*2.5*speed;
 
-    pos.x = cos(speed)*distance;
-    pos.y = sin(speed)*distance;
+    speed -= 1/500.0;
 
     return pos;
 }

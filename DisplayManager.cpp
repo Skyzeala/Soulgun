@@ -26,17 +26,25 @@ DisplayManager::~DisplayManager(void) {
  * Pass in window and what you Position you want window to focus on
  */
 void DisplayManager::updateWindowPos(Position window_focus){
-
-
-		point_of_view.h = 5000;
-		point_of_view.w = 5000;
-		if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
+	point_of_view.h = 1200;
+	point_of_view.w = 1200;
+	if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
 	  	point_of_view.x = 512 - window_focus.x;
-		if(window_focus.y >= 512 && window_focus.y <= MAX_TILES*TILE_HEIGHT - 512)
-			point_of_view.y = 512 - window_focus.y;
+    // else if (window_focus.x < 512)
+    //     point_of_view.x = 512;
+    // else
+    //     point_of_view.x = MAX_TILES*TILE_WIDTH - 512;
 
-		SDL_RenderSetViewport(renderer, &point_of_view);
+	if(window_focus.y >= 512 && window_focus.y <= MAX_TILES*TILE_HEIGHT - 512)
+		point_of_view.y = 512 - window_focus.y;
+    // else if (window_focus.y < 512)
+    //     point_of_view.y = 512;
+    // else
+    //     point_of_view.y = MAX_TILES*TILE_WIDTH - 512;
 
+    SDL_RenderSetViewport(renderer, &point_of_view);
+    //SDL_RenderSetClipRect(renderer, &point_of_view);
+	
 }
 
 /**
@@ -86,18 +94,24 @@ void DisplayManager::spawnEnemies(void) {
     }
 
     // Spawn humans if there aren't enough
-    if (humans < MIN_HUMAN) {
-        for (int x = 0; x < MIN_HUMAN - humans; ++x) {
+    if (humans < minHuman) {
+        for (int x = 0; x < minHuman - humans; ++x) {
             spawnHumanoid(ET_HUMAN, player);
         }
     }
+    srand(time(NULL));
+    if (rand() % 8000 < 1) //add another human once in a while
+        minHuman++;
 
     // Spawn robots if there aren't enough
-    if (robots < MIN_ROBOT) {
-        for (int x = 0; x < MIN_ROBOT - robots; ++x) {
+    if (robots < minRobot) {
+        for (int x = 0; x < minRobot - robots; ++x) {
             spawnHumanoid(ET_ROBOT, player);
         }
     }
+    srand(time(NULL));
+    if (rand() % 7000 < 1) //add another robot once in a while
+        minRobot++;
 }
 
 /**
@@ -120,16 +134,26 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
 
     // Have enemies encircle the player
     float unitCircle = 2 * M_PI;
-    float total = (MIN_HUMAN + MIN_ROBOT);
+    float total = (minHuman + minRobot);
+
+    double x;
+    double y;
+    double speed;
+    double health = 2;
+    int shootCooldown = 400;
+    ShootStyle ss = SS_3INAROW;
+    moveProjectileFunc projMoveFunc = moveDirection;
 
     for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        double x = pos.x + cos(i) * SPAWN_DIST;
-        double y = pos.y + sin(i) * SPAWN_DIST;
+        x = pos.x + cos(i) * SPAWN_DIST;
+        y = pos.y + sin(i) * SPAWN_DIST;
 
         if (!isNearEnemy(x, y, 0)) {
-            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 1.5;
+            speed = (type == static_cast<int>(TX_HUMAN)) ? 0.1: 0.5;
+            srand(time(NULL));
+            speed += (rand() % 15)*0.1 + 0.4;
 
-            Humanoid *e = new Humanoid(1, type, x, y, speed, movePlayer, 330, SS_SINGLESHOT, moveDirection, static_cast<TextureID>(type));
+            Humanoid *e = new Humanoid(health, type, x, y, speed, movePlayer, shootCooldown, ss, projMoveFunc, static_cast<TextureID>(type));
             addEntity(e);
             return e;
         }

@@ -54,7 +54,7 @@ Position moveDirection(double startx, double starty, double posx, double posy, d
 Position moveSpiral(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveCorkscrew(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 Position moveSine(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
-Position moveFlower(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
+Position moveBoomerang(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed);
 
 
 #endif
