@@ -15,6 +15,7 @@
 // Distance enemies will spawn away from the player
 #define SPAWN_DIST 350
 
+
 // Hard-coded until Manager is merged with Map
 #define MAP_WIDTH 1024
 #define MAP_HEIGHT 1024
@@ -54,7 +55,8 @@ private:
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
-    int minHuman;
-    int minRobot;
+
+    int newSpawnCooldown;
+    int maxSpawnCooldown;
     bool firstSpawn;
 };

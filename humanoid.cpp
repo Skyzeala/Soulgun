@@ -18,10 +18,6 @@ Humanoid::Humanoid(const Humanoid &humanoid) :
     shootTimer(shootCooldown),
     shootStyle(shootStyle)
 {
-    if (shootStyle == SS_SPIRAL)
-    {
-        shootCooldown = (shootCooldown/16) * 16;
-    }
 }
 
 Humanoid::Humanoid(int health, EntityType entityType, 
@@ -35,7 +31,7 @@ Humanoid::Humanoid(int health, EntityType entityType,
 {
     if (shootStyle == SS_SPIRAL)
     {
-        shootCooldown = (shootCooldown/16) * 16;
+        shootCooldown = 367; //don't mess with this unless you know what youre doing
     }
 }
 
@@ -84,6 +80,11 @@ vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBul
     {
         aposx += 50;
         aposy -= 28;
+    }
+    if (projectileMove == moveCorkscrew)
+    {
+        aposx += 22;
+        aposy += 38;
     }
     TextureID texture = (soulBullet ? TX_BULLET : TX_BULLET); //change when new texture is available
     int power = 1;
@@ -161,6 +162,9 @@ vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBul
                 shootCooldown = shootTimer;
                 break;
             case SS_SPIRAL:
+                //don't mess with this unless you know what youre doing
+                //yes, the exact spray pattern is nondeterministic
+                //no, i dont know why
                 if (shootCooldown % 16 == 0)
                 {
                     aimDirection = (shootCooldown/16)*M_PI/8.0;

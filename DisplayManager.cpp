@@ -10,8 +10,9 @@ DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture
     renderer = xRenderer;
     txMan = xTexture;
 		renderMap = map;
-    minHuman = 0;
-    minRobot = 3;
+
+    maxSpawnCooldown = 900;
+    newSpawnCooldown = maxSpawnCooldown;
     firstSpawn = true;
 }
 
@@ -95,27 +96,36 @@ void DisplayManager::spawnEnemies(void) {
             break;
         }
     }
-
-    // Spawn humans if there aren't enough
-    if (humans < minHuman) {
-        for (int x = 0; x < minHuman - humans; ++x) {
-            spawnHumanoid(ET_HUMAN, player);
-        }
+    if (humans + robots > 40)
+        newSpawnCooldown = 50;
+    else if (humans + robots < 2)
+    {
+        newSpawnCooldown = 0;
+        firstSpawn = true;
     }
-    srand(time(NULL));
-    if (rand() % 5000 < 1) //add another human once in a while
-        minHuman++;
 
-    // Spawn robots if there aren't enough
-    if (robots < minRobot) {
-        for (int x = 0; x < minRobot - robots; ++x) {
-            spawnHumanoid(ET_ROBOT, player);
+    if (newSpawnCooldown <= 0)
+    {
+        srand(time(NULL));
+        switch(rand()%3)
+        {
+            case 0:
+            case 1:
+            //case 2:
+                spawnHumanoid(ET_ROBOT, player);
+                break;
+            case 2:
+                spawnHumanoid(ET_ROBOT, player);
+                break;
         }
+        newSpawnCooldown = maxSpawnCooldown;
+        maxSpawnCooldown -= 20;
         firstSpawn = false;
     }
-    srand(time(NULL));
-    if (rand() % 4000 < 1) //add another robot once in a while
-        minRobot++;
+    else
+        newSpawnCooldown -= 1;
+
+    
 }
 
 /**
@@ -138,7 +148,6 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
 
     // Have enemies encircle the player
     float unitCircle = 2 * M_PI;
-    float total = (minHuman + minRobot);
 
     double x;
     double y;
@@ -147,69 +156,77 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
     int shootCooldown = 500;
     ShootStyle ss = SS_3INAROW;
     moveProjectileFunc projMoveFunc = moveDirection;
-
-    for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        x = pos.x + cos(i) * SPAWN_DIST;
-        y = pos.y + sin(i) * SPAWN_DIST;
-        srand(time(NULL));
-        speed = (type == static_cast<int>(TX_HUMAN)) ? 0.3: 0.1;
-        speed += (rand() % 15)*0.1 + 0.4;
-        health = (type == static_cast<int>(TX_HUMAN)) ? rand() % 5 + 2: rand() % 2 + 1;
-        ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
-        if (ss != SS_SINGLESHOT)
-            ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
-        if (ss == SS_8WAY || ss == SS_SPIRAL)
-            ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
-        if (ss == SS_8WAY || ss == SS_SPIRAL)
-            shootCooldown += rand()%100;
-        
-        srand(time(NULL));
-        switch(rand()%(NUM_OF_PROJ_MOVE_FUNCS+5))
-        {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-                projMoveFunc = moveDirection;
-                shootCooldown -= rand()%200;
-                break;
-            case 4:
-                projMoveFunc = moveSpiral;
-                shootCooldown += rand()%100;
-            break;
-            case 5:
-            case 6:
-                projMoveFunc = moveSine;
-                shootCooldown -= rand()%100;
-                break;
-            case 7:
-            case 8:
-                projMoveFunc = moveCorkscrew;
-                shootCooldown += rand()%100;
-                break;
-            case 9:
-                projMoveFunc = moveBoomerang;
-                shootCooldown += rand()%100;
-                break;
-            default:
-                projMoveFunc = moveDirection;
-                break;
-        }
-        if (firstSpawn)
-        {
-            ss = SS_SINGLESHOT;
-            projMoveFunc = moveDirection;
-        }
-
-        ss = SS_SPIRAL;
-        projMoveFunc = moveSine;
-
-        if (!isNearEnemy(x, y, 0)) {
-            Humanoid *e = new Humanoid(health, type, x, y, speed, movePlayer, shootCooldown, ss, projMoveFunc, static_cast<TextureID>(type));
-            addEntity(e);
-            return e;
-        }
+    int i;
+    switch(rand() % 4)
+    {
+        case 0:
+            i = M_PI/4;
+        case 1:
+            i = M_PI*3/4.0;
+        case 2:
+            i = -M_PI/4;
+        default:
+            i = -M_PI*3/4.0;
     }
+
+    x = pos.x + cos(i) * SPAWN_DIST;
+    y = pos.y + sin(i) * SPAWN_DIST;
+    srand(time(NULL));
+    speed = (type == static_cast<int>(TX_HUMAN)) ? 0.4: 0.1;
+    speed += (rand() % 20)*0.05;
+    health = (type == static_cast<int>(TX_HUMAN)) ? rand() % 3 + 2: rand() % 2 + 1;
+    ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss != SS_SINGLESHOT)
+        ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss == SS_8WAY || ss == SS_SPIRAL)
+        ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss == SS_8WAY || ss == SS_SPIRAL)
+        shootCooldown += rand()%100;
+        
+    srand(time(NULL));
+    switch(rand()%(NUM_OF_PROJ_MOVE_FUNCS+5))
+    {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            projMoveFunc = moveDirection;
+            shootCooldown -= rand()%200;
+            break;
+        case 4:
+            projMoveFunc = moveSpiral;
+            shootCooldown += rand()%100;
+            break;
+        case 5:
+        case 6:
+            projMoveFunc = moveSine;
+            shootCooldown -= rand()%100;
+            break;
+        case 7:
+        case 8:
+            projMoveFunc = moveCorkscrew;
+            shootCooldown += rand()%100;
+            break;
+        case 9:
+            projMoveFunc = moveBoomerang;
+            shootCooldown += rand()%100;
+            break;
+        default:
+            projMoveFunc = moveDirection;
+            break;
+    }
+    if (firstSpawn)
+    {
+        ss = SS_SINGLESHOT;
+        projMoveFunc = moveDirection;
+    }
+
+    if (!isNearEnemy(x, y, 0)) {
+        Humanoid *e = new Humanoid(health, type, x, y, speed, movePlayer, shootCooldown, ss, projMoveFunc, static_cast<TextureID>(type));
+        addEntity(e);
+        return e;
+    }
+    
 
     return NULL;
 }
