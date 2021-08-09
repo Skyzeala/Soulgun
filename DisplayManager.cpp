@@ -103,7 +103,7 @@ void DisplayManager::spawnEnemies(void) {
         }
     }
     srand(time(NULL));
-    if (rand() % 6000 < 1) //add another human once in a while
+    if (rand() % 5000 < 1) //add another human once in a while
         minHuman++;
 
     // Spawn robots if there aren't enough
@@ -114,7 +114,7 @@ void DisplayManager::spawnEnemies(void) {
         firstSpawn = false;
     }
     srand(time(NULL));
-    if (rand() % 5000 < 1) //add another robot once in a while
+    if (rand() % 4000 < 1) //add another robot once in a while
         minRobot++;
 }
 
@@ -200,6 +200,9 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
             ss = SS_SINGLESHOT;
             projMoveFunc = moveDirection;
         }
+
+        ss = SS_SPIRAL;
+        projMoveFunc = moveSine;
 
         if (!isNearEnemy(x, y, 0)) {
             Humanoid *e = new Humanoid(health, type, x, y, speed, movePlayer, shootCooldown, ss, projMoveFunc, static_cast<TextureID>(type));
