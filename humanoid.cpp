@@ -7,14 +7,14 @@ using namespace std;
 Humanoid::Humanoid() :
     Entity(),
     shootCooldown(0),
-    shootTimer(10),
+    shootTimer(100),
     shootStyle(SS_SINGLESHOT)
 {
 }
 
 Humanoid::Humanoid(const Humanoid &humanoid) :
     Entity(humanoid),
-    shootCooldown(0),
+    shootCooldown(100),
     shootTimer(shootCooldown),
     shootStyle(shootStyle)
 {
@@ -25,7 +25,7 @@ Humanoid::Humanoid(int health, EntityType entityType,
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
                 TextureID textureID) :
     Entity(health, entityType, x, y, speed, entityMove, projectileMove, textureID),
-    shootCooldown(50),
+    shootCooldown(100),
     shootTimer(shootCooldown),
     shootStyle(shootStyle)
 {

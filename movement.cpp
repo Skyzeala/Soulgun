@@ -160,8 +160,8 @@ Position moveSpiral(double startx, double starty, double posx, double posy, doub
     double dist = sqrt(pow(posx - startx, 2) + pow(posy - starty, 2));
     if (dist == 0)
         dist = 8;
-    dist += 0.17; 
-    direction += M_PI/(3*dist);
+    dist += 0.25; 
+    direction += M_PI/(2*dist);
 
     pos.x = cos(direction)*dist + startx;
     pos.y = sin(direction)*dist + starty;
@@ -173,8 +173,8 @@ Position moveSpiral(double startx, double starty, double posx, double posy, doub
 Position moveCorkscrew(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
 {
     Position pos;
-    pos.x = speed*cos(direction) - 20*sin(speed/8) + startx;
-    pos.y = speed*sin(direction) - 20*cos(speed/8) + starty;
+    pos.x = speed*2*cos(direction) - 40*sin(speed/8) + startx;
+    pos.y = speed*2*sin(direction) - 40*cos(speed/8) + starty;
     speed += 0.3;
 
     return pos;
@@ -190,14 +190,14 @@ Position moveSine(double startx, double starty, double posx, double posy, double
     if ((direction < 0 && direction > -M_PI/2) || (direction > M_PI/2 && direction < M_PI))
     {
         //northeast and southwest
-        pos.x = speed*cos(direction) - 15*sin(speed/15) + startx;
-        pos.y = speed*sin(direction) - 15*sin(speed/15) + starty;
+        pos.x = speed*2*cos(direction) - 40*sin(speed/20) + startx;
+        pos.y = speed*2*sin(direction) - 40*sin(speed/20) + starty;
     }
     else
     {
         //northwest and southeast
-        pos.x = speed*cos(direction) - 15*cos(speed/15) + startx;
-        pos.y = speed*sin(direction) + 15*cos(speed/15) + starty;
+        pos.x = speed*2*cos(direction) - 40*cos(speed/20) + startx;
+        pos.y = speed*2*sin(direction) + 40*cos(speed/20) + starty;
     }
     speed += 0.5;
 

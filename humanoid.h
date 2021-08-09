@@ -13,7 +13,7 @@
 #define ENEMY_MIN_DIST 250
 
 // Distance enemy will move away from player
-#define ENEMY_MAX_DIST 500
+#define ENEMY_MAX_DIST 450
 
 enum ShootStyle 
 {
@@ -49,4 +49,4 @@ protected:
 
 
 
-#endif 
+#endif

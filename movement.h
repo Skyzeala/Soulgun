@@ -18,6 +18,8 @@
 #endif
 #include <cmath>
 
+#define NUM_OF_PROJ_MOVE_FUNCS 5
+
 struct Position
 {
     double x;

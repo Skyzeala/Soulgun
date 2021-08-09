@@ -54,6 +54,7 @@ private:
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
-    int minHuman = 0;
-    int minRobot = 3;
+    int minHuman;
+    int minRobot;
+    bool firstSpawn;
 };
