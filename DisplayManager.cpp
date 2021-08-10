@@ -10,6 +10,11 @@ DisplayManager::DisplayManager(SDL_Renderer *xRenderer, TextureManager *xTexture
     renderer = xRenderer;
     txMan = xTexture;
 		renderMap = map;
+
+    maxSpawnCooldown = 1000;
+    newSpawnCooldown = maxSpawnCooldown;
+    firstSpawn = true;
+    srand(time(NULL));
 }
 
 /**
@@ -26,17 +31,25 @@ DisplayManager::~DisplayManager(void) {
  * Pass in window and what you Position you want window to focus on
  */
 void DisplayManager::updateWindowPos(Position window_focus){
-
-
-		point_of_view.h = 5000;
-		point_of_view.w = 5000;
-		if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
+	point_of_view.h = 1200;
+	point_of_view.w = 1200;
+	if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
 	  	point_of_view.x = 512 - window_focus.x;
-		if(window_focus.y >= 512 && window_focus.y <= MAX_TILES*TILE_HEIGHT - 512)
-			point_of_view.y = 512 - window_focus.y;
+    // else if (window_focus.x < 512)
+    //     point_of_view.x = 512;
+    // else
+    //     point_of_view.x = MAX_TILES*TILE_WIDTH - 512;
 
-		SDL_RenderSetViewport(renderer, &point_of_view);
+	if(window_focus.y >= 512 && window_focus.y <= MAX_TILES*TILE_HEIGHT - 512)
+		point_of_view.y = 512 - window_focus.y;
+    // else if (window_focus.y < 512)
+    //     point_of_view.y = 512;
+    // else
+    //     point_of_view.y = MAX_TILES*TILE_WIDTH - 512;
 
+    SDL_RenderSetViewport(renderer, &point_of_view);
+    //SDL_RenderSetClipRect(renderer, &point_of_view);
+	
 }
 
 /**
@@ -65,7 +78,7 @@ void DisplayManager::removeEntity(Humanoid *entity) {
 /**
  * Spawns enemies as needed
  */
-void DisplayManager::spawnEnemies(void) {
+void DisplayManager::spawnEnemies(MapManager *map) {
     int humans = 0;
     int robots = 0;
     Humanoid *player = NULL;
@@ -84,20 +97,30 @@ void DisplayManager::spawnEnemies(void) {
             break;
         }
     }
-
-    // Spawn humans if there aren't enough
-    if (humans < MIN_HUMAN) {
-        for (int x = 0; x < MIN_HUMAN - humans; ++x) {
-            spawnHumanoid(ET_HUMAN, player);
-        }
+    //keep the number of spawns constrained
+    if (humans + robots > 40)
+        newSpawnCooldown = 50;
+    else if (humans + robots < 2)
+    {
+        newSpawnCooldown = 0;
+        firstSpawn = true;
     }
+    //spawn enemies at a generally increasing rate
+    if (newSpawnCooldown <= 0)
+    {
+        if (rand() % 4 > 0)
+            spawnHumanoid(map, ET_ROBOT, player);
+        else if (!firstSpawn)
+            spawnHumanoid(map, ET_HUMAN, player);
 
-    // Spawn robots if there aren't enough
-    if (robots < MIN_ROBOT) {
-        for (int x = 0; x < MIN_ROBOT - robots; ++x) {
-            spawnHumanoid(ET_ROBOT, player);
-        }
+        newSpawnCooldown = maxSpawnCooldown;
+        maxSpawnCooldown -= 15;
+        if (maxSpawnCooldown < 500)
+            maxSpawnCooldown = 600;
+        firstSpawn = false;
     }
+    else
+        newSpawnCooldown -= 1;
 }
 
 /**
@@ -107,10 +130,12 @@ void DisplayManager::spawnEnemies(void) {
  * @param player Pointer to the player
  * @returns A pointer to the humanoid spawned
  */
-Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
+Humanoid *DisplayManager::spawnHumanoid(MapManager *map, EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(10, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+
+	    player = new Humanoid(5, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+
 
         addEntity(player);
         return player;
@@ -120,21 +145,87 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
 
     // Have enemies encircle the player
     float unitCircle = 2 * M_PI;
-    float total = (MIN_HUMAN + MIN_ROBOT);
 
-    for (float i = 0; i <= unitCircle; i += (unitCircle / total)) {
-        double x = pos.x + cos(i) * SPAWN_DIST;
-        double y = pos.y + sin(i) * SPAWN_DIST;
+    //initial values and variables
+    double x;
+    double y;
+    Position newPos;
+    double speed;
+    double health;
+    int shootCooldown = 500; //starting value of the cooldown
+    ShootStyle ss;
+    moveProjectileFunc projMoveFunc;
+    int theta = (rand() % 628)*0.01;
 
-        if (!isNearEnemy(x, y, 0)) {
-            double speed = (type == static_cast<int>(TX_HUMAN)) ? 1: 1.5;
-
-            Humanoid *e = new Humanoid(1, type, x, y, speed, movePlayer, 330, SS_4WAY, moveSpiral, static_cast<TextureID>(type));
-            addEntity(e);
-            return e;
-        }
+    //pick a random available location around player to spawn at
+    x = pos.x + cos(theta) * SPAWN_DIST;
+    y = pos.y + sin(theta) * SPAWN_DIST;
+    newPos.x = x;
+    newPos.y = y;
+    while (!(map->mapCollision(pos)))
+    {
+        x = pos.x + cos(theta) * SPAWN_DIST;
+        y = pos.y + sin(theta) * SPAWN_DIST;
+        newPos.x = x;
+        newPos.y = y;
     }
 
+    //generate randomized stats
+    speed = (type == static_cast<int>(TX_HUMAN)) ? 0.4: 0.2;
+    speed += (rand() % 30)*0.05;
+    health = (type == static_cast<int>(TX_HUMAN)) ? rand() % 3 + 2: rand() % 2 + 1;
+    ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss != SS_SINGLESHOT)
+        ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss == SS_8WAY || ss == SS_SPIRAL)
+        ss = static_cast<ShootStyle>(rand()%SS_TOTAL);
+    if (ss == SS_8WAY || ss == SS_SPIRAL)
+        shootCooldown += rand()%100 + 50;
+        
+    //generate randomized shooting styles, projectile movements, and appropriate shooting cooldowns
+    switch(rand()%(NUM_OF_PROJ_MOVE_FUNCS+5))
+    {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            projMoveFunc = moveDirection;
+            shootCooldown -= rand()%200 + 100;
+            break;
+        case 4:
+            projMoveFunc = moveSpiral;
+            shootCooldown += rand()%100 - 50;
+            break;
+        case 5:
+        case 6:
+            projMoveFunc = moveSine;
+            shootCooldown -= rand()%100;
+            break;
+        case 7:
+        case 8:
+            projMoveFunc = moveCorkscrew;
+            shootCooldown += rand()%100 - 50;
+            break;
+        case 9:
+            projMoveFunc = moveBoomerang;
+            shootCooldown += rand()%100 - 50;
+            break;
+        default:
+            projMoveFunc = moveDirection;
+            break;
+    }
+    if (firstSpawn) //make sure the first two are very basic to let the player learn how to play
+    {
+        ss = SS_SINGLESHOT;
+        projMoveFunc = moveDirection;
+    }
+
+    if (!isNearEnemy(x, y, 5)) {
+        Humanoid *e = new Humanoid(health, type, x, y, speed, movePlayer, shootCooldown, ss, projMoveFunc, static_cast<TextureID>(type));
+        addEntity(e);
+        return e;
+    }
+    
     return NULL;
 }
 
@@ -143,7 +234,7 @@ Humanoid *DisplayManager::spawnHumanoid(EntityType type, Humanoid *player) {
  *
  * @param player Pointer to the player
  */
-void DisplayManager::moveEnemies(Humanoid *player) {
+void DisplayManager::moveEnemies(MapManager *map, Humanoid *player) {
     Position playerPos = player->getPosition();
     Humanoid *h = NULL;
 
@@ -182,10 +273,11 @@ void DisplayManager::moveEnemies(Humanoid *player) {
                     }
                     mov.down = !mov.up;
                     mov.left = !mov.right;
-
-                    h->move(mov);
+                    if (map->mapCollision(h->testMove(mov)))
+                        h->move(mov);
                 }
-                else {
+                else if (map->mapCollision(h->testMove(mov)))
+                {
                     h->move(h->moveDirection);
                 }
             break;
@@ -225,9 +317,10 @@ void DisplayManager::moveEnemies(Humanoid *player) {
                         mov.left = false;
                         mov.right = false;
                     }
-                    h->move(mov);
+                    if (map->mapCollision(h->testMove(mov)))
+                        h->move(mov);
                 }
-                else {
+                else if (map->mapCollision(h->testMove(mov))) {
                     h->move(h->moveDirection);
                 }
             break;
@@ -257,10 +350,11 @@ bool DisplayManager::isNearEnemy(int x, int y, int proximity) {
 }
 
 
-
+//add a projectile to display manager
 void DisplayManager::addProjectile(Projectile *proj) {
     projectiles.push_back(proj);
 }
+//remove a projectile from display manager
 void DisplayManager::removeProjectile(Projectile *proj) {
     for (int i = 0; i < projectiles.size(); ++i) {
         if (projectiles[i] == proj) {
@@ -269,6 +363,7 @@ void DisplayManager::removeProjectile(Projectile *proj) {
         }
     }
 }
+//call the shoot function for all enemies and add returned projectiles to the display manager projectiles list
 void DisplayManager::fireEnemies(Humanoid *player)
 {
     Position playerPos = player->getPosition();
@@ -285,6 +380,7 @@ void DisplayManager::fireEnemies(Humanoid *player)
             addProjectile(p[i]);
     }
 }
+//move all projectiles using their propper projectileMove functions
 void DisplayManager::moveProjectiles(Humanoid *player) {
     Position playerPos = player->getPosition();
     Projectile *p = NULL;
