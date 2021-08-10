@@ -8,12 +8,13 @@
 #include "humanoid.h"
 #include <vector>
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
-#define MIN_HUMAN 2
-#define MIN_ROBOT 8
 
 // Distance enemies will spawn away from the player
-#define SPAWN_DIST 512
+#define SPAWN_DIST 350
+
 
 // Hard-coded until Manager is merged with Map
 #define MAP_WIDTH 1024
@@ -30,9 +31,9 @@ public:
 
 		void updateWindowPos(Position window_focus);
 
-    void spawnEnemies(void);
-    Humanoid *spawnHumanoid(EntityType type, Humanoid *player = NULL);
-    void moveEnemies(Humanoid *player = NULL);
+    void spawnEnemies(MapManager *map);
+    Humanoid *spawnHumanoid(MapManager *map, EntityType type, Humanoid *player = NULL);
+    void moveEnemies(MapManager *map, Humanoid *player = NULL);
     bool isNearEnemy(int x, int y, int proximity);
     void fireEnemies(Humanoid *player = NULL);
     void moveProjectiles(Humanoid *player = NULL);
@@ -54,4 +55,8 @@ private:
     SDL_Renderer *renderer;
 		MapManager *renderMap;
     TextureManager *txMan;
+
+    int newSpawnCooldown;
+    int maxSpawnCooldown;
+    bool firstSpawn;
 };
