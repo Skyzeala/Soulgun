@@ -35,7 +35,7 @@ int main( int argc, char **argv ) {
 	DisplayManager dispMan(renderer, txMan, map);
 	vector<Projectile*> playerShots;
 
-	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
+	Humanoid *player = dispMan.spawnHumanoid(map, ET_PLAYER);
 
 	int nextRefresh = SDL_GetTicks();
 	while (event.type != SDL_QUIT) 
@@ -69,8 +69,8 @@ int main( int argc, char **argv ) {
 		
 		
 		// Redraw entities
-		dispMan.spawnEnemies();
-		dispMan.moveEnemies(player);
+		dispMan.spawnEnemies(map);
+		dispMan.moveEnemies(map, player);
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 		dispMan.refresh();

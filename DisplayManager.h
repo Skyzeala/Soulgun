@@ -31,9 +31,9 @@ public:
 
 		void updateWindowPos(Position window_focus);
 
-    void spawnEnemies(void);
-    Humanoid *spawnHumanoid(EntityType type, Humanoid *player = NULL);
-    void moveEnemies(Humanoid *player = NULL);
+    void spawnEnemies(MapManager *map);
+    Humanoid *spawnHumanoid(MapManager *map, EntityType type, Humanoid *player = NULL);
+    void moveEnemies(MapManager *map, Humanoid *player = NULL);
     bool isNearEnemy(int x, int y, int proximity);
     void fireEnemies(Humanoid *player = NULL);
     void moveProjectiles(Humanoid *player = NULL);

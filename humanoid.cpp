@@ -64,11 +64,11 @@ void Humanoid::move(Movement &dir)
 }
 
 
-//unfinished, only singleshot works
-//how to watch the proj pointer in vscode with gdb: (Projectile*[9]) *proj
-//will convert this over to using vectors in the future
+
+//OUTDATED COMMENT THAT I WANT TO KEEP: how to watch the proj pointer in vscode with gdb: (Projectile*[9]) *proj
 vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBullet)
 {
+    //figure out what direction the entity is aiming
     double aimDirection;
     if (entityType != ET_PLAYER) 
         aimDirection = atan2((targety-posy), (targetx-posx));
@@ -76,6 +76,8 @@ vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBul
         aimDirection = convertMovementToRads(moveDirection);
     double aposx = posx;
     double aposy = posy;
+
+    //adjust for function offsets
     if (projectileMove == moveSine)
     {
         aposx += 50;
@@ -90,12 +92,14 @@ vector<Projectile*> Humanoid::shoot(double targetx, double targety, bool soulBul
     int power = 1;
     vector<Projectile*> proj;
 
+    //pick projectile lifetime based on movement function
     int lifetime = 700;
     if (projectileMove == moveSpiral 
         || projectileMove == moveCorkscrew
         || projectileMove == moveBoomerang)
         lifetime = 1200;
 
+    //fire projectiles
     if (shootCooldown <= 0 || shootStyle == SS_SPIRAL || shootStyle == SS_3INAROW)
     {
         switch (shootStyle)
