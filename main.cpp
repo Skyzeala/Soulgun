@@ -19,8 +19,6 @@ using namespace std;
 bool eventFinder(SDL_Event &event, Movement &movement);
 
 int main (int argc, char **argv) {
-	//Main loop flag
-	bool quit = false;
 	Movement movement;
 
 	//Event handler
@@ -41,13 +39,13 @@ int main (int argc, char **argv) {
 	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
-	while (event.type != SDL_QUIT) 
+	while (event.type != SDL_QUIT)
 	{
 		// Check for input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
 				break;
-		}	
+		}
 
 		SDL_RenderClear(renderer);
 
@@ -79,9 +77,21 @@ int main (int argc, char **argv) {
 		dispMan.moveEnemies(map, player);
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
+
+        //checks if players health is below 0
+        if(player->damage(0)){
+            SDL_DestroyRenderer(renderer);
+            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+            SDL_Texture *gtext = IMG_LoadTexture(renderer, "assets/images/game_over.png");
+            //SDL_RenderCopy(renderer, (txMan->getTexture(TX_GAMEOVER)), NULL, NULL);
+            SDL_RenderCopy(renderer, gtext, NULL, NULL);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(2000);
+            break;
+        }
+
 		dispMan.refresh();
 		hud->refresh();
-		
 		SDL_RenderPresent(renderer);
 	}
 
