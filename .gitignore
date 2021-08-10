@@ -40,3 +40,4 @@ dependencies
 
 # macOS
 .DS_Store
+*.dSYM
