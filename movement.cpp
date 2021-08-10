@@ -5,7 +5,10 @@ using namespace std;
 
 double convertCoordsToRads(int startx, int starty, int endx, int endy)
 {
-    return atan2(endy-starty, endx-startx);
+    double dir = atan2(endy-starty, endx-startx);
+    if (dir == -M_PI)
+        dir = M_PI;
+    return dir;
 }
 
 Movement convertCoordsToMovement(int startx, int starty, int endx, int endy)
@@ -108,11 +111,46 @@ Position moveDirection(double startx, double starty, double posx, double posy, d
     pos.x = posx;
     pos.y = posy;
 
-    pos.x += cos(direction)*2.5*speed;
-    pos.y += sin(direction)*2.5*speed;
+    pos.x += cos(direction)*3*speed;
+    pos.y += sin(direction)*3*speed;
 
     return pos;
 }
+
+/* ALMOST works but doesnt actually, hasrouble when the player (thetaAim) goes from -pi to pi and back
+Position moveTracking(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
+{
+    Position pos;
+    pos.x = posx;
+    pos.y = posy;
+    while (direction > M_PI)
+        direction -= M_PI*2;
+    while (direction <= -M_PI)
+        direction += M_PI*2;
+    double dif = direction - thetaAim;
+
+    if (abs(dif) <= M_PI/2)
+    {
+        direction -= 0.1*dif;
+        speed += 0.01;
+    }
+    else if (abs(dif + M_PI*2) <= M_PI/2)
+    {
+        direction -= 0.1*dif;
+        speed += 0.01;
+    }
+    else if (abs(dif - M_PI*2) <= M_PI/2)
+    {
+        direction -= 0.1*dif;
+        speed += 0.01;
+    }
+
+    pos.x += cos(direction)*0.25*speed;
+    pos.y += sin(direction)*0.25*speed;
+
+    return pos;
+}
+*/
 
 //coded with help from https://forum.unity.com/threads/moving-an-object-in-a-spiral-pattern-math-inside.465693/
 Position moveSpiral(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
@@ -122,8 +160,8 @@ Position moveSpiral(double startx, double starty, double posx, double posy, doub
     double dist = sqrt(pow(posx - startx, 2) + pow(posy - starty, 2));
     if (dist == 0)
         dist = 8;
-    dist += 0.17; 
-    direction += M_PI/(3*dist);
+    dist += 0.25; 
+    direction += M_PI/(2*dist);
 
     pos.x = cos(direction)*dist + startx;
     pos.y = sin(direction)*dist + starty;
@@ -135,8 +173,8 @@ Position moveSpiral(double startx, double starty, double posx, double posy, doub
 Position moveCorkscrew(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
 {
     Position pos;
-    pos.x = speed*cos(direction) - 20*sin(speed/8) + startx;
-    pos.y = speed*sin(direction) - 20*cos(speed/8) + starty;
+    pos.x = speed*2*cos(direction) - 40*sin(speed/8) + startx;
+    pos.y = speed*2*sin(direction) - 40*cos(speed/8) + starty;
     speed += 0.3;
 
     return pos;
@@ -152,16 +190,31 @@ Position moveSine(double startx, double starty, double posx, double posy, double
     if ((direction < 0 && direction > -M_PI/2) || (direction > M_PI/2 && direction < M_PI))
     {
         //northeast and southwest
-        pos.x = speed*cos(direction) - 15*sin(speed/15) + startx;
-        pos.y = speed*sin(direction) - 15*sin(speed/15) + starty;
+        pos.x = speed*2*cos(direction) - 40*sin(speed/20) + startx;
+        pos.y = speed*2*sin(direction) - 40*sin(speed/20) + starty;
     }
     else
     {
         //northwest and southeast
-        pos.x = speed*cos(direction) - 15*cos(speed/15) + startx;
-        pos.y = speed*sin(direction) + 15*cos(speed/15) + starty;
+        pos.x = speed*2*cos(direction) - 40*cos(speed/20) + startx;
+        pos.y = speed*2*sin(direction) + 40*cos(speed/20) + starty;
     }
     speed += 0.5;
+
+    return pos;
+}
+
+
+Position moveBoomerang(double startx, double starty, double posx, double posy, double &direction, double thetaAim, double &speed)
+{
+    Position pos;
+    pos.x = posx;
+    pos.y = posy;
+
+    pos.x += cos(direction)*2.5*speed;
+    pos.y += sin(direction)*2.5*speed;
+
+    speed -= 1/500.0;
 
     return pos;
 }

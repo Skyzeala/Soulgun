@@ -35,7 +35,7 @@ int main (int argc, char **argv) {
 	DisplayManager dispMan(renderer, txMan, map);
 	vector<Projectile*> playerShots;
 
-	Humanoid *player = dispMan.spawnHumanoid(ET_PLAYER);
+	Humanoid *player = dispMan.spawnHumanoid(map, ET_PLAYER);
 	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
@@ -67,10 +67,14 @@ int main (int argc, char **argv) {
 		if (now < nextRefresh)
 			SDL_Delay(nextRefresh - now);
 		nextRefresh = now + REFRESH_RATE;
-
+		
+		
+		SDL_RenderClear(renderer);
+		
+		
 		// Redraw entities
-		dispMan.spawnEnemies();
-		dispMan.moveEnemies(player);
+		dispMan.spawnEnemies(map);
+		dispMan.moveEnemies(map, player);
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
 
