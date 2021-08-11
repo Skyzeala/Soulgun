@@ -31,8 +31,8 @@ DisplayManager::~DisplayManager(void) {
  * Pass in window and what you Position you want window to focus on
  */
 void DisplayManager::updateWindowPos(Position window_focus){
-	point_of_view.h = 1200;
-	point_of_view.w = 1200;
+	point_of_view.h = 5000;
+	point_of_view.w = 5000;
 	if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
 	  	point_of_view.x = 512 - window_focus.x;
     // else if (window_focus.x < 512)
