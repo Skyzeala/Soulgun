@@ -12,6 +12,9 @@ _Jackedsoft 2021_
 * C++
 * [SDL 2.0](https://www.libsdl.org/]) - "a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D"
 
+## Installation instructions
+
+
 ## Attributions
 Special thanks to [Lazy Foo' Productions](https://lazyfoo.net/tutorials/SDL/) for the tutorial on SDL usage and capabilities.
 
