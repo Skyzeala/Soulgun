@@ -1,10 +1,10 @@
 # Soulgun
-A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies.  If the player gets in over their head they can target a humanoid enemy to switch places and move out of harm's way.
-_Jackedsoft 2021_
+A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies. If the players bullet kills a humanoid, the player will change to the humanoid location and inherit its shooting style
+_ChangeitlaterJACK 2021_
 
 ## Contributors
 * **J**ared Collums
-* **A**leksander Kaletin
+* **A**leksandr Kaletin
 * **C**hristopher Tevren
 * **K**irani Anderson
 
@@ -24,8 +24,7 @@ Entity sprites based on graphics designed by [OpenMoji](https://openmoji.org/) â
 
 ## Player Control
 * Movement
-	* Hold a single Up/down/left/right arrow key to move in that specific direction
-	* Hold two combinations of Up/Down/Left/Right key to move in a diagonal
+	* Hold the Up/Down/Left/Right arrow key to move 
 * Shooting
 	* Hold space to shoot. Aiming is based on previous movement direction
 
@@ -105,5 +104,36 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Soulgun functionality
 	* Game over screen
 	* Updated spawning
-	* Testing
+
+## Team Member Contributions 
+### Jared
+	*Texture Manager
+	* Display Manager
+	* Makfile
+	* Enemy spawning
+	* Projectiles
+	* HUD
+
+### Aleksandr
+	* Reading keyboard input
+	* Flash screen
+	* Soulgun functionality
+	* Game over screen
+
+### Christopher
+	* Map manager
+	* Improved map rendering
+	* Entity/map hitboxes 
+	* Entity/map collision
+	* POV on player
+
+### Kirani
+	* Entity class
+	* Projectile class
+	* Humanoid class
+	* Projectile shooting options added
+	* Added player shooting
+	* Enemy-projectile collision detection
+
+
 
