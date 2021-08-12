@@ -72,3 +72,39 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Better sprite graphics 
 	* Rudimentary Sound effects
 	* Better map graphics
+
+## Project Workflow
+- Week 1 
+ 	* Texture Manager 
+ 	
+- Week 2 
+	* Display Manager 
+	* Makefile 
+	* Reading keyboard input 
+	* Entity implementation
+
+- Week 3 
+	* Enemy spawning 
+	* Map manager
+	* Enemy AI movement
+	* Projectiles 
+
+- Week 4 
+	* Projectile shooting options added
+	* Flash screen option added
+	* Entity/map hitboxes added
+	* Entity/map collision added
+
+- Week 5 
+	* Added player shooting 
+	* Enemy-projectile collision
+	* POV on player
+	* Edge of map panning fixed
+
+- Week 6 
+	* HUD
+	* Soulgun functionality
+	* Game over screen
+	* Updated spawning
+	* Testing
+
