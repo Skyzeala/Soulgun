@@ -99,7 +99,6 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Added player shooting 
 	* Enemy-projectile collision
 	* POV on player
-	* Edge of map panning fixed
 
 - Week 6 
 	* HUD
