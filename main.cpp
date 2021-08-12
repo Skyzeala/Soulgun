@@ -9,6 +9,7 @@
 #include "humanoid.h"
 #include "TextureManager.h"
 #include "DisplayManager.h"
+#include "HUD.h"
 
 #define REFRESH_RATE 15
 
@@ -17,15 +18,14 @@ using namespace std;
 //function prototype
 bool eventFinder(SDL_Event &event, Movement &movement);
 
-int main( int argc, char **argv ) {
-	//Main loop flag
-	bool quit = false;
+int main (int argc, char **argv) {
 	Movement movement;
 
 	//Event handler
 	SDL_Event event;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 
 	SDL_Window *window = SDL_CreateWindow("Soulgun", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 1024, 0);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
@@ -36,15 +36,18 @@ int main( int argc, char **argv ) {
 	vector<Projectile*> playerShots;
 
 	Humanoid *player = dispMan.spawnHumanoid(map, ET_PLAYER);
+	HUD *hud = new HUD(renderer, player, txMan);
 
 	int nextRefresh = SDL_GetTicks();
-	while (event.type != SDL_QUIT) 
+	while (event.type != SDL_QUIT)
 	{
 		// Check for input
 		while (SDL_PollEvent(&event) != 0) {
 			if (event.type == SDL_QUIT)
 				break;
-		}	
+		}
+
+		SDL_RenderClear(renderer);
 
 		// Interpret event
 		if (eventFinder(event, movement))
@@ -58,6 +61,7 @@ int main( int argc, char **argv ) {
 			player->move(movement);
 			dispMan.updateWindowPos(player->getPosition());
 		}
+		
 		// Wait for refresh delay
 		int now = SDL_GetTicks();
 		if (now < nextRefresh)
@@ -73,14 +77,28 @@ int main( int argc, char **argv ) {
 		dispMan.moveEnemies(map, player);
 		dispMan.fireEnemies(player);
 		dispMan.moveProjectiles(player);
+
+        //checks if players health is below 0
+        if(player->damage(0)){
+            SDL_DestroyRenderer(renderer);
+            SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+            SDL_Texture *gtext = IMG_LoadTexture(renderer, "assets/images/game_over.png");
+            //SDL_RenderCopy(renderer, (txMan->getTexture(TX_GAMEOVER)), NULL, NULL);
+            SDL_RenderCopy(renderer, gtext, NULL, NULL);
+            SDL_RenderPresent(renderer);
+            SDL_Delay(2000);
+            break;
+        }
+
 		dispMan.refresh();
-		
+		hud->refresh();
 		SDL_RenderPresent(renderer);
 	}
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+	TTF_Quit();
 
 	return 0;
 }

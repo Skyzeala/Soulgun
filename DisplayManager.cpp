@@ -31,8 +31,8 @@ DisplayManager::~DisplayManager(void) {
  * Pass in window and what you Position you want window to focus on
  */
 void DisplayManager::updateWindowPos(Position window_focus){
-	point_of_view.h = 1200;
-	point_of_view.w = 1200;
+	point_of_view.h = 5000;
+	point_of_view.w = 5000;
 	if(window_focus.x >= 512 && window_focus.x <= MAX_TILES*TILE_WIDTH - 512)
 	  	point_of_view.x = 512 - window_focus.x;
     // else if (window_focus.x < 512)
@@ -133,7 +133,9 @@ void DisplayManager::spawnEnemies(MapManager *map) {
 Humanoid *DisplayManager::spawnHumanoid(MapManager *map, EntityType type, Humanoid *player) {
     // Place player at center of map
     if (type == ET_PLAYER) {
-	    player = new Humanoid(3, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+
+	    player = new Humanoid(5, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+
 
         addEntity(player);
         return player;
@@ -394,8 +396,10 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
         thetaAim = convertCoordsToRads(projPos.x, projPos.y, playerPos.x, playerPos.y);
  		if (!(p->isSoulBullet()) && player->entityCollision(p->getHitbox()))
         {
+            player->damage(p->getPower());
 			removeProjectile(p);
         }
+        //check if bullet is from player
         else if (p->isSoulBullet())
         {
             for (int i = 0; i < entities.size(); ++i)
@@ -404,7 +408,11 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
                 {
                     if ((entities[i])->entityCollision(p->getHitbox()))
                     {
-                        if (entities[i]->damage(p->getPower()))
+                        //if bullet hit another entity(humanoid)
+                        if(swapSpots(entities[i])){
+                            entities.erase(entities.begin() + i);
+                        }//bullet didnt hit a humanoid
+                        else if (entities[i]->damage(p->getPower()))
                             removeEntity(entities[i]);
                         removeProjectile(p);
                     }
@@ -465,17 +473,6 @@ void DisplayManager::refresh(void) {
 
         SDL_RenderCopy(renderer, texture, NULL, &position);
     }
-/*
-    //TODO need to remove this once collision is done
-    //Attempt at swapping player with humanoid
-    if(rand() % 100 == 3){
-        int random = (rand() % 10) + 1;
-        if(swapSpots(entities[random])){
-            //entities.erase(entities.begin() + i);
-            entities.erase(entities.begin() + random);
-        }
-    }
-*/
 }
 
 void DisplayManager::flashBox(int startx, int starty, int Width, int Height){
@@ -518,6 +515,7 @@ bool DisplayManager::swapSpots(Humanoid *toSwap){
         if(toSwap->getType() == ET_HUMAN){
             Position newPos = toSwap->getPosition();
             entities[0]->setLocation(newPos);
+            entities[0]->setHitboxPos(newPos);
             flashScreen();
             flashBox(newPos.x-5, newPos.y-5, newPos.x+5, newPos.y+5);
             return true;
