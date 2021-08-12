@@ -107,7 +107,7 @@ Development will happen in one week sprints, with each sprint introducing the fe
 
 ## Team Member Contributions 
 ### Jared
-	*Texture Manager
+	* Texture Manager
 	* Display Manager
 	* Makfile
 	* Enemy spawning
