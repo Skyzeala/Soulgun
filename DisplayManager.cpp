@@ -134,7 +134,7 @@ Humanoid *DisplayManager::spawnHumanoid(MapManager *map, EntityType type, Humano
     // Place player at center of map
     if (type == ET_PLAYER) {
 
-	    player = new Humanoid(5, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+	    player = new Humanoid(50, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
 
 
         addEntity(player);
@@ -155,15 +155,16 @@ Humanoid *DisplayManager::spawnHumanoid(MapManager *map, EntityType type, Humano
     int shootCooldown = 500; //starting value of the cooldown
     ShootStyle ss;
     moveProjectileFunc projMoveFunc;
-    int theta = (rand() % 628)*0.01;
+    double theta = (rand() % 628)*0.01;
 
     //pick a random available location around player to spawn at
     x = pos.x + cos(theta) * SPAWN_DIST;
     y = pos.y + sin(theta) * SPAWN_DIST;
     newPos.x = x;
     newPos.y = y;
-    while (!(map->mapCollision(pos)))
+    while (!(map->mapCollision(newPos)))
     {
+    		theta = (rand() % 628)*0.01;
         x = pos.x + cos(theta) * SPAWN_DIST;
         y = pos.y + sin(theta) * SPAWN_DIST;
         newPos.x = x;
@@ -417,11 +418,11 @@ void DisplayManager::moveProjectiles(Humanoid *player) {
                         removeProjectile(p);
                     }
                 }
-                else if (p->move(thetaAim))
+                else if (p->move(thetaAim) || !renderMap->mapCollision(p->getPosition()))
                     removeProjectile(p);
             }
         }
-        else if (p->move(thetaAim))
+      	else if (p->move(thetaAim) || !renderMap->mapCollision(p->getPosition()))
             removeProjectile(p);
     }
 }
