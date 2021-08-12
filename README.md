@@ -1,5 +1,5 @@
 # Soulgun
-A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies. If the players bullet kills a humanoid, the player will change to the humanoid location and inherit its shooting style
+A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies. If the players projectile kills a humanoid, the player will change to the humanoids location and inherit its shooting style.
 _ChangeitlaterJACK 2021_
 
 ## Contributors
