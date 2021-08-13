@@ -12,14 +12,6 @@ Humanoid::Humanoid() :
 {
 }
 
-Humanoid::Humanoid(const Humanoid &humanoid) :
-    Entity(humanoid),
-    shootCooldown(100),
-    shootTimer(shootCooldown),
-    shootStyle(shootStyle)
-{
-}
-
 Humanoid::Humanoid(int health, EntityType entityType, 
                 double x, double y, double speed, moveEntityFunc entityMove, 
                 int shootCooldown, ShootStyle shootStyle, moveProjectileFunc projectileMove, 
@@ -39,6 +31,17 @@ Humanoid::~Humanoid()
 {
     //todo
 }
+
+ShootStyle Humanoid::getShootStyle()
+{
+    return shootStyle;
+}
+
+void Humanoid::setShootStyle(ShootStyle ss)
+{
+    shootStyle = ss;
+}
+
 
 void Humanoid::move(Movement &dir)
 {

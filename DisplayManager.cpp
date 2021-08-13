@@ -134,7 +134,7 @@ Humanoid *DisplayManager::spawnHumanoid(MapManager *map, EntityType type, Humano
     // Place player at center of map
     if (type == ET_PLAYER) {
 
-	    player = new Humanoid(50, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
+	    player = new Humanoid(5, ET_PLAYER, MAP_WIDTH / 2, MAP_HEIGHT / 2, 2, movePlayer, 50, SS_SINGLESHOT, moveDirection, TX_PLAYER);
 
 
         addEntity(player);
@@ -517,6 +517,8 @@ bool DisplayManager::swapSpots(Humanoid *toSwap){
             Position newPos = toSwap->getPosition();
             entities[0]->setLocation(newPos);
             entities[0]->setHitboxPos(newPos);
+            entities[0]->setProjMoveFunc(toSwap->getProjMoveFunc());
+            entities[0]->setShootStyle(toSwap->getShootStyle());
             flashScreen();
             flashBox(newPos.x-5, newPos.y-5, newPos.x+5, newPos.y+5);
             return true;
