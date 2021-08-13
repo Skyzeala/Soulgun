@@ -18,11 +18,10 @@ enum EntityType
         ET_PROJECTILE
 };
 
-class Entity
+class Entity //ABS
 {
 public:
         Entity(); //construct a default entity
-        Entity(const Entity &entity); //construct an entity from a copy, for use with soul stealing?
         Entity(int health, EntityType entityType,
                 double x, double y, double speed, moveEntityFunc entityMove,
                 moveProjectileFunc projectileMove,
@@ -35,6 +34,9 @@ public:
 
         TextureID getImage(); //returns TextureID
         EntityType getType(); //returns Entity ID
+        moveProjectileFunc getProjMoveFunc();
+        void setProjMoveFunc(moveProjectileFunc func);
+
 				void setHitbox(EntityType ID); //Sets hitbox depending on EntityType
 				void setHitboxPos(Position entity); //Sets hitbox pos with Position struct
 				SDL_Rect * getHitbox(); //Returns hitbox
