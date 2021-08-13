@@ -1,10 +1,10 @@
 # Soulgun
-A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies.  If the player gets in over their head they can target a humanoid enemy to switch places and move out of harm's way.
-_Jackedsoft 2021_
+A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies. If the players projectile kills a humanoid, the player will change to the humanoids location and inherit its shooting style.
+_ChangeitlaterJACK 2021_
 
 ## Contributors
 * **J**ared Collums
-* **A**leksander Kaletin
+* **A**leksandr Kaletin
 * **C**hristopher Tevren
 * **K**irani Anderson
 
@@ -34,10 +34,15 @@ After that you can easily compile the game by typing "make" from the terminal in
 
 
 ## Overview of how entities and projectiles work
-Humanoids can be either humans or robots. A humans soul can be stolen by the player, giving the player the stats of the human. Human and robots stats include health, movement speed, a shooting cooldown, and bullet patterns. 
-The spawning of humanoids is managed by the display manager, which generates humanoids with random stats near the player. The spawn rate increases over time. Movement is also handled by the display manager. Robots move vertically and horizontally, while humans move diagonally.
-Entity bullet patterns are defined by two variables, the shoot style, and a function that defines the projectiles movement. The shoot style of an entity is what defines the number and orientation of bullets when they are fired. The projectile movement function defines how the bullet will move after it has been spawned. These two variables are randomized separately, creating a fair amount of unique combinations.
+* Humanoids can be either humans or robots. A humans soul can be stolen by the player, giving the player the stats of the human. Human and robots stats include health, movement speed, a shooting cooldown, and bullet patterns. 
+* The spawning of humanoids is managed by the display manager, which generates humanoids with random stats near the player. The spawn rate increases over time. Movement is also handled by the display manager. Robots move vertically and horizontally, while humans move diagonally.
+* Entity bullet patterns are defined by two variables, the shoot style, and a function that defines the projectiles movement. The shoot style of an entity is what defines the number and orientation of bullets when they are fired. The projectile movement function defines how the bullet will move after it has been spawned. These two variables are randomized separately, creating a fair amount of unique combinations.
 
+## Player Control
+* Movement
+	* Hold the Up/Down/Left/Right arrow key to move 
+* Shooting
+	* Hold space to shoot. Aiming is based on previous movement direction
 
 
 ## Development Roadmap
@@ -82,3 +87,69 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Better sprite graphics 
 	* Rudimentary Sound effects
 	* Better map graphics
+
+## Project Workflow
+- Week 1 
+ 	* Texture Manager 
+ 	
+- Week 2 
+	* Display Manager 
+	* Makefile 
+	* Reading keyboard input 
+	* Entity implementation
+
+- Week 3 
+	* Enemy spawning 
+	* Map manager
+	* Enemy AI movement
+	* Projectiles 
+
+- Week 4 
+	* Projectile shooting options added
+	* Flash screen option added
+	* Entity/map hitboxes added
+	* Entity/map collision added
+
+- Week 5 
+	* Added player shooting 
+	* Enemy-projectile collision
+	* POV on player
+
+- Week 6 
+	* HUD
+	* Soulgun functionality
+	* Game over screen
+	* Updated spawning
+
+## Team Member Contributions 
+### Jared
+	* Texture Manager
+	* Display Manager
+	* Makfile
+	* Enemy spawning
+	* Projectiles
+	* HUD
+
+### Aleksandr
+	* Reading keyboard input
+	* Flash screen
+	* Soulgun functionality
+	* Game over screen
+
+### Christopher
+	* Map manager
+	* Improved map rendering
+	* Entity/map hitboxes 
+	* Entity/map collision
+	* POV on player
+
+### Kirani
+	* Entity class
+	* Projectile class
+	* Humanoid class
+	* Projectile shooting options added
+	* Added player shooting
+	* Enemy-projectile collision detection
+
+
+
