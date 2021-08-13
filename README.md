@@ -17,7 +17,7 @@ Special thanks to [Lazy Foo' Productions](https://lazyfoo.net/tutorials/SDL/) fo
 
 Entity sprites based on graphics designed by [OpenMoji](https://openmoji.org/) – the open-source emoji and icon project. License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/#)
 
-## Build instructions OsX MAC
+## Build instructions macOS
 
 Easiest way to get SDL2 and SDL2_image going on your mac is using Homebrew. 
 
