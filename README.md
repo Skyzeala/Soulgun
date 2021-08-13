@@ -12,19 +12,31 @@ _Jackedsoft 2021_
 * C++
 * [SDL 2.0](https://www.libsdl.org/]) - "a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D"
 
-## Installation instructions
-
-
 ## Attributions
 Special thanks to [Lazy Foo' Productions](https://lazyfoo.net/tutorials/SDL/) for the tutorial on SDL usage and capabilities.
 
 Entity sprites based on graphics designed by [OpenMoji](https://openmoji.org/) – the open-source emoji and icon project. License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/#)
 
+## Build instructions OsX MAC
+
+Easiest way to get SDL2 and SDL2_image going on your mac is using Homebrew. 
+
+	https://brew.sh/
+	
+After installing homebrew, just type:
+
+	brew install SDL2
+	brew install SDL2_image
+	
+This will add the needed SDL2 framework to compile Soulgun.
+
+After that you can easily compile the game by typing "make" from the terminal in the game directory where the Makefile is.
+
 
 ## Overview of how entities and projectiles work
-* Humanoids can be either humans or robots. A humans soul can be stolen by the player, giving the player the stats of the human. Human and robots stats include health, movement speed, a shooting cooldown, and bullet patterns. 
-* The spawning of humanoids is managed by the display manager, which generates humanoids with random stats near the player. The spawn rate increases over time. Movement is also handled by the display manager. Robots move vertically and horizontally, while humans move diagonally.
-* Entity bullet patterns are defined by two variables, the shoot style, and a function that defines the projectiles movement. The shoot style of an entity is what defines the number and orientation of bullets when they are fired. The projectile movement function defines how the bullet will move after it has been spawned. These two variables are randomized separately, creating a fair amount of unique combinations.
+Humanoids can be either humans or robots. A humans soul can be stolen by the player, giving the player the stats of the human. Human and robots stats include health, movement speed, a shooting cooldown, and bullet patterns. 
+The spawning of humanoids is managed by the display manager, which generates humanoids with random stats near the player. The spawn rate increases over time. Movement is also handled by the display manager. Robots move vertically and horizontally, while humans move diagonally.
+Entity bullet patterns are defined by two variables, the shoot style, and a function that defines the projectiles movement. The shoot style of an entity is what defines the number and orientation of bullets when they are fired. The projectile movement function defines how the bullet will move after it has been spawned. These two variables are randomized separately, creating a fair amount of unique combinations.
 
 
 
