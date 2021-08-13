@@ -24,27 +24,6 @@ Entity::Entity() :
 #endif
 }
 
-Entity::Entity(const Entity &entity) :
-    maxHealth(maxHealth),
-    health(maxHealth),
-    entityType(ET_PLAYER),
-    posx(posx),
-    posy(posy),
-    speed(speed),
-    entityMove(entityMove),
-    projectileMove(projectileMove),
-    textureID(textureID)
-{
-		setHitbox(entityType);
-#ifdef ENTITYDEBUG
-    cout << "Created entity from copy." << endl;
-#endif
-}
-
-Entity::~Entity(void) {
-    // todo
-}
-
 Entity::Entity(int health, EntityType entityType,
                 double x, double y, double speed, moveEntityFunc entityMove,
                 moveProjectileFunc projectileMove,
@@ -69,6 +48,10 @@ Entity::Entity(int health, EntityType entityType,
 }
 
 
+Entity::~Entity(void) {
+    // todo
+}
+
 Position Entity::getPosition()
 {
     Position pos;
@@ -90,6 +73,16 @@ TextureID Entity::getImage()
 EntityType Entity::getType()
 {
     return entityType;
+}
+
+moveProjectileFunc Entity::getProjMoveFunc()
+{
+    return projectileMove;
+}
+
+void Entity::setProjMoveFunc(moveProjectileFunc func)
+{
+    projectileMove = func;
 }
 
 void Entity::setHitbox(EntityType ID){
