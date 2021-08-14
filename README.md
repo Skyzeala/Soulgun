@@ -2,6 +2,8 @@
 A cross-platform "bullet hell" game where your gun can possess your enemies.  The player will dodge bullets from neverending barrage of robotic and humanoid enemies. If the players projectile kills a humanoid, the player will change to the humanoids location and inherit its shooting style.
 _ChangeitlaterJACK 2021_
 
+A demo and short overview of the program can be found in "Soulgun Project Video.mp4"
+
 ## Contributors
 * **J**ared Collums
 * **A**leksandr Kaletin
@@ -72,7 +74,7 @@ Be aware that the setup for SDL2 and SDL2_image can be very finicky.
 	* Hold space to shoot. Aiming is based on previous movement direction
 
 
-## Development Roadmap
+## Development Roadmap at the Start of the Term
 Development will happen in one week sprints, with each sprint introducing the features specified below.  Specific milestone deadlines may be shifted as needed.  After the last of these sprints we hope to have a coherent game whose mechanics and assets can be easily built upon.
 
 ### Week 1 - Prototype
@@ -115,17 +117,18 @@ Development will happen in one week sprints, with each sprint introducing the fe
 	* Rudimentary Sound effects
 	* Better map graphics
 
-## Project Workflow
+## Project Workflow Through the Term
 - Week 1 
  	* Texture Manager 
  	
 - Week 2 
-	* Display Manager 
+	* Display Manager
 	* Makefile 
 	* Reading keyboard input 
 	* Entity implementation
 
 - Week 3 
+	* Basic game loop
 	* Enemy spawning 
 	* Map manager
 	* Enemy AI movement
