@@ -50,7 +50,12 @@ If you do not have admin permissions or are unable to install it in traditional 
 	Run the configure script in the parent directory: ../configure
 	Compile and install SDL: make; make install
 	Do the same for SD2L_image
+
+To download Soulgun
+
+	In the directory of your choice, enter this command: git clone https://github.com/ChangeitlaterJACK/Soulgun
 	Then in the Soulgun directory, compile Soulgun with this command: make lab
+	Soulgun can then be run with the following command: ./Soulgun.exe
 
 
 ## Build instructions Windows
