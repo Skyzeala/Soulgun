@@ -15,6 +15,8 @@ _ChangeitlaterJACK 2021_
 ## Attributions
 Special thanks to [Lazy Foo' Productions](https://lazyfoo.net/tutorials/SDL/) for the tutorial on SDL usage and capabilities.
 
+Special thanks to [Giovanni Codes Games](https://giovanni.codes) for a guide on installing SDL2 on Windows with VSCode.
+
 Entity sprites based on graphics designed by [OpenMoji](https://openmoji.org/) – the open-source emoji and icon project. License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/#)
 
 ## Build instructions macOS
@@ -31,6 +33,31 @@ After installing homebrew, just type:
 This will add the needed SDL2 framework to compile Soulgun.
 
 After that you can easily compile the game by typing "make" from the terminal in the game directory where the Makefile is.
+
+## Build instructions Linux
+
+If you have administrator privileges on your machine, follow these LazyFoo tutorials to install [SDL2](https://lazyfoo.net/tutorials/SDL/01_hello_SDL/linux/index.php) and [SDL2_image](https://lazyfoo.net/tutorials/SDL/06_extension_libraries_and_loading_other_image_formats/linux/index.php)
+
+If you do not have admin permissions or are unable to install it in traditional ways, do this using your command line.
+
+	Go to the directory you wish to install SDL2, and remember the path name of that directory
+	Enter the command: git clone https://github.com/libsdl-org/SDL.git
+	Go into the SDL directory: cd SDL
+	Open the Makefile file and change the prefix to the absolute path to get to your directory/local
+	Back on the command line, create a directory called build, and enter it: mkdir build; cd build
+	Run the configure script in the parent directory: ../configure
+	Compile and install SDL: make; make install
+	Do the same for SD2L_image
+	Then in the Soulgun directory, compile Soulgun with this command: make lab
+
+
+## Build instructions Windows
+
+Windows is currently not supported and has many bugs. 
+
+If you would still like to install Soulgun on Windows you can follow [LazyFoo's Windows installation guides](https://lazyfoo.net/tutorials/SDL/01_hello_SDL/windows/index.php), or [Giovanni Codes Games' VSCode installation guide](https://giovanni.codes/setup-sdl2-with-visual-studio-code-and-mingw64-on-windows/).
+
+Be aware that the setup for SDL2 and SDL2_image can be very finicky.
 
 
 ## Overview of how entities and projectiles work
